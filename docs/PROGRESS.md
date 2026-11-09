@@ -2,6 +2,12 @@
 
 Fecha: 9 de noviembre de 2026.
 
+## Nuevo despliegue solicitado
+
+- Se volvió a compilar y desplegar el contenido del commit ecfb0f1 en Cloudflare: versión 980f93f6-2c83-4764-87f0-82db9fccddf0, en https://folio.mayiitoo-alberto.workers.dev.
+- La compilación validó cuarenta preguntas y generó 22 páginas. Las cinco comprobaciones remotas confirmaron 503 con private, no-store y sin contenido privado.
+- Access continúa sin configurar. Wrangler tiene sesión y permiso para desplegar Workers, pero no para administrar Access; la conexión al navegador tampoco está disponible. El despliegue existe, pero el uso remoto de la biblioteca permanece pendiente de activar Access.
+
 ## Activación de preguntas y pequeñas mejoras
 
 - Por petición explícita del usuario se activaron las veinte preguntas de Lengua y comunicación. El banco principal tiene cuarenta preguntas; no quedan preguntas pendientes de esta unidad.

@@ -1,0 +1,120 @@
+import { test, expect } from '@playwright/test';
+import { mkdir } from 'node:fs/promises';
+test('biblioteca → lectura → práctica → simulacro → resultados → diagnóstico → repaso', async ({
+  page,
+  request,
+}, info) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Biblioteca', exact: true })).toBeVisible();
+  await expect(page.locator('.book-entry:visible')).toHaveCount(10);
+  await page.getByRole('button', { name: 'Física', exact: true }).click();
+  await expect(page.locator('.book-entry:visible')).toHaveCount(1);
+  await page.getByRole('button', { name: 'Todas las materias' }).click();
+  await page.getByRole('searchbox', { name: 'Buscar libros' }).fill('álgebra');
+  await expect(page.locator('.book-entry:visible')).toHaveCount(1);
+  await page.getByRole('searchbox', { name: 'Buscar libros' }).fill('');
+  await page.evaluate(() => document.fonts.ready);
+  await mkdir('output/playwright', { recursive: true });
+  await page.screenshot({
+    path: 'output/playwright/library-' + info.project.name + '.png',
+    fullPage: true,
+  });
+  await page.getByRole('link', { name: 'Abrir Matemáticas', exact: true }).click();
+  await page.getByRole('link', { name: 'Comenzar a leer' }).click();
+  await expect(page.locator('.katex').first()).toBeVisible();
+  await page.locator('.mermaid-container').scrollIntoViewIfNeeded();
+  await expect(page.locator('.mermaid-target svg')).toBeVisible({ timeout: 20000 });
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({
+    path: 'output/playwright/reading-' + info.project.name + '.png',
+    fullPage: true,
+  });
+  const complete = page.getByRole('button', { name: 'Marcar como leída' });
+  if (await complete.count()) await complete.click();
+  await expect(page.getByRole('button', { name: 'Completada', exact: true })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('button', { name: 'Completada', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Practicar este tópico', exact: true }).click();
+  await page.getByLabel('Cantidad de preguntas').fill('2');
+  await page.getByRole('button', { name: 'Comenzar evaluación' }).click();
+  await expect(page.getByRole('heading', { name: 'Comprueba lo aprendido' })).toBeVisible();
+  await page.getByRole('radio').first().click();
+  await expect(page.locator('.feedback')).toBeVisible();
+  await page.getByRole('button', { name: 'Finalizar evaluación', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirmar y ver resultados' }).click();
+  await expect(page.getByRole('heading', { name: 'Resultados de la evaluación' })).toBeVisible();
+  await page.goto('/simulacros/?mode=exam');
+  await page.getByLabel('Cantidad de preguntas').fill('4');
+  const created = page.waitForResponse(
+    (r) => r.url().endsWith('/api/v1/exams') && r.request().method() === 'POST',
+  );
+  await page.getByRole('button', { name: 'Comenzar evaluación' }).click();
+  const response = await (await created).json();
+  expect(JSON.stringify(response)).not.toMatch(/correctOption|explanation|correct_option/);
+  expect(new Set(response.questions.map((q: { topicId: string }) => q.topicId)).size).toBe(4);
+  await expect(page.getByRole('heading', { name: 'Simulacro de admisión' })).toBeVisible();
+  await page.getByRole('radio').first().click();
+  await expect(page.getByText('Respuesta guardada en tu intento.')).toBeVisible();
+  await expect(page.locator('.feedback')).toHaveCount(0);
+  const url = page.url();
+  await page.screenshot({
+    path: 'output/playwright/exam-' + info.project.name + '.png',
+    fullPage: true,
+  });
+  await page.reload();
+  await expect(page.locator('.question-map .answered')).toHaveCount(1);
+  await page.getByRole('button', { name: 'Finalizar evaluación', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirmar y ver resultados' }).click();
+  await expect(page.getByRole('heading', { name: 'Resultados de la evaluación' })).toBeVisible();
+  await page.screenshot({
+    path: 'output/playwright/results-' + info.project.name + '.png',
+    fullPage: true,
+  });
+  const concept = page.locator('.review-question .text-link').first(),
+    href = await concept.getAttribute('href');
+  expect(href).toContain('#');
+  await concept.click();
+  await expect(
+    page.locator(page.url().split('#')[1] ? '#' + page.url().split('#')[1] : '.prose'),
+  ).toBeVisible();
+  await page.goto(url);
+  await expect(page.getByRole('heading', { name: 'Resultados de la evaluación' })).toBeVisible();
+  await page.getByRole('link', { name: 'Ver mi diagnóstico' }).click();
+  await expect(page.getByRole('heading', { name: 'Conceptos para volver a leer' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Volver a la lectura' }).first()).toBeVisible();
+  await page.goto('/repaso/?topic=ecuaciones-lineales');
+  await page.getByRole('button', { name: 'Mostrar respuesta' }).click();
+  await expect(page.locator('.card-answer')).toBeVisible();
+  await page.getByRole('button', { name: 'Lo recordé' }).click();
+  await expect(page.getByText(/1 revisadas en esta sesión/)).toBeVisible();
+  const health = await request.get('/api/v1/health');
+  expect(health.status()).toBe(200);
+  expect(errors).toEqual([]);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(
+    false,
+  );
+});
+test('preferencias y navegación móvil', async ({ page }, info) => {
+  await page.goto('/configuracion/');
+  await page.getByLabel('Tamaño del texto').selectOption('large');
+  await page.getByRole('button', { name: 'Guardar preferencias' }).click();
+  await expect(page.getByText('Preferencias guardadas.')).toBeVisible();
+  await page.reload();
+  await expect(page.getByLabel('Tamaño del texto')).toHaveValue('large');
+  await page.getByLabel('Tamaño del texto').selectOption('normal');
+  await page.getByRole('button', { name: 'Guardar preferencias' }).click();
+  if (info.project.name === 'mobile') {
+    await expect(page.locator('#sidebar')).toHaveAttribute('inert', '');
+    await page.getByRole('button', { name: 'Abrir navegación' }).click();
+    await expect(page.locator('#sidebar')).not.toHaveAttribute('inert', '');
+    await expect(page.locator('#sidebar')).toBeInViewport();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#sidebar')).toHaveAttribute('inert', '');
+    await expect(page.getByRole('button', { name: 'Abrir navegación' })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
+  }
+});

@@ -3,12 +3,10 @@ import AppLayout from '../layouts/AppLayout.astro';
 import FlashcardDeck from '../components/review/FlashcardDeck';
 ---
 
-<AppLayout title="Repaso" section="Repaso">
-  <div class="page-heading">
+<AppLayout title="Repaso" section="Repaso" focus immersive>
+  <div class="page-heading review-heading">
     <div>
-      <p class="eyebrow">Recordar para comprender mejor</p>
       <h1>Un concepto a la vez</h1>
-      <p>Un espacio tranquilo para recuperar definiciones, fórmulas e ideas esenciales.</p>
     </div>
   </div>
   <FlashcardDeck client:load />

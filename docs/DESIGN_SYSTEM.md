@@ -27,6 +27,14 @@ El sidebar está oculto inicialmente. Un botón hamburguesa visible en todos los
 
 La vista de preguntas utiliza una única columna centrada. El enunciado ocupa el centro; las opciones quedan alineadas dentro de esa columna para comparar y leer con facilidad. La hoja de respuestas aparece debajo, sin un panel lateral ni recuadros para cada opción.
 
+## Módulos compactos e inmersión
+
+El botón Concentrarme está disponible en todos los módulos. Oculta navegación, encabezado general y pie de página; deja una barra discreta con el nombre del módulo y Salir. Escape también restaura la navegación y el foco de teclado. El sidebar conserva su preferencia de apertura, pero permanece oculto e inerte durante la inmersión.
+
+Quiz y simulacro activan la inmersión al comenzar o retomar un intento. El reloj comparte una fila compacta con el título y la pregunta ocupa el centro del espacio disponible. La hoja de respuestas se despliega bajo demanda y se cierra al saltar a otra pregunta. Pendientes y Finalizar siguen accesibles. Los enunciados largos y las explicaciones pueden crecer y desplazar la página; no se recorta contenido para forzarlo dentro de una altura fija.
+
+La configuración muestra un resumen de tópicos y permite desplegar la selección; solo lista materias con preguntas disponibles. Repaso comienza en modo inmersivo, con una tarjeta central. Las lecturas mantienen su tipografía y sus diagramas; al concentrarse, el índice lateral se oculta y el artículo se centra en una columna.
+
 ## Tiempo y accesibilidad
 
 Práctica/quiz y simulacro siempre muestran un reloj. Sin límite se muestra el tiempo transcurrido; con límite, una cuenta regresiva. Ambos se calculan a partir de las fechas del intento y la hora del servidor, por lo que recargar no reinicia el reloj. El servidor sigue rechazando respuestas tardías y la interfaz finaliza al agotar el plazo.

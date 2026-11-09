@@ -44,11 +44,7 @@ export default function FlashcardDeck() {
     }
   }
   return (
-    <>
-      <div className="notice">
-        Recupera la idea antes de ver la respuesta. Después, decide si quieres volver a estudiarla o
-        si la recuerdas con claridad.
-      </div>
+    <div className="review-workspace">
       <label className="field" style={{ maxWidth: 370 }}>
         Filtrar tarjetas por tópico
         <select
@@ -123,16 +119,12 @@ export default function FlashcardDeck() {
               <BookOpen size={15} />
               Consultar el concepto en su lectura
             </a>
-            <p className="muted" style={{ fontSize: '.82rem', marginTop: 18 }}>
-              El historial se guarda en D1. Esta versión ofrece repaso libre, sin programación
-              espaciada.
-            </p>
             <p className="muted" style={{ fontSize: '.8rem', marginTop: 8 }}>
               Revisiones anteriores de esta tarjeta: {card.reviewCount}.
             </p>
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }

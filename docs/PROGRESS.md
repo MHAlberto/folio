@@ -2,6 +2,14 @@
 
 Fecha: 9 de noviembre de 2026.
 
+## Módulos compactos y modo inmersivo
+
+- Concentrarme permite centrar cualquier módulo y ocultar sidebar, encabezado general y pie de página. La barra discreta del módulo ofrece Salir; Escape también restaura navegación y foco. Se conserva la preferencia del sidebar y los controles ocultos quedan inertes.
+- Quiz y simulacro activan automáticamente la inmersión al comenzar o retomar un intento; al finalizar se recupera la navegación. La pregunta y sus opciones ocupan el centro, el título y reloj comparten una fila compacta y la hoja de respuestas se despliega bajo demanda. Saltar a otro reactivo vuelve a cerrar la hoja.
+- La configuración de evaluación resume los tópicos y despliega su selección al solicitarla. Solo lista materias y cuadernos con preguntas disponibles. Se redujeron márgenes y texto redundante en módulos y repaso.
+- Repaso comienza inmersivo, con una tarjeta central. La lectura ofrece la misma vista sin índice lateral y conserva su tipografía y recursos didácticos. No se utilizan alturas fijas que recorten preguntas o explicaciones largas.
+- Pasan tipos generados, Astro Check/TypeScript sin errores, lint, formato, validación del banco de cuarenta preguntas, 29 pruebas de contenido/API, build de 22 páginas y ocho E2E en escritorio y móvil. Se verifican entrada automática, salida por botón y Escape, restauración del sidebar y foco, lectura, repaso y paneles desplegables. Capturas de examen y repaso revisadas en ambos tamaños.
+
 ## Acceso directo sin Cloudflare Access
 
 - El usuario pidió explícitamente desplegar sin configurar Access. Se añadió ACCESS_MODE=public en producción; el modo privado queda como opción y ya no bloquea la publicación solicitada.

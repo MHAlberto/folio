@@ -8,6 +8,8 @@ La aplicación funciona localmente con Wrangler. Incluye diez materias y 74 tóp
 
 La dirección solicitada para producción es https://folio.mayiitoo-alberto.workers.dev. Por petición del usuario, funciona con acceso directo sin Cloudflare Access. El contenido es público; progreso, preferencias e intentos se separan por navegador mediante una cookie opaca HttpOnly. Borrar las cookies o cambiar de navegador inicia otro espacio. El estado de publicación se registra en [PROGRESS](docs/PROGRESS.md).
 
+Todos los módulos ofrecen Concentrarme para ocultar la navegación y centrarse en la actividad. Los quizzes, simulacros en curso y el repaso entran en modo inmersivo automáticamente; Salir o Escape permiten recuperar la navegación. La selección de tópicos y la hoja de respuestas se despliegan bajo demanda para mantener la interfaz compacta.
+
 ## Requisitos y desarrollo
 
 Node 24 o superior, npm y Chrome para las pruebas de navegador. En Windows PowerShell utiliza npm.cmd y npx.cmd si la política del sistema bloquea los lanzadores .ps1.

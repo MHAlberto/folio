@@ -5,6 +5,7 @@ import type { ExamConfig } from '../../../shared/schemas/api';
 import type { Catalog } from '../../../shared/schemas/content';
 import { catalog, readingUrl, topicById } from '../../../shared/catalog';
 import { api, ApiError, dateLabel } from '../../lib/api';
+import { setImmersive } from '../../lib/immersion';
 
 type CatalogCounts = Omit<Catalog, 'topics'> & {
   topics: (Catalog['topics'][number] & { questionCount: number })[];
@@ -26,8 +27,16 @@ export default function ExamWorkspace() {
     [remaining, setRemaining] = useState<number | null>(null),
     [elapsed, setElapsed] = useState(0);
   const offset = useRef(0),
-    heading = useRef<HTMLHeadingElement>(null);
+    heading = useRef<HTMLHeadingElement>(null),
+    sheet = useRef<HTMLDetailsElement>(null);
   const autoFinished = useRef(false);
+  useEffect(() => {
+    if (attempt) {
+      setImmersive(attempt.status === 'in_progress');
+      if (attempt.status === 'in_progress') heading.current?.focus({ preventScroll: true });
+      else document.querySelector<HTMLElement>('#contenido')?.focus({ preventScroll: true });
+    }
+  }, [attempt?.id, attempt?.status]);
   const adopt = useCallback((value: Attempt) => {
     offset.current = Date.parse(value.serverNow) - Date.now();
     setAttempt(value);
@@ -214,6 +223,7 @@ export default function ExamWorkspace() {
   function navigate(to: number) {
     setConfirm(false);
     setIndex(to);
+    if (sheet.current) sheet.current.open = false;
     heading.current?.focus();
   }
   if (loading)
@@ -286,65 +296,73 @@ export default function ExamWorkspace() {
                 <p className="form-description">
                   Selecciona materias completas o tópicos específicos.
                 </p>
-                {data.subjects.map((subject) => {
-                  const books = data.books.filter((b) => b.subjectId === subject.id),
-                    ids = data.topics
-                      .filter((t) => t.questionCount > 0 && books.some((b) => b.id === t.bookId))
-                      .map((t) => t.id);
-                  return (
-                    <div className="book-check-group" key={subject.id}>
-                      <label className="check-row">
-                        <input
-                          type="checkbox"
-                          disabled={ids.length === 0}
-                          checked={ids.length > 0 && ids.every((id) => selected.includes(id))}
-                          onChange={(e) => toggle(ids, e.target.checked)}
-                        />
-                        <strong>{subject.title}</strong>
-                        {ids.length === 0 && <small>Sin preguntas todavía</small>}
-                      </label>
-                      {books.map((book) => {
-                        const topics = data.topics.filter((t) => t.bookId === book.id),
-                          bookIds = topics.filter((t) => t.questionCount > 0).map((t) => t.id);
-                        return (
-                          <div key={book.id}>
-                            <label className="check-row topic-check">
-                              <input
-                                type="checkbox"
-                                disabled={bookIds.length === 0}
-                                checked={
-                                  bookIds.length > 0 && bookIds.every((id) => selected.includes(id))
-                                }
-                                onChange={(e) => toggle(bookIds, e.target.checked)}
-                              />
-                              <span>{book.title}</span>
-                            </label>
-                            {topics.map((topic) => (
-                              <label
-                                className="check-row"
-                                style={{ paddingLeft: 54 }}
-                                key={topic.id}
-                              >
+                <details className="topic-picker">
+                  <summary>
+                    Cambiar contenido <span>{selected.length} tópicos seleccionados</span>
+                  </summary>
+                  {data.subjects.map((subject) => {
+                    const books = data.books.filter((b) => b.subjectId === subject.id),
+                      ids = data.topics
+                        .filter((t) => t.questionCount > 0 && books.some((b) => b.id === t.bookId))
+                        .map((t) => t.id);
+                    if (ids.length === 0) return null;
+                    return (
+                      <div className="book-check-group" key={subject.id}>
+                        <label className="check-row">
+                          <input
+                            type="checkbox"
+                            disabled={ids.length === 0}
+                            checked={ids.length > 0 && ids.every((id) => selected.includes(id))}
+                            onChange={(e) => toggle(ids, e.target.checked)}
+                          />
+                          <strong>{subject.title}</strong>
+                          {ids.length === 0 && <small>Sin preguntas todavía</small>}
+                        </label>
+                        {books.map((book) => {
+                          const topics = data.topics.filter((t) => t.bookId === book.id),
+                            bookIds = topics.filter((t) => t.questionCount > 0).map((t) => t.id);
+                          if (bookIds.length === 0) return null;
+                          return (
+                            <div key={book.id}>
+                              <label className="check-row topic-check">
                                 <input
                                   type="checkbox"
-                                  disabled={topic.questionCount === 0}
-                                  checked={selected.includes(topic.id)}
-                                  onChange={(e) => toggle([topic.id], e.target.checked)}
+                                  disabled={bookIds.length === 0}
+                                  checked={
+                                    bookIds.length > 0 &&
+                                    bookIds.every((id) => selected.includes(id))
+                                  }
+                                  onChange={(e) => toggle(bookIds, e.target.checked)}
                                 />
-                                <span>{topic.title}</span>
-                                <small>
-                                  {topic.pendingQuestionCount
-                                    ? topic.pendingQuestionCount + ' en revisión'
-                                    : topic.questionCount + ' preguntas'}
-                                </small>
+                                <span>{book.title}</span>
                               </label>
-                            ))}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
+                              {topics.map((topic) => (
+                                <label
+                                  className="check-row"
+                                  style={{ paddingLeft: 54 }}
+                                  key={topic.id}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    disabled={topic.questionCount === 0}
+                                    checked={selected.includes(topic.id)}
+                                    onChange={(e) => toggle([topic.id], e.target.checked)}
+                                  />
+                                  <span>{topic.title}</span>
+                                  <small>
+                                    {topic.pendingQuestionCount
+                                      ? topic.pendingQuestionCount + ' en revisión'
+                                      : topic.questionCount + ' preguntas'}
+                                  </small>
+                                </label>
+                              ))}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+                </details>
               </section>
               <section className="form-section">
                 <h2>Selección y tiempo</h2>
@@ -370,9 +388,7 @@ export default function ExamWorkspace() {
                     onChange={(e) => setCount(Number(e.target.value))}
                     required
                   />
-                  <small>
-                    El banco de muestra tiene {available} preguntas en los tópicos seleccionados.
-                  </small>
+                  <small>{available} preguntas disponibles en los tópicos seleccionados.</small>
                 </label>
                 <label className="field">
                   Límite de tiempo, en minutos <span className="muted">(opcional)</span>
@@ -441,7 +457,7 @@ export default function ExamWorkspace() {
   const question = attempt.questions[index]!,
     answered = attempt.questions.filter((q) => q.selectedOption).length;
   return (
-    <>
+    <div className="exam-session">
       <div className="exam-toolbar">
         <div>
           <small>
@@ -585,38 +601,49 @@ export default function ExamWorkspace() {
           </nav>
         </div>
         <aside className="exam-aside">
-          <h2>Hoja de respuestas</h2>
-          <div className="question-map">
-            {attempt.questions.map((q, i) => (
-              <button
-                key={q.id}
-                className={(q.selectedOption ? 'answered ' : '') + (i === index ? 'current' : '')}
-                onClick={() => navigate(i)}
-                disabled={busy}
-                aria-label={'Ir al reactivo ' + (i + 1) + (q.selectedOption ? ', respondido' : '')}
-                aria-current={i === index ? 'step' : undefined}
-              >
-                {i + 1}
-              </button>
-            ))}
-          </div>
-          <p>
-            {answered} de {attempt.questionCount} respuestas guardadas.
-          </p>
+          <details className="answer-sheet" ref={sheet}>
+            <summary>
+              Hoja de respuestas{' '}
+              <span>
+                {answered}/{attempt.questionCount}
+              </span>
+            </summary>
+            <div className="question-map">
+              {attempt.questions.map((q, i) => (
+                <button
+                  key={q.id}
+                  className={(q.selectedOption ? 'answered ' : '') + (i === index ? 'current' : '')}
+                  onClick={() => navigate(i)}
+                  disabled={busy}
+                  aria-label={
+                    'Ir al reactivo ' + (i + 1) + (q.selectedOption ? ', respondido' : '')
+                  }
+                  aria-current={i === index ? 'step' : undefined}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+            <p>
+              {answered} de {attempt.questionCount} respuestas guardadas.
+            </p>
+            <p>
+              {attempt.mode === 'exam'
+                ? 'Las explicaciones estarán disponibles al finalizar.'
+                : 'Revisa cada explicación y relaciona los conceptos con su lectura.'}
+            </p>
+            <p>Puedes retomar este intento en Progreso.</p>
+          </details>
           {firstUnanswered >= 0 && firstUnanswered !== index && (
             <button
               className="button secondary"
+              aria-label="Ir a primera sin responder"
               disabled={busy}
               onClick={() => navigate(firstUnanswered)}
             >
-              Ir a primera sin responder
+              Pendientes ({attempt.questionCount - answered})
             </button>
           )}
-          <p>
-            {attempt.mode === 'exam'
-              ? 'Las explicaciones estarán disponibles al finalizar.'
-              : 'Revisa cada explicación y relaciona los conceptos con su lectura.'}
-          </p>
           <button
             className="button"
             onClick={() => {
@@ -628,10 +655,9 @@ export default function ExamWorkspace() {
             Finalizar evaluación
             <Check size={16} />
           </button>
-          <p>Puedes cerrar la página y retomar este intento en Progreso.</p>
         </aside>
       </div>
-    </>
+    </div>
   );
 }
 

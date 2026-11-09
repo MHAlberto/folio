@@ -55,6 +55,10 @@ test('biblioteca → lectura → práctica → simulacro → resultados → diag
   await expect(page.locator('.katex').first()).toBeVisible();
   await page.locator('.mermaid-container').scrollIntoViewIfNeeded();
   await expect(page.locator('.mermaid-target svg')).toBeVisible({ timeout: 20000 });
+  await page.getByRole('button', { name: 'Activar modo inmersivo' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-immersive', 'true');
+  await expect(page.locator('.reader-toc')).not.toBeVisible();
+  await expect(page.locator('.topbar')).not.toBeVisible();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
     path: 'output/playwright/reading-' + info.project.name + '.png',
@@ -69,6 +73,9 @@ test('biblioteca → lectura → práctica → simulacro → resultados → diag
   await page.getByLabel('Cantidad de preguntas').fill('2');
   await page.getByRole('button', { name: 'Comenzar evaluación' }).click();
   await expect(page.getByRole('heading', { name: 'Comprueba lo aprendido' })).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('data-immersive', 'true');
+  await expect(page.getByRole('button', { name: 'Salir del modo inmersivo' })).toBeVisible();
+  await expect(page.locator('.app-footer')).not.toBeVisible();
   await expect(page.getByRole('timer', { name: 'Tiempo transcurrido' })).toBeVisible();
   const initialTime = await page.getByRole('timer').locator('time').textContent();
   await expect(page.getByRole('timer').locator('time')).not.toHaveText(initialTime!);
@@ -77,6 +84,8 @@ test('biblioteca → lectura → práctica → simulacro → resultados → diag
   await page.getByRole('button', { name: 'Finalizar evaluación', exact: true }).click();
   await page.getByRole('button', { name: 'Confirmar y ver resultados' }).click();
   await expect(page.getByRole('heading', { name: 'Resultados de la evaluación' })).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('data-immersive', 'false');
+  await expect(page.locator('.topbar')).toBeVisible();
   await page.goto('/simulacros/?mode=exam');
   await page.getByLabel('Cantidad de preguntas').fill('4');
   await page.getByLabel('Límite de tiempo, en minutos').fill('5');
@@ -88,6 +97,8 @@ test('biblioteca → lectura → práctica → simulacro → resultados → diag
   expect(JSON.stringify(response)).not.toMatch(/correctOption|explanation|correct_option/);
   expect(new Set(response.questions.map((q: { topicId: string }) => q.topicId)).size).toBe(4);
   await expect(page.getByRole('heading', { name: 'Simulacro de admisión' })).toBeVisible();
+  await expect(page.locator('html')).toHaveAttribute('data-immersive', 'true');
+  await expect(page.locator('.answer-sheet')).not.toHaveAttribute('open', '');
   const promptBounds = await page.locator('.question-prompt').boundingBox();
   expect(
     Math.abs(promptBounds!.x + promptBounds!.width / 2 - page.viewportSize()!.width / 2),
@@ -103,6 +114,7 @@ test('biblioteca → lectura → práctica → simulacro → resultados → diag
     fullPage: true,
   });
   await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-immersive', 'true');
   await expect(page.locator('.question-map .answered')).toHaveCount(1);
   await page.getByRole('button', { name: 'Finalizar evaluación', exact: true }).click();
   await page.getByRole('button', { name: 'Confirmar y ver resultados' }).click();
@@ -124,8 +136,14 @@ test('biblioteca → lectura → práctica → simulacro → resultados → diag
   await expect(page.getByRole('heading', { name: 'Conceptos para volver a leer' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Volver a la lectura' }).first()).toBeVisible();
   await page.goto('/repaso/?topic=ecuaciones-lineales');
+  await expect(page.locator('html')).toHaveAttribute('data-immersive', 'true');
+  await expect(page.locator('.topbar')).not.toBeVisible();
   await page.getByRole('button', { name: 'Mostrar respuesta' }).click();
   await expect(page.locator('.card-answer')).toBeVisible();
+  await page.screenshot({
+    path: 'output/playwright/review-' + info.project.name + '.png',
+    fullPage: true,
+  });
   await page.getByRole('button', { name: 'Lo recordé' }).click();
   await expect(page.getByText(/1 revisadas en esta sesión/)).toBeVisible();
   const health = await request.get('/api/v1/health');
@@ -158,6 +176,22 @@ test('preferencias y navegación ocultable en escritorio y móvil', async ({ pag
     await page.reload();
     await expect(page.locator('#sidebar')).toHaveAttribute('inert', '');
   }
+  const desktop = page.viewportSize()!.width > 720;
+  if (desktop) await page.getByRole('button', { name: 'Abrir navegación' }).click();
+  await page.getByRole('button', { name: 'Activar modo inmersivo' }).click();
+  await expect(page.locator('#sidebar')).not.toBeVisible();
+  await expect(page.locator('#sidebar')).toHaveAttribute('inert', '');
+  await expect(page.getByLabel('Tamaño del texto')).toHaveValue('normal');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('html')).toHaveAttribute('data-immersive', 'false');
+  await expect(page.getByRole('button', { name: 'Activar modo inmersivo' })).toBeFocused();
+  if (desktop) {
+    await expect(page.locator('#sidebar')).not.toHaveAttribute('inert', '');
+    await page.getByRole('button', { name: 'Cerrar navegación' }).click();
+  } else await expect(page.locator('#sidebar')).toHaveAttribute('inert', '');
+  await page.getByRole('button', { name: 'Activar modo inmersivo' }).click();
+  await page.getByRole('button', { name: 'Salir del modo inmersivo' }).click();
+  await expect(page.locator('.topbar')).toBeVisible();
 });
 test('Español: preguntas activas, continuar lectura, revisar pendientes y repetir configuración', async ({
   page,
@@ -197,7 +231,11 @@ test('Español: preguntas activas, continuar lectura, revisar pendientes y repet
   await page.getByRole('link', { name: 'Continuar con: Lengua y comunicación' }).click();
   await expect(page).toHaveURL(/\/lectura\/espanol-01\//);
   await page.getByRole('link', { name: 'Practicar este tópico', exact: true }).click();
+  await expect(page.locator('.topic-picker')).not.toHaveAttribute('open', '');
+  await page.locator('.topic-picker > summary').click();
   await expect(page.getByRole('checkbox', { name: /Lengua y comunicación/ })).toBeChecked();
+  await expect(page.getByRole('checkbox', { name: /Lengua y comunicación/ })).toBeVisible();
+  await page.locator('.topic-picker > summary').click();
   await page.getByLabel('Cantidad de preguntas').fill('3');
   await page.getByLabel('Límite de tiempo, en minutos').fill('2');
   const created = page.waitForResponse(
@@ -210,7 +248,9 @@ test('Español: preguntas activas, continuar lectura, revisar pendientes y repet
   );
   await page.getByRole('radio').first().click();
   await expect(page.locator('.feedback')).toBeVisible();
+  await page.locator('.answer-sheet > summary').click();
   await page.getByRole('button', { name: 'Ir al reactivo 3', exact: true }).click();
+  await expect(page.locator('.answer-sheet')).not.toHaveAttribute('open', '');
   await page.getByRole('button', { name: 'Ir a primera sin responder' }).click();
   await expect(page.locator('.question-label')).toContainText('Reactivo 2 de 3');
   await page.getByRole('button', { name: 'Finalizar evaluación', exact: true }).click();
@@ -221,7 +261,9 @@ test('Español: preguntas activas, continuar lectura, revisar pendientes y repet
   await page.getByRole('link', { name: 'Repetir configuración' }).click();
   await expect(page.getByLabel('Cantidad de preguntas')).toHaveValue('3');
   await expect(page.getByLabel('Límite de tiempo, en minutos')).toHaveValue('2');
+  await page.locator('.topic-picker > summary').click();
   await expect(page.getByRole('checkbox', { name: /Lengua y comunicación/ })).toBeChecked();
+  await page.locator('.topic-picker > summary').click();
   const repeated = page.waitForResponse(
     (r) => r.url().endsWith('/api/v1/exams') && r.request().method() === 'POST',
   );

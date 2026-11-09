@@ -10,8 +10,15 @@ interface Props {
   section?: string;
   wide?: boolean;
   focus?: boolean;
+  immersive?: boolean;
 }
-const { title, section = 'Biblioteca', wide = false, focus = false } = Astro.props;
+const {
+  title,
+  section = 'Biblioteca',
+  wide = false,
+  focus = false,
+  immersive = false,
+} = Astro.props;
 const nav = [
   ['Biblioteca', '/', 'library'],
   ['Simulacros', '/simulacros/', 'exam'],
@@ -21,7 +28,7 @@ const nav = [
 ---
 
 <!doctype html>
-<html lang="es" data-sidebar="closed">
+<html lang="es" data-sidebar="closed" data-immersive={String(immersive)}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -116,10 +123,18 @@ const nav = [
             <strong>{section}</strong>
           </div>
         </div>
-        <span class="private-label">
-          <span class="private-dot"></span>Tu espacio de estudio
-        </span>
+        <button class="immersion-toggle" aria-label="Activar modo inmersivo" aria-pressed="false">
+          <Icon name="expand" size={18} />
+          <span>Concentrarme</span>
+        </button>
       </header>
+      <div class="immersion-bar" aria-label="Controles del modo inmersivo">
+        <span>{title}</span>
+        <button class="immersion-exit" aria-label="Salir del modo inmersivo" title="Salir · Escape">
+          <Icon name="collapse" size={18} />
+          <span>Salir</span>
+        </button>
+      </div>
       <main id="contenido" class:list={['main-content', { wide, focus }]} tabindex="-1">
         <slot />
       </main>
@@ -129,6 +144,7 @@ const nav = [
       </footer>
     </div>
     <script>
+      import { setImmersive } from '../lib/immersion';
       const toggle = document.querySelector<HTMLButtonElement>('#menu-toggle');
       const overlay = document.querySelector<HTMLElement>('#menu-overlay');
       const sidebar = document.querySelector<HTMLElement>('#sidebar');
@@ -136,12 +152,27 @@ const nav = [
       const root = document.documentElement;
       function syncNavigation() {
         const open = root.dataset.sidebar === 'open';
-        if (sidebar) sidebar.inert = !open;
+        const immersed = root.dataset.immersive === 'true';
+        if (sidebar) sidebar.inert = immersed || !open;
         toggle?.setAttribute('aria-expanded', String(open));
         toggle?.setAttribute('aria-label', open ? 'Ocultar navegación' : 'Abrir navegación');
-        if (overlay) overlay.hidden = !open || !mobile.matches;
+        if (overlay) overlay.hidden = immersed || !open || !mobile.matches;
       }
       syncNavigation();
+      const immersionToggle = document.querySelector<HTMLButtonElement>('.immersion-toggle');
+      immersionToggle?.addEventListener('click', () => {
+        setImmersive(true);
+        document.querySelector<HTMLElement>('#contenido')?.focus({ preventScroll: true });
+      });
+      function leaveImmersion() {
+        setImmersive(false);
+        immersionToggle?.focus({ preventScroll: true });
+      }
+      document.querySelector('.immersion-exit')?.addEventListener('click', leaveImmersion);
+      document.addEventListener('folio:immersion', () => {
+        syncNavigation();
+        immersionToggle?.setAttribute('aria-pressed', String(root.dataset.immersive === 'true'));
+      });
       mobile.addEventListener('change', () => {
         if (mobile.matches) root.dataset.sidebar = 'closed';
         syncNavigation();
@@ -170,7 +201,10 @@ const nav = [
       document.querySelector('#menu-close')?.addEventListener('click', closeMenu);
       overlay?.addEventListener('click', closeMenu);
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeMenu();
+        if (e.key === 'Escape') {
+          if (root.dataset.immersive === 'true') leaveImmersion();
+          else closeMenu();
+        }
       });
       import { api } from '../lib/api';
       api<{ displayName: string; textSize: string; readingWidth: string }>('/profile')

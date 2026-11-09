@@ -41,6 +41,8 @@ Cache-Control es private, no-store. Se aplican CSP, protección de marcos, restr
 
 El frontend importa tipos de la API mediante import type. Las importaciones del banco y sus claves se quedan en el servidor. Astro descubre MDX con glob desde content/books; genera rutas por topicId.
 
+Los documentos originales de integración se conservan en content/editorial, fuera del descubrimiento y de los assets. Las preguntas en content/drafts/questions se validan, pero nunca se importan en el Worker ni se incluyen en la selección. El catálogo solo comunica su conteo pendiente y estado editorial.
+
 El temario básico de content/syllabus.json agrupa 74 apartados en diez cuadernos. readingTopicIds enlaza las lecturas disponibles de cada apartado. El generador solo ofrece preguntas existentes; un apartado pendiente nunca equivale a un capítulo inventado.
 
 ## API v1

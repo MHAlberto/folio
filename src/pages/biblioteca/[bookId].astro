@@ -1,6 +1,5 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
-import BookCover from '../../components/library/BookCover.astro';
 import Icon from '../../components/ui/Icon.astro';
 import { catalog } from '../../../shared/catalog';
 import { outlineForBook, syllabus } from '../../../shared/syllabus';
@@ -21,12 +20,15 @@ const outline = outlineForBook(book.id);
     Volver a la biblioteca
   </a>
   <div class="book-detail">
-    <BookCover book={book} color={subject.color} />
     <div>
       <span class:list={['subject-marker', subject.color]}>{subject.title}</span>
       <h1>{book.title}</h1>
       <span class="badge provisional">
-        {readings.length ? 'Lecturas de muestra' : 'Material por incorporar'}
+        {readings.some((t) => t.status === 'draft')
+          ? 'Material en revisión'
+          : readings.length
+            ? 'Lecturas de muestra'
+            : 'Material por incorporar'}
       </span>
       <p class="book-description">{book.description}</p>
       <div class="detail-meta">
@@ -73,7 +75,9 @@ const outline = outlineForBook(book.id);
                   <Icon name="arrow" size={15} />
                 </a>
                 <span class="row-label" data-topic-status={t.id}>
-                  Lectura provisional · Por comenzar
+                  {t.status === 'draft'
+                    ? 'Borrador en revisión'
+                    : 'Lectura provisional · Por comenzar'}
                 </span>
               </div>
             ))
@@ -97,11 +101,7 @@ const outline = outlineForBook(book.id);
     .then((rows) => {
       for (const p of rows) {
         const el = document.querySelector('[data-topic-status="' + CSS.escape(p.topicId) + '"]');
-        if (el)
-          el.textContent =
-            p.status === 'completed'
-              ? 'Lectura de muestra completada'
-              : 'Lectura provisional · En lectura';
+        if (el) el.textContent = p.status === 'completed' ? 'Lectura completada' : 'En lectura';
       }
     })
     .catch(() => {});

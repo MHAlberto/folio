@@ -2,12 +2,13 @@
 import { catalog } from '../../../shared/catalog';
 interface Props {
   id: string;
+  label?: string;
 }
-const { id } = Astro.props;
+const { id, label } = Astro.props;
 const source = catalog.references.find((r) => r.id === id);
 if (!source) throw new Error(`Referencia inexistente: ${id}`);
 ---
 
 <a href={`#fuente-${id}`} class="citation" aria-label={`Consultar fuente: ${source.title}`}>
-  [{source.author}]
+  [{label ?? source.author}]
 </a>

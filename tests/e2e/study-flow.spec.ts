@@ -40,6 +40,9 @@ test('biblioteca → lectura → práctica → simulacro → resultados → diag
   await page.getByLabel('Cantidad de preguntas').fill('2');
   await page.getByRole('button', { name: 'Comenzar evaluación' }).click();
   await expect(page.getByRole('heading', { name: 'Comprueba lo aprendido' })).toBeVisible();
+  await expect(page.getByRole('timer', { name: 'Tiempo transcurrido' })).toBeVisible();
+  const initialTime = await page.getByRole('timer').locator('time').textContent();
+  await expect(page.getByRole('timer').locator('time')).not.toHaveText(initialTime!);
   await page.getByRole('radio').first().click();
   await expect(page.locator('.feedback')).toBeVisible();
   await page.getByRole('button', { name: 'Finalizar evaluación', exact: true }).click();
@@ -47,6 +50,7 @@ test('biblioteca → lectura → práctica → simulacro → resultados → diag
   await expect(page.getByRole('heading', { name: 'Resultados de la evaluación' })).toBeVisible();
   await page.goto('/simulacros/?mode=exam');
   await page.getByLabel('Cantidad de preguntas').fill('4');
+  await page.getByLabel('Límite de tiempo, en minutos').fill('5');
   const created = page.waitForResponse(
     (r) => r.url().endsWith('/api/v1/exams') && r.request().method() === 'POST',
   );
@@ -55,6 +59,12 @@ test('biblioteca → lectura → práctica → simulacro → resultados → diag
   expect(JSON.stringify(response)).not.toMatch(/correctOption|explanation|correct_option/);
   expect(new Set(response.questions.map((q: { topicId: string }) => q.topicId)).size).toBe(4);
   await expect(page.getByRole('heading', { name: 'Simulacro de admisión' })).toBeVisible();
+  const promptBounds = await page.locator('.question-prompt').boundingBox();
+  expect(
+    Math.abs(promptBounds!.x + promptBounds!.width / 2 - page.viewportSize()!.width / 2),
+  ).toBeLessThan(3);
+  await expect(page.getByRole('timer', { name: 'Tiempo restante' })).toBeVisible();
+  await expect(page.getByRole('timer').locator('time')).toHaveText(/^0[45]:\d{2}$/);
   await page.getByRole('radio').first().click();
   await expect(page.getByText('Respuesta guardada en tu intento.')).toBeVisible();
   await expect(page.locator('.feedback')).toHaveCount(0);
@@ -96,7 +106,7 @@ test('biblioteca → lectura → práctica → simulacro → resultados → diag
     false,
   );
 });
-test('preferencias y navegación móvil', async ({ page }, info) => {
+test('preferencias y navegación ocultable en escritorio y móvil', async ({ page }) => {
   await page.goto('/configuracion/');
   await page.getByLabel('Tamaño del texto').selectOption('large');
   await page.getByRole('button', { name: 'Guardar preferencias' }).click();
@@ -105,7 +115,7 @@ test('preferencias y navegación móvil', async ({ page }, info) => {
   await expect(page.getByLabel('Tamaño del texto')).toHaveValue('large');
   await page.getByLabel('Tamaño del texto').selectOption('normal');
   await page.getByRole('button', { name: 'Guardar preferencias' }).click();
-  if (info.project.name === 'mobile') {
+  {
     await expect(page.locator('#sidebar')).toHaveAttribute('inert', '');
     await page.getByRole('button', { name: 'Abrir navegación' }).click();
     await expect(page.locator('#sidebar')).not.toHaveAttribute('inert', '');
@@ -116,5 +126,46 @@ test('preferencias y navegación móvil', async ({ page }, info) => {
       'aria-expanded',
       'false',
     );
+    await page.reload();
+    await expect(page.locator('#sidebar')).toHaveAttribute('inert', '');
   }
+});
+test('primera unidad de Español: lectura en revisión con diagramas y banco separado', async ({
+  page,
+  request,
+}, info) => {
+  await page.goto('/biblioteca/lengua-escrita/');
+  await page.getByRole('link', { name: 'Comenzar a leer' }).click();
+  await expect(page).toHaveURL(/\/lectura\/espanol-01\//);
+  await expect(
+    page.getByRole('heading', { name: 'Lengua y comunicación', exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText('Borrador en revisión', { exact: true })).toBeVisible();
+  await page.locator('.mermaid-container').first().scrollIntoViewIfNeeded();
+  await expect(page.locator('.mermaid-target svg')).toHaveCount(2);
+  await expect(
+    page.getByText('20 preguntas en revisión, aún fuera del banco activo.'),
+  ).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Practicar este tópico', exact: true })).toHaveCount(
+    0,
+  );
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({
+    path: 'output/playwright/espanol-01-' + info.project.name + '.png',
+    fullPage: true,
+  });
+  await page.screenshot({ path: 'output/playwright/espanol-01-top-' + info.project.name + '.png' });
+  expect((await request.get('/content/drafts/questions/espanol-01.json')).status()).toBe(404);
+  expect((await request.get('/content/editorial/espanol-01/questions-source.json')).status()).toBe(
+    404,
+  );
+  const response = await request.get('/api/v1/catalog');
+  const data = await response.json();
+  expect(data.topics.find((t: { id: string }) => t.id === 'espanol-01')).toMatchObject({
+    status: 'draft',
+    questionCount: 0,
+    pendingQuestionCount: 20,
+  });
+  await page.goto('/simulacros/');
+  await expect(page.getByRole('checkbox', { name: /Lengua y comunicación/ })).toBeDisabled();
 });

@@ -9,8 +9,9 @@ interface Props {
   title: string;
   section?: string;
   wide?: boolean;
+  focus?: boolean;
 }
-const { title, section = 'Biblioteca', wide = false } = Astro.props;
+const { title, section = 'Biblioteca', wide = false, focus = false } = Astro.props;
 const nav = [
   ['Biblioteca', '/', 'library'],
   ['Simulacros', '/simulacros/', 'exam'],
@@ -20,7 +21,7 @@ const nav = [
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" data-sidebar="closed">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,30 +33,29 @@ const nav = [
     <meta name="robots" content="noindex,nofollow" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title} · Folio</title>
+    <script is:inline>
+      try {
+        if (window.innerWidth > 720 && localStorage.getItem('folio:sidebar') === 'open')
+          document.documentElement.dataset.sidebar = 'open';
+      } catch {
+        /* Navigation still works when local storage is unavailable. */
+      }
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#contenido">
       Saltar al contenido
     </a>
-    <div class="mobile-bar">
-      <a href="/" class="wordmark">
-        folio<span class="brand-dot"></span>
-      </a>
-      <button
-        id="menu-toggle"
-        class="icon-button"
-        aria-controls="sidebar"
-        aria-expanded="false"
-        aria-label="Abrir navegación"
-      >
-        <Icon name="menu" />
-      </button>
-    </div>
     <div id="menu-overlay" hidden></div>
     <aside class="sidebar" id="sidebar" aria-label="Navegación principal">
-      <a href="/" class="wordmark" aria-label="Folio, biblioteca">
-        folio<span class="brand-dot"></span>
-      </a>
+      <div class="sidebar-heading">
+        <a href="/" class="wordmark" aria-label="Folio, biblioteca">
+          folio<span class="brand-dot"></span>
+        </a>
+        <button class="icon-button" id="menu-close" aria-label="Cerrar navegación">
+          <Icon name="close" />
+        </button>
+      </div>
       <div class="sidebar-intro">Un espacio para aprender.</div>
       <nav>
         {nav.map(([label, href, icon]) => (
@@ -97,16 +97,30 @@ const nav = [
     </aside>
     <div class="app-body">
       <header class="topbar">
-        <div class="breadcrumb">
-          <span>Espacio personal</span>
-          <span aria-hidden="true">/</span>
-          <strong>{section}</strong>
+        <div class="topbar-start">
+          <button
+            id="menu-toggle"
+            class="icon-button"
+            aria-controls="sidebar"
+            aria-expanded="false"
+            aria-label="Abrir navegación"
+          >
+            <Icon name="menu" />
+          </button>
+          <a href="/" class="wordmark" aria-label="Folio, inicio">
+            folio<span class="brand-dot"></span>
+          </a>
+          <div class="breadcrumb">
+            <span>Espacio personal</span>
+            <span aria-hidden="true">/</span>
+            <strong>{section}</strong>
+          </div>
         </div>
         <span class="private-label">
           <span class="private-dot"></span>Espacio privado
         </span>
       </header>
-      <main id="contenido" class:list={['main-content', { wide }]} tabindex="-1">
+      <main id="contenido" class:list={['main-content', { wide, focus }]} tabindex="-1">
         <slot />
       </main>
       <footer class="app-footer">
@@ -119,26 +133,41 @@ const nav = [
       const overlay = document.querySelector<HTMLElement>('#menu-overlay');
       const sidebar = document.querySelector<HTMLElement>('#sidebar');
       const mobile = window.matchMedia('(max-width: 720px)');
+      const root = document.documentElement;
       function syncNavigation() {
-        if (sidebar)
-          sidebar.inert = mobile.matches && !document.body.classList.contains('menu-open');
+        const open = root.dataset.sidebar === 'open';
+        if (sidebar) sidebar.inert = !open;
+        toggle?.setAttribute('aria-expanded', String(open));
+        toggle?.setAttribute('aria-label', open ? 'Ocultar navegación' : 'Abrir navegación');
+        if (overlay) overlay.hidden = !open || !mobile.matches;
       }
       syncNavigation();
-      mobile.addEventListener('change', syncNavigation);
+      mobile.addEventListener('change', () => {
+        if (mobile.matches) root.dataset.sidebar = 'closed';
+        syncNavigation();
+      });
       function closeMenu() {
-        const wasOpen = document.body.classList.contains('menu-open');
-        document.body.classList.remove('menu-open');
-        toggle?.setAttribute('aria-expanded', 'false');
-        if (overlay) overlay.hidden = true;
+        const wasOpen = root.dataset.sidebar === 'open';
+        root.dataset.sidebar = 'closed';
+        try {
+          localStorage.setItem('folio:sidebar', 'closed');
+        } catch {
+          /* Optional preference. */
+        }
         syncNavigation();
         if (wasOpen) toggle?.focus();
       }
       toggle?.addEventListener('click', () => {
-        const open = document.body.classList.toggle('menu-open');
-        toggle.setAttribute('aria-expanded', String(open));
-        if (overlay) overlay.hidden = !open;
+        const open = root.dataset.sidebar !== 'open';
+        root.dataset.sidebar = open ? 'open' : 'closed';
+        try {
+          localStorage.setItem('folio:sidebar', root.dataset.sidebar);
+        } catch {
+          /* Optional preference. */
+        }
         syncNavigation();
       });
+      document.querySelector('#menu-close')?.addEventListener('click', closeMenu);
       overlay?.addEventListener('click', closeMenu);
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeMenu();

@@ -1,6 +1,5 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
-import BookCover from '../components/library/BookCover.astro';
 import Icon from '../components/ui/Icon.astro';
 import { catalog } from '../../shared/catalog';
 import { outlineForBook, syllabusTopicCount } from '../../shared/syllabus';
@@ -56,11 +55,14 @@ import { outlineForBook, syllabusTopicCount } from '../../shared/syllabus';
           )}
         >
           <a href={'/biblioteca/' + b.id + '/'} aria-label={'Abrir ' + b.title}>
-            <BookCover book={b} color={subject.color} />
             <div class="book-meta">
               <span class:list={['subject-marker', subject.color]}>{subject.title}</span>
               <span class="badge provisional">
-                {readings.length ? 'Muestra disponible' : 'Por incorporar'}
+                {readings.some((t) => t.status === 'draft')
+                  ? 'Material en revisión'
+                  : readings.length
+                    ? 'Muestra disponible'
+                    : 'Por incorporar'}
               </span>
             </div>
             <h3 class="book-title">{b.title}</h3>
@@ -69,7 +71,10 @@ import { outlineForBook, syllabusTopicCount } from '../../shared/syllabus';
               <span>
                 {outline.length} tópicos ·{' '}
                 <span data-book-progress={b.id}>
-                  {readings.length ? readings.length + ' lecturas de muestra' : 'Índice disponible'}
+                  {readings.length
+                    ? readings.length +
+                      (readings.length === 1 ? ' lectura disponible' : ' lecturas disponibles')
+                    : 'Índice disponible'}
                 </span>
               </span>
               <Icon name="arrow" size={17} />
@@ -108,8 +113,8 @@ import { outlineForBook, syllabusTopicCount } from '../../shared/syllabus';
     </section>
   </div>
   <p class="muted" style="font-size:.79rem;margin-top:28px">
-    Temario básico proporcionado por ti. Hay cuatro lecturas provisionales para explorar el flujo;
-    el resto del material está pendiente de incorporar.
+    Temario básico proporcionado por ti. Las lecturas indican su estado de revisión; los apartados
+    sin material están pendientes de incorporar.
   </p>
 </AppLayout>
 <script>
@@ -165,8 +170,7 @@ import { outlineForBook, syllabusTopicCount } from '../../shared/syllabus';
         const done = progress.filter(
           (p) => ids.includes(p.topicId) && p.status === 'completed',
         ).length;
-        if (el && done)
-          el.textContent = done + '/' + ids.length + ' lecturas de muestra completadas';
+        if (el && done) el.textContent = done + '/' + ids.length + ' lecturas completadas';
       }
     })
     .catch(() => {});

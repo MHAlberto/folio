@@ -8,3 +8,4 @@ output
 test-results
 playwright-report
 content/books/**/*.mdx
+content/editorial/**

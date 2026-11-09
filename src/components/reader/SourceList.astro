@@ -2,8 +2,9 @@
 import { catalog } from '../../../shared/catalog';
 interface Props {
   ids: string[];
+  status?: 'demo' | 'draft' | 'reviewed';
 }
-const { ids } = Astro.props;
+const { ids, status = 'demo' } = Astro.props;
 const sources = ids.map((id) => catalog.references.find((r) => r.id === id)!);
 ---
 
@@ -20,7 +21,12 @@ const sources = ids.map((id) => catalog.references.find((r) => r.id === id)!);
       </li>
     ))}
   </ol>
-  <p>
-    Texto de demostración original. Revisa las fuentes antes de utilizarlo como material definitivo.
-  </p>
+  {status !== 'reviewed' && (
+    <p>
+      {status === 'draft'
+        ? 'Borrador académico aportado para revisión.'
+        : 'Texto de demostración original.'}{' '}
+      Revisa las fuentes antes de utilizarlo como material definitivo.
+    </p>
+  )}
 </section>

@@ -8,7 +8,12 @@
     {
       "bookId": "lengua-escrita",
       "topics": [
-        { "number": 1, "title": "Lengua y comunicación", "page": 4, "readingTopicIds": [] },
+        {
+          "number": 1,
+          "title": "Lengua y comunicación",
+          "page": 4,
+          "readingTopicIds": ["espanol-01"]
+        },
         { "number": 2, "title": "Formas discursivas del texto", "page": 8, "readingTopicIds": [] },
         { "number": 3, "title": "Comprensión de lectura", "page": 13, "readingTopicIds": [] },
         { "number": 4, "title": "Gramática", "page": 21, "readingTopicIds": [] },

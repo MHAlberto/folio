@@ -4,7 +4,12 @@ import { pathToFileURL } from 'node:url';
 import matter from 'gray-matter';
 import { compile } from '@mdx-js/mdx';
 import { z } from 'zod';
-import { catalogSchema, questionSchema, flashcardSchema } from '../shared/schemas/content';
+import {
+  catalogSchema,
+  questionSchema,
+  flashcardSchema,
+  draftQuestionBankSchema,
+} from '../shared/schemas/content';
 import { syllabusSchema } from '../shared/syllabus';
 
 const readJson = async (file: string) => JSON.parse(await readFile(file, 'utf8'));
@@ -28,6 +33,12 @@ export async function validateContent(root = process.cwd()) {
     .parse(await readJson(path.join(root, 'content/flashcards.json')));
   const syllabus = syllabusSchema.parse(await readJson(path.join(root, 'content/syllabus.json')));
   const errors: string[] = [];
+  const drafts = await Promise.all(
+    (await files(path.join(root, 'content/drafts/questions')))
+      .filter((f) => f.endsWith('.json'))
+      .map(async (file) => draftQuestionBankSchema.parse(await readJson(file))),
+  );
+  const draftQuestions = drafts.flatMap((bank) => bank.questions);
   const unique = (ids: string[], label: string) => {
     if (new Set(ids).size !== ids.length) errors.push('IDs duplicados en ' + label);
   };
@@ -50,6 +61,10 @@ export async function validateContent(root = process.cwd()) {
   unique(
     questions.map((q) => q.id),
     'preguntas',
+  );
+  unique(
+    [...questions, ...draftQuestions].map((q) => q.id),
+    'preguntas activas y borradores',
   );
   unique(
     cards.map((c) => c.id),
@@ -96,14 +111,10 @@ export async function validateContent(root = process.cwd()) {
     if (!linkedReadings.includes(t.id)) errors.push('Lectura fuera del temario: ' + t.id);
   for (const t of catalog.topics) {
     if (!catalog.books.some((b) => b.id === t.bookId)) errors.push('Libro inexistente: ' + t.id);
-    unique(
-      t.concepts.map((c) => c.anchor),
-      'anclas de ' + t.id,
-    );
     for (const ref of t.references)
       if (!references.has(ref)) errors.push('Referencia inexistente: ' + ref);
   }
-  for (const q of questions) {
+  for (const q of [...questions, ...draftQuestions]) {
     const topic = topicMap.get(q.topicId);
     if (!topic) errors.push('Tópico inexistente: ' + q.id);
     for (const c of q.conceptIds)
@@ -112,6 +123,30 @@ export async function validateContent(root = process.cwd()) {
     for (const ref of q.references)
       if (!references.has(ref)) errors.push('Referencia inexistente: ' + q.id + ' / ' + ref);
   }
+  for (const bank of drafts) {
+    if (!topicMap.has(bank.topicId)) errors.push('Borrador sin tópico: ' + bank.topicId);
+    if (bank.questions.some((q) => q.topicId !== bank.topicId))
+      errors.push('Tópicos inconsistentes en borrador: ' + bank.topicId);
+    const provenancePath = path.resolve(root, bank.provenance.sourceFile);
+    if (!provenancePath.startsWith(path.resolve(root) + path.sep))
+      errors.push('Fuente editorial fuera del proyecto.');
+    else
+      try {
+        await access(provenancePath);
+      } catch {
+        errors.push('Fuente editorial inexistente: ' + bank.provenance.sourceFile);
+      }
+    for (const q of bank.questions)
+      if (
+        !topicMap
+          .get(q.topicId)
+          ?.concepts.some((c) => c.id === q.conceptIds[0] && '#' + c.anchor === q.sourceSection)
+      )
+        errors.push('Sección de origen incorrecta: ' + q.id);
+  }
+  for (const topic of catalog.topics)
+    if (topic.pendingQuestionCount !== draftQuestions.filter((q) => q.topicId === topic.id).length)
+      errors.push('Conteo de preguntas en revisión incorrecto: ' + topic.id);
   for (const c of cards)
     if (!topicMap.get(c.topicId)?.concepts.some((x) => x.id === c.conceptId))
       errors.push('Relación inválida de tarjeta: ' + c.id);
@@ -164,6 +199,7 @@ export async function validateContent(root = process.cwd()) {
     syllabusTopics: syllabus.books.reduce((n, b) => n + b.topics.length, 0),
     topics: catalog.topics.length,
     questions: questions.length,
+    draftQuestions: draftQuestions.length,
     cards: cards.length,
   };
 }

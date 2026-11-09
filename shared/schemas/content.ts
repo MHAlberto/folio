@@ -24,6 +24,8 @@ export const topicSchema = z.object({
   title: z.string(),
   description: z.string(),
   minutes: z.number().int().positive(),
+  status: z.enum(['demo', 'draft', 'reviewed']).default('demo'),
+  pendingQuestionCount: z.number().int().nonnegative().default(0),
   concepts: z.array(conceptSchema).min(1),
   references: z.array(idSchema).min(1),
   subtopics: z.array(z.object({ title: z.string(), anchor: idSchema })),
@@ -69,6 +71,23 @@ export const flashcardSchema = z.object({
   conceptId: idSchema,
   front: z.string(),
   back: z.string(),
+});
+export const draftQuestionBankSchema = z.object({
+  topicId: idSchema,
+  status: z.literal('draft-pending-review'),
+  notes: z.string(),
+  provenance: z.object({ topicIds: z.array(z.string()), sourceFile: z.string() }),
+  questions: z
+    .array(
+      questionSchema.safeExtend({
+        originalId: z.string(),
+        origin: z.string(),
+        reviewStatus: z.literal('draft'),
+        difficulty: z.enum(['basic', 'intermediate', 'advanced']),
+        sourceSection: z.string().regex(/^#[a-z0-9-]+$/),
+      }),
+    )
+    .min(1),
 });
 export type Catalog = z.infer<typeof catalogSchema>;
 export type Question = z.infer<typeof questionSchema>;

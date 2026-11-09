@@ -52,7 +52,13 @@ const components = {
       <header class="reader-header">
         <div class="eyebrow">
           <span>Tópico {String(topic.number).padStart(2, '0')}</span>
-          <span class="badge provisional">Lectura provisional</span>
+          <span class="badge provisional">
+            {topic.status === 'draft'
+              ? 'Borrador en revisión'
+              : topic.status === 'reviewed'
+                ? 'Lectura'
+                : 'Lectura provisional'}
+          </span>
         </div>
         <h1>{topic.title}</h1>
         <p class="reader-deck">{topic.description}</p>
@@ -66,13 +72,20 @@ const components = {
       </header>
       <div class="prose">
         <Content components={components} />
-        <SourceList ids={topic.references} />
+        <SourceList ids={topic.references} status={topic.status} />
       </div>
       <ReadingProgress topicId={topic.id} client:load />
       <div class="result-actions">
-        <a class="button secondary" href={'/simulacros/?topic=' + topic.id + '&mode=practice'}>
-          Practicar este tópico <Icon name="arrow" size={16} />
-        </a>
+        {topic.pendingQuestionCount > 0 && (
+          <p class="muted">
+            {topic.pendingQuestionCount} preguntas en revisión, aún fuera del banco activo.
+          </p>
+        )}
+        {topic.status !== 'draft' && (
+          <a class="button secondary" href={'/simulacros/?topic=' + topic.id + '&mode=practice'}>
+            Practicar este tópico <Icon name="arrow" size={16} />
+          </a>
+        )}
       </div>
       <nav class="reading-navigation" aria-label="Lecturas relacionadas">
         {prev && (
@@ -97,7 +110,9 @@ const components = {
       <a href="#referencias">Referencias</a>
       <div class="toc-separator">
         <h2>Después de leer</h2>
-        <a href={'/simulacros/?topic=' + topic.id + '&mode=practice'}>Practicar los conceptos</a>
+        {topic.status !== 'draft' && (
+          <a href={'/simulacros/?topic=' + topic.id + '&mode=practice'}>Practicar los conceptos</a>
+        )}
         <a href={'/repaso/?topic=' + topic.id}>Repasar con tarjetas</a>
       </div>
     </aside>

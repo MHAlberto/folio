@@ -23,7 +23,8 @@ export default function ExamWorkspace() {
   const [busy, setBusy] = useState(false),
     [index, setIndex] = useState(0),
     [confirm, setConfirm] = useState(false),
-    [remaining, setRemaining] = useState<number | null>(null);
+    [remaining, setRemaining] = useState<number | null>(null),
+    [elapsed, setElapsed] = useState(0);
   const offset = useRef(0),
     heading = useRef<HTMLHeadingElement>(null);
   const autoFinished = useRef(false);
@@ -58,7 +59,10 @@ export default function ExamWorkspace() {
             book = params.get('book');
           setSelected(
             value.topics
-              .filter((t) => (topic ? t.id === topic : book ? t.bookId === book : true))
+              .filter(
+                (t) =>
+                  t.questionCount > 0 && (topic ? t.id === topic : book ? t.bookId === book : true),
+              )
               .map((t) => t.id),
           );
           if (topic) setCount(5);
@@ -98,21 +102,23 @@ export default function ExamWorkspace() {
     }
   }, [attempt]);
   useEffect(() => {
-    if (!attempt?.deadlineAt || attempt.status !== 'in_progress') {
+    if (!attempt || attempt.status !== 'in_progress') {
       setRemaining(null);
       return;
     }
-    const tick = () =>
+    const tick = () => {
+      const now = Date.now() + offset.current;
+      setElapsed(Math.max(0, Math.floor((now - Date.parse(attempt.startedAt)) / 1000)));
       setRemaining(
-        Math.max(
-          0,
-          Math.ceil((Date.parse(attempt.deadlineAt!) - Date.now() - offset.current) / 1000),
-        ),
+        attempt.deadlineAt
+          ? Math.max(0, Math.ceil((Date.parse(attempt.deadlineAt) - now) / 1000))
+          : null,
       );
+    };
     tick();
     const timer = setInterval(tick, 1000);
     return () => clearInterval(timer);
-  }, [attempt?.deadlineAt, attempt?.status]);
+  }, [attempt?.deadlineAt, attempt?.startedAt, attempt?.status]);
   useEffect(() => {
     if (remaining === 0 && attempt?.status === 'in_progress' && !busy && !autoFinished.current) {
       autoFinished.current = true;
@@ -264,7 +270,7 @@ export default function ExamWorkspace() {
                 {data.subjects.map((subject) => {
                   const books = data.books.filter((b) => b.subjectId === subject.id),
                     ids = data.topics
-                      .filter((t) => books.some((b) => b.id === t.bookId))
+                      .filter((t) => t.questionCount > 0 && books.some((b) => b.id === t.bookId))
                       .map((t) => t.id);
                   return (
                     <div className="book-check-group" key={subject.id}>
@@ -280,7 +286,7 @@ export default function ExamWorkspace() {
                       </label>
                       {books.map((book) => {
                         const topics = data.topics.filter((t) => t.bookId === book.id),
-                          bookIds = topics.map((t) => t.id);
+                          bookIds = topics.filter((t) => t.questionCount > 0).map((t) => t.id);
                         return (
                           <div key={book.id}>
                             <label className="check-row topic-check">
@@ -302,11 +308,16 @@ export default function ExamWorkspace() {
                               >
                                 <input
                                   type="checkbox"
+                                  disabled={topic.questionCount === 0}
                                   checked={selected.includes(topic.id)}
                                   onChange={(e) => toggle([topic.id], e.target.checked)}
                                 />
                                 <span>{topic.title}</span>
-                                <small>{topic.questionCount} preguntas</small>
+                                <small>
+                                  {topic.pendingQuestionCount
+                                    ? topic.pendingQuestionCount + ' en revisión'
+                                    : topic.questionCount + ' preguntas'}
+                                </small>
                               </label>
                             ))}
                           </div>
@@ -420,17 +431,18 @@ export default function ExamWorkspace() {
             {attempt.mode === 'practice' ? 'Comprueba lo aprendido' : 'Simulacro de admisión'}
           </h1>
         </div>
-        {remaining !== null ? (
-          <div className="timer" role="timer" aria-label="Tiempo restante">
-            <Clock size={17} />
-            {Math.floor(remaining / 60)
-              .toString()
-              .padStart(2, '0')}
-            :{(remaining % 60).toString().padStart(2, '0')}
-          </div>
-        ) : (
-          <span className="muted">Sin límite de tiempo</span>
-        )}
+        <div
+          className={'timer' + (remaining !== null && remaining <= 60 ? ' is-ending' : '')}
+          role="timer"
+          aria-label={remaining !== null ? 'Tiempo restante' : 'Tiempo transcurrido'}
+          aria-live="off"
+        >
+          <Clock size={17} />
+          <span>{remaining !== null ? 'Tiempo restante' : 'Tiempo transcurrido'}</span>
+          <time dateTime={'PT' + (remaining ?? elapsed) + 'S'}>
+            {formatTime(remaining ?? elapsed)}
+          </time>
+        </div>
       </div>
       {error && (
         <p className="error-message" role="alert">
@@ -583,6 +595,15 @@ export default function ExamWorkspace() {
       </div>
     </>
   );
+}
+
+function formatTime(seconds: number) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60)
+    .toString()
+    .padStart(2, '0');
+  const rest = (seconds % 60).toString().padStart(2, '0');
+  return (hours ? hours.toString().padStart(2, '0') + ':' : '') + minutes + ':' + rest;
 }
 
 export function HistoryTable({ rows }: { rows: History }) {

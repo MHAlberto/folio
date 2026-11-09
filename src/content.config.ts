@@ -6,7 +6,7 @@ const readings = defineCollection({
   schema: z.object({
     topicId: z.string(),
     title: z.string(),
-    provisional: z.literal(true).optional(),
+    provisional: z.boolean().optional(),
   }),
 });
 export const collections = { readings };

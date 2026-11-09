@@ -7,7 +7,7 @@ import { selectQuestions } from '../server/services/selection';
 import { readingUrl, catalog } from '../shared/catalog';
 const bank = data.map((q) => questionSchema.parse(q));
 const config = examConfigSchema.parse({
-  topicIds: catalog.topics.map((t) => t.id),
+  topicIds: catalog.topics.filter((t) => bank.some((q) => q.topicId === t.id)).map((t) => t.id),
   count: 12,
   mode: 'exam',
   selection: 'random',
@@ -18,8 +18,9 @@ describe('contenido y selección', () => {
       subjects: 10,
       books: 10,
       syllabusTopics: 74,
-      topics: 4,
+      topics: 5,
       questions: 20,
+      draftQuestions: 20,
       cards: 4,
     });
   });

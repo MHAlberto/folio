@@ -16,6 +16,8 @@ Los IDs usan letras minúsculas sin acentos, números y guiones. Deben ser estab
 
 ## Libro y tópico
 
+Los tópicos incluyen status: demo, draft o reviewed. Un borrador aportado para revisión no se convierte en material aprobado al importarlo. pendingQuestionCount refleja cuántas preguntas permanecen fuera del banco activo.
+
 El índice general se conserva en content/syllabus.json: diez cuadernos, 74 apartados y sus páginas de origen. Cada apartado tiene number, title, page y readingTopicIds. Una lista vacía significa material pendiente, sin crear un capítulo ficticio. Las lecturas específicas del catálogo se vinculan a estos apartados como subtópicos. Cuando se añada una lectura, registra su ID en el apartado correspondiente. El título y la edición de la guía siguen pendientes; no se deducen a partir de la paginación.
 
 Un libro define id, subjectId, title, subtitle, description, author, edition y provisional. No debe atribuirse a un autor publicado un cuaderno original de Folio.
@@ -112,6 +114,12 @@ Debe haber exactamente una opción correcta, cuatro IDs distintos A–D y distra
 La estructura inicial es textual. Puede contener notación Unicode. Fórmulas KaTeX y diagramas en tarjetas se incorporarán con un contrato explícito.
 
 ## Validación y revisión
+
+Los bancos pendientes viven en content/drafts/questions. Se validan con draftQuestionBankSchema: IDs, opciones, claves, conceptos, referencias, sección de origen y procedencia. El generador del servidor importa únicamente content/questions.json, por lo que los borradores no participan en simulacros. No copies preguntas pendientes al banco activo sin una revisión explícita.
+
+Los originales recibidos para la primera unidad están en content/editorial/espanol-01 y quedan fuera de las colecciones Astro y de los assets. La lectura adaptada usa el ID canónico espanol-01. Se conserva la correspondencia con ESP-001 y con los IDs originales de sus veinte preguntas. Varios conceptos pueden compartir el ancla de una misma sección.
+
+La unidad Lengua y comunicación conserva el estado de revisión. Los siete reactivos del libro no fueron entregados completos; sus comentarios y claves se guardan solo en el original editorial, sin inventar enunciados ni agregarlos al motor. Los dos diagramas del texto se integran como MermaidDiagram.
 
 Ejecuta npm run content:validate y npm run build. El validador comprueba esquemas Zod, IDs únicos, relaciones, orden por libro, opciones, referencias, anclas, correspondencia MDX y archivos locales. Astro compila el MDX y verifica los componentes y las fórmulas.
 

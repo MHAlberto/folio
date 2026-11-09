@@ -250,7 +250,7 @@
     {
       "id": "acentuacion",
       "bookId": "lengua-escrita",
-      "number": 1,
+      "number": 7,
       "title": "Acentuación de palabras",
       "description": "Reconocer la sílaba tónica y aplicar las reglas generales.",
       "minutes": 4,
@@ -277,6 +277,114 @@
           "anchor": "reglas-tilde"
         }
       ]
+    },
+    {
+      "id": "espanol-01",
+      "bookId": "lengua-escrita",
+      "number": 1,
+      "title": "Lengua y comunicación",
+      "description": "Elementos de la comunicación y funciones del lenguaje: reconocer la intención de cada mensaje.",
+      "minutes": 18,
+      "status": "draft",
+      "concepts": [
+        {
+          "id": "com-emisor",
+          "title": "Emisor",
+          "anchor": "elementos-de-la-comunicacion"
+        },
+        {
+          "id": "com-codigo",
+          "title": "Código",
+          "anchor": "elementos-de-la-comunicacion"
+        },
+        {
+          "id": "com-canal",
+          "title": "Canal",
+          "anchor": "elementos-de-la-comunicacion"
+        },
+        {
+          "id": "com-retroalimentacion",
+          "title": "Retroalimentación",
+          "anchor": "situacion-comunicativa-ruido-y-retroalimentacion"
+        },
+        {
+          "id": "funcion-referencial",
+          "title": "Función referencial",
+          "anchor": "funcion-referencial"
+        },
+        {
+          "id": "funcion-apelativa",
+          "title": "Función apelativa",
+          "anchor": "funcion-apelativa"
+        },
+        {
+          "id": "funcion-poetica",
+          "title": "Función poética",
+          "anchor": "funcion-poetica"
+        },
+        {
+          "id": "funcion-emotiva",
+          "title": "Función emotiva",
+          "anchor": "funcion-emotiva"
+        },
+        {
+          "id": "funcion-fatica",
+          "title": "Función fática",
+          "anchor": "funcion-fatica"
+        },
+        {
+          "id": "funcion-metalinguistica",
+          "title": "Función metalingüística",
+          "anchor": "funcion-metalinguistica"
+        },
+        {
+          "id": "funcion-predominante",
+          "title": "Función predominante",
+          "anchor": "como-identificar-la-funcion-predominante-en-un-examen"
+        }
+      ],
+      "references": [
+        "unam-situacion-comunicativa",
+        "unam-lenguaje-funciones",
+        "unam-teoria-comunicacion",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "subtopics": [
+        {
+          "title": "Qué significa comunicar",
+          "anchor": "que-significa-comunicar"
+        },
+        {
+          "title": "Elementos de la comunicación",
+          "anchor": "elementos-de-la-comunicacion"
+        },
+        {
+          "title": "Ruido y retroalimentación",
+          "anchor": "situacion-comunicativa-ruido-y-retroalimentacion"
+        },
+        {
+          "title": "Función referencial",
+          "anchor": "funcion-referencial"
+        },
+        {
+          "title": "Función apelativa",
+          "anchor": "funcion-apelativa"
+        },
+        {
+          "title": "Función poética",
+          "anchor": "funcion-poetica"
+        },
+        {
+          "title": "Funciones complementarias",
+          "anchor": "funciones-complementarias"
+        },
+        {
+          "title": "Identificar la función predominante",
+          "anchor": "como-identificar-la-funcion-predominante-en-un-examen"
+        }
+      ],
+      "pendingQuestionCount": 20
     }
   ],
   "references": [
@@ -300,6 +408,41 @@
       "author": "Real Academia Española",
       "year": "Consulta editorial",
       "url": "https://www.rae.es/dpd/tilde"
+    },
+    {
+      "id": "unam-situacion-comunicativa",
+      "title": "Situación comunicativa",
+      "author": "UNAM · Portal Académico del CCH",
+      "year": "s. f.",
+      "url": "https://portalacademico.cch.unam.mx/alumno/tlriid1/unidad2/distintosDestinatarios/situacionComunicativa"
+    },
+    {
+      "id": "unam-lenguaje-funciones",
+      "title": "El lenguaje y sus funciones",
+      "author": "Brenda María Islas Ochoa · UNAM",
+      "year": "2019",
+      "url": "https://repositorio-uapa.cuaed.unam.mx/repositorio/moodle/pluginfile.php/1427/mod_resource/content/1/contenido/index.html"
+    },
+    {
+      "id": "unam-teoria-comunicacion",
+      "title": "Taller de Comunicación I · Guía de examen extraordinario",
+      "author": "UNAM · Colegio de Ciencias y Humanidades",
+      "year": "s. f.",
+      "url": "https://portalacademico.cch.unam.mx/materiales/al/Guias_extras/Talleres/com1_val.pdf"
+    },
+    {
+      "id": "unam-dinamica-comunicacion",
+      "title": "Dinámica de la comunicación en la escritura",
+      "author": "Antonio Mejía Guzmán · UNAM",
+      "year": "2018",
+      "url": "https://repositorio-uapa.cuaed.unam.mx/repositorio/moodle/pluginfile.php/1603/mod_resource/content/8/contenido/index.html"
+    },
+    {
+      "id": "unam-hablar-escuchar",
+      "title": "Cómo enseñar a hablar y escuchar en el salón de clases",
+      "author": "María de Lourdes Zabadúa Valencia y Ernesto García Palacios · UNAM",
+      "year": "2012",
+      "url": "https://portalacademico.cch.unam.mx/materiales/libros/pdfs/librocch_hablarescuchar.pdf"
     }
   ]
 }

@@ -4,7 +4,7 @@ Biblioteca personal de estudio con lecturas MDX, evaluación y diagnóstico. Ast
 
 ## Estado
 
-La aplicación funciona localmente con Wrangler. Incluye el temario proporcionado por el usuario: diez materias y 74 tópicos con sus páginas originales. Hay cuatro lecturas provisionales, veinte preguntas y cuatro tarjetas para comprobar el flujo. Los apartados sin material se identifican como pendientes.
+La aplicación funciona localmente con Wrangler. Incluye diez materias y 74 tópicos con sus páginas originales. Lengua y comunicación es la primera unidad aportada, integrada como borrador con dos diagramas y cinco referencias. Sus veinte preguntas permanecen en revisión. El banco activo conserva veinte preguntas de demostración y cuatro tarjetas; los demás apartados se identifican como pendientes.
 
 La dirección solicitada para producción es https://folio.mayiitoo-alberto.workers.dev. El estado real de publicación y los pendientes se registran en [PROGRESS](docs/PROGRESS.md). No desactives la protección para acceder a la aplicación.
 

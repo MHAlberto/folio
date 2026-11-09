@@ -55,6 +55,22 @@ beforeEach(async () => {
   ]);
 });
 describe('Hono con D1 nativo local', () => {
+  it('mantiene las preguntas nuevas en revisión fuera del banco activo', async () => {
+    const response = await request('/exams', 'POST', {
+      topicIds: ['espanol-01'],
+      count: 1,
+      mode: 'exam',
+      selection: 'random',
+    });
+    expect(response.status).toBe(422);
+    const catalog = (await (await request('/catalog')).json()) as {
+      topics: { id: string; questionCount: number; pendingQuestionCount: number }[];
+    };
+    expect(catalog.topics.find((t) => t.id === 'espanol-01')).toMatchObject({
+      questionCount: 0,
+      pendingQuestionCount: 20,
+    });
+  });
   it('responde health y catálogo sin claves', async () => {
     expect(await (await request('/health')).json()).toMatchObject({ status: 'ok' });
     const r = await request('/catalog');

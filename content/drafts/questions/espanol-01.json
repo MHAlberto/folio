@@ -1,0 +1,735 @@
+{
+  "topicId": "espanol-01",
+  "status": "draft-pending-review",
+  "notes": "20 preguntas nuevas originales, separadas de las 7 preguntas del libro. No publicar automáticamente.",
+  "provenance": {
+    "topicIds": ["espanol-01", "ESP-001"],
+    "sourceFile": "content/editorial/espanol-01/questions-source.json"
+  },
+  "questions": [
+    {
+      "id": "esp-001-n001",
+      "topicId": "espanol-01",
+      "conceptIds": ["com-emisor"],
+      "prompt": "Una coordinadora envía un aviso a sus estudiantes. ¿Quién es el emisor?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Los estudiantes"
+        },
+        {
+          "id": "B",
+          "text": "La coordinadora"
+        },
+        {
+          "id": "C",
+          "text": "La aplicación de mensajería"
+        },
+        {
+          "id": "D",
+          "text": "El horario del aviso"
+        }
+      ],
+      "correctOption": "B",
+      "explanation": "El emisor es quien produce y transmite el mensaje.",
+      "references": [
+        "unam-situacion-comunicativa",
+        "unam-lenguaje-funciones",
+        "unam-teoria-comunicacion",
+        "unam-dinamica-comunicacion"
+      ],
+      "originalId": "ESP-001-N001",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "basic",
+      "sourceSection": "#elementos-de-la-comunicacion"
+    },
+    {
+      "id": "esp-001-n002",
+      "topicId": "espanol-01",
+      "conceptIds": ["com-codigo"],
+      "prompt": "En un correo escrito en español, ¿qué es el código principal?",
+      "options": [
+        {
+          "id": "A",
+          "text": "La pantalla"
+        },
+        {
+          "id": "B",
+          "text": "La bandeja de entrada"
+        },
+        {
+          "id": "C",
+          "text": "La lengua española escrita"
+        },
+        {
+          "id": "D",
+          "text": "El destinatario"
+        }
+      ],
+      "correctOption": "C",
+      "explanation": "El código es el sistema de signos compartido utilizado para construir el mensaje.",
+      "references": [
+        "unam-situacion-comunicativa",
+        "unam-lenguaje-funciones",
+        "unam-teoria-comunicacion",
+        "unam-dinamica-comunicacion"
+      ],
+      "originalId": "ESP-001-N002",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "basic",
+      "sourceSection": "#elementos-de-la-comunicacion"
+    },
+    {
+      "id": "esp-001-n003",
+      "topicId": "espanol-01",
+      "conceptIds": ["com-canal"],
+      "prompt": "Una estudiante escucha una explicación en el salón. ¿Cuál es un canal físico de la voz?",
+      "options": [
+        {
+          "id": "A",
+          "text": "El aire por el que se propaga el sonido"
+        },
+        {
+          "id": "B",
+          "text": "La intención del docente"
+        },
+        {
+          "id": "C",
+          "text": "El tema de la clase"
+        },
+        {
+          "id": "D",
+          "text": "La interpretación personal"
+        }
+      ],
+      "correctOption": "A",
+      "explanation": "En una comunicación oral presencial, el sonido se transmite a través del aire.",
+      "references": [
+        "unam-situacion-comunicativa",
+        "unam-lenguaje-funciones",
+        "unam-teoria-comunicacion",
+        "unam-dinamica-comunicacion"
+      ],
+      "originalId": "ESP-001-N003",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "basic",
+      "sourceSection": "#elementos-de-la-comunicacion"
+    },
+    {
+      "id": "esp-001-n004",
+      "topicId": "espanol-01",
+      "conceptIds": ["com-retroalimentacion"],
+      "prompt": "Después de recibir una instrucción, alguien pregunta: «¿Debo entregarlo hoy?». ¿Qué ejemplifica esa pregunta?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Código lingüístico"
+        },
+        {
+          "id": "B",
+          "text": "Ruido físico"
+        },
+        {
+          "id": "C",
+          "text": "Retroalimentación"
+        },
+        {
+          "id": "D",
+          "text": "Referente"
+        }
+      ],
+      "correctOption": "C",
+      "explanation": "La pregunta es una respuesta del receptor que permite aclarar el mensaje.",
+      "references": [
+        "unam-situacion-comunicativa",
+        "unam-lenguaje-funciones",
+        "unam-teoria-comunicacion",
+        "unam-dinamica-comunicacion"
+      ],
+      "originalId": "ESP-001-N004",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "basic",
+      "sourceSection": "#situacion-comunicativa-ruido-y-retroalimentacion"
+    },
+    {
+      "id": "esp-001-n005",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-referencial"],
+      "prompt": "¿Cuál enunciado tiene una función predominantemente referencial?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Por favor, abre el cuaderno"
+        },
+        {
+          "id": "B",
+          "text": "La reunión comienza a las diez"
+        },
+        {
+          "id": "C",
+          "text": "La luna susurra en el río"
+        },
+        {
+          "id": "D",
+          "text": "¡Qué emoción me da verte!"
+        }
+      ],
+      "correctOption": "B",
+      "explanation": "El enunciado informa un horario.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N005",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "basic",
+      "sourceSection": "#funcion-referencial"
+    },
+    {
+      "id": "esp-001-n006",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-referencial"],
+      "prompt": "¿Qué elemento recibe el mayor énfasis en la función referencial?",
+      "options": [
+        {
+          "id": "A",
+          "text": "El destinatario"
+        },
+        {
+          "id": "B",
+          "text": "El código como objeto de análisis"
+        },
+        {
+          "id": "C",
+          "text": "El referente o contexto"
+        },
+        {
+          "id": "D",
+          "text": "El ritmo del mensaje"
+        }
+      ],
+      "correctOption": "C",
+      "explanation": "La función referencial orienta la atención hacia lo que se describe o informa.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N006",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "basic",
+      "sourceSection": "#funcion-referencial"
+    },
+    {
+      "id": "esp-001-n007",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-referencial"],
+      "prompt": "El enunciado «Un cuadrado tiene cuatro lados» se clasifica principalmente como:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Poético"
+        },
+        {
+          "id": "B",
+          "text": "Apelativo"
+        },
+        {
+          "id": "C",
+          "text": "Fático"
+        },
+        {
+          "id": "D",
+          "text": "Referencial"
+        }
+      ],
+      "correctOption": "D",
+      "explanation": "Comunica una propiedad geométrica.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N007",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "basic",
+      "sourceSection": "#funcion-referencial"
+    },
+    {
+      "id": "esp-001-n008",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-referencial"],
+      "prompt": "¿Cuál afirmación sobre la función referencial es correcta?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Todo enunciado referencial es verdadero"
+        },
+        {
+          "id": "B",
+          "text": "Describe o informa, aunque la afirmación pueda ser incorrecta"
+        },
+        {
+          "id": "C",
+          "text": "Aparece exclusivamente en noticias"
+        },
+        {
+          "id": "D",
+          "text": "Exige hablar en segunda persona"
+        }
+      ],
+      "correctOption": "B",
+      "explanation": "La función del lenguaje no certifica la verdad de lo afirmado.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N008",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "basic",
+      "sourceSection": "#funcion-referencial"
+    },
+    {
+      "id": "esp-001-n009",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-apelativa"],
+      "prompt": "¿Cuál es un ejemplo inequívoco de función apelativa?",
+      "options": [
+        {
+          "id": "A",
+          "text": "El salón tiene veinte sillas"
+        },
+        {
+          "id": "B",
+          "text": "El sol dibuja sombras"
+        },
+        {
+          "id": "C",
+          "text": "Por favor, entrega el reporte"
+        },
+        {
+          "id": "D",
+          "text": "Estoy cansado"
+        }
+      ],
+      "correctOption": "C",
+      "explanation": "Se solicita directamente una acción al receptor.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N009",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "basic",
+      "sourceSection": "#funcion-apelativa"
+    },
+    {
+      "id": "esp-001-n010",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-apelativa"],
+      "prompt": "¿A qué elemento dirige principalmente su atención la función apelativa?",
+      "options": [
+        {
+          "id": "A",
+          "text": "El receptor"
+        },
+        {
+          "id": "B",
+          "text": "El referente"
+        },
+        {
+          "id": "C",
+          "text": "El código"
+        },
+        {
+          "id": "D",
+          "text": "La forma del mensaje"
+        }
+      ],
+      "correctOption": "A",
+      "explanation": "La función apelativa busca actuar sobre el destinatario.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N010",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "basic",
+      "sourceSection": "#funcion-apelativa"
+    },
+    {
+      "id": "esp-001-n011",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-apelativa"],
+      "prompt": "¿Cuál enunciado formula una petición indirecta?",
+      "options": [
+        {
+          "id": "A",
+          "text": "El agua está fría"
+        },
+        {
+          "id": "B",
+          "text": "¿Podrías pasarme el libro?"
+        },
+        {
+          "id": "C",
+          "text": "La palabra «libro» es un sustantivo"
+        },
+        {
+          "id": "D",
+          "text": "¡Qué sorpresa!"
+        }
+      ],
+      "correctOption": "B",
+      "explanation": "La pregunta funciona como una solicitud al interlocutor.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N011",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "basic",
+      "sourceSection": "#funcion-apelativa"
+    },
+    {
+      "id": "esp-001-n012",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-apelativa"],
+      "prompt": "¿Qué propósito predomina en «Participa en la jornada de limpieza»?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Explicar un término"
+        },
+        {
+          "id": "B",
+          "text": "Expresar tristeza"
+        },
+        {
+          "id": "C",
+          "text": "Describir una fecha"
+        },
+        {
+          "id": "D",
+          "text": "Invitar al receptor a actuar"
+        }
+      ],
+      "correctOption": "D",
+      "explanation": "El mensaje busca provocar la participación del destinatario.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N012",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "basic",
+      "sourceSection": "#funcion-apelativa"
+    },
+    {
+      "id": "esp-001-n013",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-poetica"],
+      "prompt": "¿Cuál enunciado destaca principalmente su elaboración poética?",
+      "options": [
+        {
+          "id": "A",
+          "text": "El cielo se vistió de cobre"
+        },
+        {
+          "id": "B",
+          "text": "El sol se ocultó a las 19:00"
+        },
+        {
+          "id": "C",
+          "text": "Cierra la ventana"
+        },
+        {
+          "id": "D",
+          "text": "Estoy de acuerdo"
+        }
+      ],
+      "correctOption": "A",
+      "explanation": "La personificación y la imagen metafórica ponen el énfasis en la expresión.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N013",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "intermediate",
+      "sourceSection": "#funcion-poetica"
+    },
+    {
+      "id": "esp-001-n014",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-poetica"],
+      "prompt": "¿Qué recurso aparece en «El viento susurra mi nombre»?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Enumeración estadística"
+        },
+        {
+          "id": "B",
+          "text": "Personificación"
+        },
+        {
+          "id": "C",
+          "text": "Definición de código"
+        },
+        {
+          "id": "D",
+          "text": "Petición directa"
+        }
+      ],
+      "correctOption": "B",
+      "explanation": "Se atribuye al viento una acción propia de personas.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N014",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "intermediate",
+      "sourceSection": "#funcion-poetica"
+    },
+    {
+      "id": "esp-001-n015",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-poetica"],
+      "prompt": "¿Cuál afirmación sobre la función poética es correcta?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Solo aparece en poemas"
+        },
+        {
+          "id": "B",
+          "text": "Todos los poemas tienen exclusivamente esa función"
+        },
+        {
+          "id": "C",
+          "text": "Puede aparecer fuera de la literatura"
+        },
+        {
+          "id": "D",
+          "text": "No se relaciona con la forma de las palabras"
+        }
+      ],
+      "correctOption": "C",
+      "explanation": "La atención a la forma del mensaje también aparece en publicidad, lemas y conversación.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N015",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "intermediate",
+      "sourceSection": "#funcion-poetica"
+    },
+    {
+      "id": "esp-001-n016",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-poetica"],
+      "prompt": "¿Cuál enunciado usa repetición y ritmo como recursos expresivos?",
+      "options": [
+        {
+          "id": "A",
+          "text": "El registro cierra hoy"
+        },
+        {
+          "id": "B",
+          "text": "¡Inscríbete ahora!"
+        },
+        {
+          "id": "C",
+          "text": "«Verbo» es una categoría gramatical"
+        },
+        {
+          "id": "D",
+          "text": "Va la lluvia, vuelve el viento, viene el día"
+        }
+      ],
+      "correctOption": "D",
+      "explanation": "La reiteración de patrones verbales resalta la construcción del mensaje.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N016",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "intermediate",
+      "sourceSection": "#funcion-poetica"
+    },
+    {
+      "id": "esp-001-n017",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-emotiva"],
+      "prompt": "¿En cuál predomina la función emotiva?",
+      "options": [
+        {
+          "id": "A",
+          "text": "¡Estoy muy feliz por el resultado!"
+        },
+        {
+          "id": "B",
+          "text": "El examen dura dos horas"
+        },
+        {
+          "id": "C",
+          "text": "Revisa tu respuesta"
+        },
+        {
+          "id": "D",
+          "text": "¿Qué significa «sujeto»?"
+        }
+      ],
+      "correctOption": "A",
+      "explanation": "Expresa directamente el estado emocional del emisor.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N017",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "intermediate",
+      "sourceSection": "#funcion-emotiva"
+    },
+    {
+      "id": "esp-001-n018",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-fatica"],
+      "prompt": "En una llamada, «¿Bueno?, ¿me escuchas?» sirve principalmente para:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Definir una palabra"
+        },
+        {
+          "id": "B",
+          "text": "Verificar el contacto"
+        },
+        {
+          "id": "C",
+          "text": "Exponer una teoría"
+        },
+        {
+          "id": "D",
+          "text": "Crear una metáfora"
+        }
+      ],
+      "correctOption": "B",
+      "explanation": "La función fática comprueba que la comunicación está establecida.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N018",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "intermediate",
+      "sourceSection": "#funcion-fatica"
+    },
+    {
+      "id": "esp-001-n019",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-metalinguistica"],
+      "prompt": "¿En cuál predomina la función metalingüística?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Haz el ejercicio"
+        },
+        {
+          "id": "B",
+          "text": "Tengo sueño"
+        },
+        {
+          "id": "C",
+          "text": "«Rápido» es un adjetivo"
+        },
+        {
+          "id": "D",
+          "text": "El río creció ayer"
+        }
+      ],
+      "correctOption": "C",
+      "explanation": "Se usa la lengua para describir una palabra y su clase gramatical.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N019",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "intermediate",
+      "sourceSection": "#funcion-metalinguistica"
+    },
+    {
+      "id": "esp-001-n020",
+      "topicId": "espanol-01",
+      "conceptIds": ["funcion-predominante"],
+      "prompt": "En un cartel que dice «¡Ahorra agua: cada gota cuenta!», ¿qué función predomina por su finalidad?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Referencial, porque menciona el agua"
+        },
+        {
+          "id": "B",
+          "text": "Fática, porque es breve"
+        },
+        {
+          "id": "C",
+          "text": "Metalingüística, porque usa palabras"
+        },
+        {
+          "id": "D",
+          "text": "Apelativa, porque busca cambiar una conducta"
+        }
+      ],
+      "correctOption": "D",
+      "explanation": "Aunque el eslogan tiene recursos expresivos, el propósito principal es motivar una acción.",
+      "references": [
+        "unam-lenguaje-funciones",
+        "unam-dinamica-comunicacion",
+        "unam-hablar-escuchar"
+      ],
+      "originalId": "ESP-001-N020",
+      "origin": "folio-investigacion-ampliada",
+      "reviewStatus": "draft",
+      "difficulty": "intermediate",
+      "sourceSection": "#como-identificar-la-funcion-predominante-en-un-examen"
+    }
+  ]
+}

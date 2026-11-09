@@ -2,6 +2,17 @@
 
 Fecha: 9 de noviembre de 2026.
 
+## Revisión actual: diseño y primer tema aportado
+
+- Se eliminaron portadas en forma de caja, fondos de color en notas, tarjetas y opciones, y separadores horizontales. El color queda en palabras y recursos didácticos.
+- El sidebar empieza oculto y se controla con hamburguesa en escritorio y móvil. Se puede cerrar con botón o Escape y su preferencia se conserva en escritorio.
+- Los reactivos, su reloj y el navegador de respuestas ocupan una sola columna centrada. Quiz/práctica y simulacro muestran tiempo transcurrido o cuenta regresiva según su configuración; recargar conserva la referencia temporal del servidor.
+- Lengua y comunicación se incorporó en Español, apartado 1 (página 4), con ID espanol-01, once conceptos, dos diagramas Mermaid y cinco fuentes. Se conserva el estado de borrador en revisión.
+- Las veinte preguntas recibidas se normalizaron y validaron en content/drafts/questions. No se agregaron al banco activo. Los originales completos están en content/editorial/espanol-01; no forman parte de los assets.
+- El lector contiene las secciones de estudio. Los comentarios y claves de los siete reactivos originales se conservan en el archivo editorial; faltan sus enunciados completos y el documento base mencionado.
+- Astro genera 22 páginas. Pasan tipos, lint, 26 pruebas de contenido/API y seis E2E en Chrome (escritorio y móvil), incluidos relojes, menú y el nuevo capítulo. Se revisaron las capturas actualizadas.
+- Esta revisión está preparada localmente para revisar el material, sin publicarlo automáticamente. El despliegue remoto descrito más abajo conserva la versión anterior y el acceso cerrado pendiente de Access.
+
 ## Implementado
 
 Etapas 1–7 y 9: base modular Astro + React + Tailwind + Hono, catálogo y lecturas, evaluación, persistencia D1, diagnóstico, repaso básico y contrato editorial.

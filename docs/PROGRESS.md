@@ -2,7 +2,16 @@
 
 Fecha: 9 de noviembre de 2026.
 
-## Nuevo despliegue solicitado
+## Acceso directo sin Cloudflare Access
+
+- El usuario pidió explícitamente desplegar sin configurar Access. Se añadió ACCESS_MODE=public en producción; el modo privado queda como opción y ya no bloquea la publicación solicitada.
+- La biblioteca y las lecturas son públicas. Cada navegador recibe una cookie opaca aleatoria de 256 bits; el servidor deriva su estudiante y separa progreso, preferencias e intentos. Borrar las cookies o utilizar otro navegador inicia un espacio nuevo. El perfil local anterior permanece separado.
+- Las cookies de producción usan Secure, HttpOnly, SameSite=Lax y prefijo __Host-. Se mantienen validación de origen, límites de cuerpo, SQL parametrizado y claves de simulacro ocultas hasta finalizar.
+- Las pruebas detectaron que las respuestas directas de Static Assets perdían encabezados preparados por Hono. Se usa c.newResponse para conservar la cookie de navegación y se fija private, no-store después de procesar la ruta.
+- Pasan generación de tipos, Astro Check/TypeScript sin errores, lint, formato, compilación de 22 páginas, 29 pruebas de contenido/API y ocho E2E. Los E2E utilizan el modo público y comprueban aislamiento entre dos navegadores, persistencia al recargar y los flujos completos de estudio.
+- Cloudflare confirmó el despliegue público 689fccf1-3bbd-4202-9d45-9f7803ac723d en https://folio.mayiitoo-alberto.workers.dev. Ocho comprobaciones remotas (biblioteca, lectura de Español, simulacros, salud, catálogo, perfil, progreso y favicon) devolvieron 200 sin redirección a Access. La cookie de producción conserva sus atributos y las respuestas usan private, no-store. El catálogo remoto ofrece las veinte preguntas de Español.
+
+## Despliegue cerrado anterior
 
 - Se volvió a compilar y desplegar el contenido del commit ecfb0f1 en Cloudflare: versión 980f93f6-2c83-4764-87f0-82db9fccddf0, en https://folio.mayiitoo-alberto.workers.dev.
 - La compilación validó cuarenta preguntas y generó 22 páginas. Las cinco comprobaciones remotas confirmaron 503 con private, no-store y sin contenido privado.
@@ -65,7 +74,7 @@ El usuario eligió la URL gratuita workers.dev: folio.mayiitoo-alberto.workers.d
 
 Access no está habilitado en la cuenta. El token OAuth disponible no permite administrar Access y la conexión al navegador de Cloudflare no está disponible. Falta habilitarlo y configurar el Team domain y AUD. La aplicación mantiene el acceso cerrado hasta entonces.
 
-## Publicación
+## Primera publicación
 
 Cloudflare confirmó la publicación del Worker folio en https://folio.mayiitoo-alberto.workers.dev. Se publicó en modo cerrado: la página principal solo informa que falta Access; las lecturas, assets y API devuelven 503. Se comprobaron GET de página, lectura, asset y salud, y POST de creación de intento. Ninguna respuesta mostró contenido privado. D1 de producción conserva cero intentos.
 
@@ -75,6 +84,6 @@ El código de aplicación corresponde al commit 58bc3ed. La configuración y las
 
 Versión final de Cloudflare: 819dcfec-e060-4110-90d3-9575910c12ba. Los commits 58bc3ed y f434b71 se subieron a origin/main. [GitHub Actions](https://github.com/MHAlberto/folio/actions/runs/42651388675) terminó correctamente sobre f434b71: instalación limpia en Linux, tipos, lint, formato, 25 pruebas, build y cuatro E2E en Chrome. La comprobación HTTP final del despliegue confirmó 503 y private, no-store para las cinco rutas probadas.
 
-## Pendiente externo
+## Opción privada pendiente
 
-Activar Cloudflare Access para todo el tráfico de folio y registrar el Team domain y AUD. Después desplegar de nuevo y comprobar con una sesión autorizada un intento real persistido en D1. No se considera logrado el flujo remoto completo hasta realizar esa verificación.
+Solo si se vuelve a solicitar una biblioteca privada: activar Cloudflare Access para todo el tráfico de folio, registrar Team domain y AUD y cambiar ACCESS_MODE a access. No es un requisito del despliegue público actual.

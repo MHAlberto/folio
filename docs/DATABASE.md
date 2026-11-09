@@ -11,7 +11,7 @@ Cloudflare D1 mediante el binding DB. Las migraciones se guardan en migrations y
 | answers           | Opción seleccionada y calificación; relación compuesta con pregunta autorizada |
 | flashcard_reviews | Historial append-only de revisiones                                            |
 
-Las relaciones con students preparan el esquema para varios usuarios, aunque solo se utiliza un perfil. La identidad futura deberá resolverse desde Access u otro proveedor en el servidor.
+Cada navegador público utiliza un estudiante independiente: el servidor deriva el ID de un token aleatorio guardado en una cookie HttpOnly y crea el perfil bajo demanda. Los perfiles locales y privados anteriores permanecen separados. Los endpoints no reciben studentId. No hay registro ni recuperación o sincronización entre navegadores.
 
 Los libros y conceptos viven en Git. Las relaciones editoriales se validan durante build. Los snapshots mantienen preguntas, opciones, claves y explicaciones históricas aunque se edite el banco. Las claves correctas de los snapshots nunca se serializan en un intento de simulacro en curso.
 

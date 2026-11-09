@@ -15,6 +15,7 @@
   },
   "vars": {
     "APP_ENV": "production",
+    "ACCESS_MODE": "public",
     "ACCESS_TEAM_DOMAIN": "",
     "ACCESS_AUD": "",
   },
@@ -35,7 +36,12 @@
         "html_handling": "auto-trailing-slash",
         "not_found_handling": "404-page",
       },
-      "vars": { "APP_ENV": "development", "ACCESS_TEAM_DOMAIN": "", "ACCESS_AUD": "" },
+      "vars": {
+        "APP_ENV": "development",
+        "ACCESS_MODE": "access",
+        "ACCESS_TEAM_DOMAIN": "",
+        "ACCESS_AUD": "",
+      },
       "d1_databases": [
         {
           "binding": "DB",

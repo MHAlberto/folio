@@ -31,6 +31,12 @@ const create = async (mode = 'exam', count = 3) => {
   expect(r.status).toBe(201);
   return r.json() as Promise<Attempt>;
 };
+const publicRequest = (path: string, init: RequestInit = {}) =>
+  app.request('https://folio.example' + path, init, {
+    ...env,
+    APP_ENV: 'production',
+    ACCESS_MODE: 'public',
+  });
 beforeAll(async () => {
   platform = await getPlatformProxy<Bindings>({
     environment: 'local',
@@ -254,6 +260,98 @@ describe('Hono con D1 nativo local', () => {
     );
     expect(r.status).toBe(503);
     expect((await app.request('https://folio.example/', {}, prod)).status).toBe(503);
+  });
+  it('abre el modo público y mantiene una cookie opaca protegida y estable', async () => {
+    const page = await publicRequest('/', { headers: { Accept: 'text/html' } });
+    expect(page.status).toBe(200);
+    expect(page.headers.get('Cache-Control')).toBe('private, no-store');
+    const cookie = page.headers.get('Set-Cookie')!;
+    expect(cookie).toMatch(/^__Host-folio-visitor=[a-f0-9]{64};/);
+    expect(cookie).toContain('HttpOnly');
+    expect(cookie).toContain('Secure');
+    expect(cookie).toContain('SameSite=Lax');
+    expect(cookie).toContain('Path=/');
+    const headers = { Cookie: cookie.split(';')[0]! };
+    const profile = await publicRequest('/api/v1/profile', { headers });
+    expect(profile.status).toBe(200);
+    expect(await profile.json()).toMatchObject({ displayName: 'Estudiante' });
+    expect(profile.headers.get('Set-Cookie')).toBeNull();
+    const invalid = await publicRequest('/api/v1/profile', {
+      headers: { Cookie: '__Host-folio-visitor=local-student' },
+    });
+    expect(invalid.status).toBe(200);
+    expect(invalid.headers.get('Set-Cookie')).toMatch(/^__Host-folio-visitor=[a-f0-9]{64};/);
+    expect((await publicRequest('/api/v1/health')).status).toBe(200);
+  });
+  it('aísla progreso, preferencias e intentos entre visitantes públicos', async () => {
+    const first = await publicRequest('/api/v1/profile');
+    const second = await publicRequest('/api/v1/profile');
+    const cookieA = first.headers.get('Set-Cookie')!.split(';')[0]!;
+    const cookieB = second.headers.get('Set-Cookie')!.split(';')[0]!;
+    expect(cookieA).not.toBe(cookieB);
+    const jsonHeaders = { Cookie: cookieA, 'Content-Type': 'application/json' };
+    await publicRequest('/api/v1/profile', {
+      method: 'PUT',
+      headers: jsonHeaders,
+      body: JSON.stringify({
+        displayName: 'Visitante A',
+        textSize: 'normal',
+        readingWidth: 'normal',
+      }),
+    });
+    await publicRequest('/api/v1/progress', {
+      method: 'PUT',
+      headers: jsonHeaders,
+      body: JSON.stringify({ topicId: 'espanol-01', status: 'completed' }),
+    });
+    const created = await publicRequest('/api/v1/exams', {
+      method: 'POST',
+      headers: jsonHeaders,
+      body: JSON.stringify({
+        topicIds: ['espanol-01'],
+        count: 2,
+        mode: 'exam',
+        selection: 'random',
+      }),
+    });
+    expect(created.status).toBe(201);
+    const attempt = (await created.json()) as Attempt;
+    expect(JSON.stringify(attempt)).not.toMatch(/correctOption|explanation/);
+    expect(
+      await (await publicRequest('/api/v1/profile', { headers: { Cookie: cookieA } })).json(),
+    ).toMatchObject({ displayName: 'Visitante A' });
+    expect(
+      await (await publicRequest('/api/v1/profile', { headers: { Cookie: cookieB } })).json(),
+    ).toMatchObject({ displayName: 'Estudiante' });
+    expect(
+      await (await publicRequest('/api/v1/progress', { headers: { Cookie: cookieA } })).json(),
+    ).toHaveLength(1);
+    for (const path of ['/api/v1/progress', '/api/v1/attempts'])
+      expect(await (await publicRequest(path, { headers: { Cookie: cookieB } })).json()).toEqual(
+        [],
+      );
+    expect(
+      (await publicRequest('/api/v1/attempts/' + attempt.id, { headers: { Cookie: cookieB } }))
+        .status,
+    ).toBe(404);
+    expect(
+      (
+        await publicRequest('/api/v1/attempts/' + attempt.id + '/finish', {
+          method: 'POST',
+          headers: { Cookie: cookieB, 'Content-Type': 'application/json' },
+          body: '{}',
+        })
+      ).status,
+    ).toBe(404);
+    expect(
+      (
+        await publicRequest('/api/v1/profile', {
+          method: 'PUT',
+          headers: { ...jsonHeaders, Origin: 'https://foreign.example' },
+          body: '{}',
+        })
+      ).status,
+    ).toBe(403);
   });
   it('rechaza JWT falsos cuando Access está configurado', async () => {
     const prod = {

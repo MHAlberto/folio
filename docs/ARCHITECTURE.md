@@ -6,8 +6,7 @@ Astro produce HTML y assets estáticos en dist. No hay adaptador SSR, servidor N
 
 ```mermaid
 flowchart LR
-  Browser[Navegador] --> Access[Cloudflare Access]
-  Access --> Worker[Worker Hono]
+  Browser[Navegador] --> Worker[Worker Hono]
   Worker --> API[API /api/v1]
   Worker --> Assets[Static Assets de Astro]
   API --> Services[Servicios]
@@ -17,11 +16,13 @@ flowchart LR
   Astro --> Assets
 ```
 
-assets.run_worker_first es true para TODAS las rutas: la biblioteca completa es privada, incluidas lecturas, JSON y recursos. Después de validar Access, Hono procesa /api/* y delega las demás rutas a env.ASSETS.fetch. Esto conserva el prerenderizado y añade una comprobación de privacidad por solicitud.
+assets.run_worker_first es true para TODAS las rutas. Hono aplica los encabezados de seguridad, procesa /api/* y delega las demás rutas a env.ASSETS.fetch. Esto conserva el prerenderizado. Por petición del usuario, producción usa ACCESS_MODE=public y el contenido se abre sin iniciar sesión.
 
 Las respuestas de ASSETS tienen encabezados inmutables. Se clonan antes de aplicar secureHeaders. El binding de assets se declara también en env.local, ya que Wrangler no lo hereda en este entorno. Ambos detalles se verifican con pruebas de navegador sobre Wrangler, además del dry-run.
 
-APP_ENV=development permite únicamente hosts de loopback en el entorno local. Producción verifica RS256, emisor y audiencia con jose y las claves públicas de Access. La ausencia de configuración produce 503; un JWT ausente o inválido produce 401. Los endpoints no admiten IDs de estudiante del cliente. El ID interno inicial es local-student.
+En modo público, cada navegador recibe una cookie opaca aleatoria de 256 bits, con prefijo __Host-, Secure, HttpOnly, SameSite=Lax, Path=/ y duración de un año. El servidor deriva el ID interno mediante SHA-256. Establece la cookie al navegar antes de que las islas hagan solicitudes concurrentes; los recursos estáticos no crean perfiles. El perfil D1 se crea al utilizar endpoints personales. No se devuelve el token en JSON ni se acepta studentId en payloads. Otro navegador obtiene un espacio independiente; borrar las cookies pierde la referencia al anterior. No hay sincronización entre dispositivos.
+
+APP_ENV=development permite el perfil local fijo únicamente en hosts de loopback cuando el modo no es público. Los E2E activan el modo público con una cookie de desarrollo sin Secure para HTTP local. El modo opcional ACCESS_MODE=access conserva la verificación RS256, emisor y audiencia con jose: sin configuración devuelve 503; un JWT ausente o inválido devuelve 401. Un ACCESS_MODE ausente o desconocido nunca activa el acceso público.
 
 Cache-Control es private, no-store. Se aplican CSP, protección de marcos, restricciones de permisos y validación de origen para escrituras. La CSP permite scripts y estilos inline necesarios para Astro, KaTeX y Mermaid; no permite scripts remotos, objetos ni marcos. El MDX sigue siendo código de confianza.
 
@@ -49,7 +50,7 @@ El temario básico de content/syllabus.json agrupa 74 apartados en diez cuaderno
 
 ## API v1
 
-Todos los endpoints están detrás del mismo perímetro.
+Los endpoints personales utilizan el estudiante resuelto por el middleware. Todas las consultas y escrituras se limitan a ese perfil.
 
 | Método   | Ruta                    | Función                                      |
 | -------- | ----------------------- | -------------------------------------------- |
@@ -87,7 +88,7 @@ Desde los resultados, Repetir configuración recupera el intento del mismo estud
 
 No vistas excluye todos los reactivos entregados a cualquier intento del estudiante, incluidos los intentos en curso. El diagnóstico de aciertos y errores utiliza solamente intentos finalizados. La cobertura cuenta los IDs del banco actual que ya se entregaron; no incluye preguntas retiradas. El historial muestra los cien intentos más recientes y el diagnóstico considera la historia completa.
 
-El despliegue inicial cerrado permite crear el Worker gratuito antes de activar Access. Solo muestra una página de estado sin contenido de la biblioteca; la API devuelve 503 incluso para escrituras. La publicación funcional requiere configurar Access y verificar una sesión autorizada. No se usa ctx.access porque Static Assets introduce un router que actualmente no transmite ese contexto al Worker del usuario; se valida el JWT directamente.
+El despliegue público funciona con Workers y D1, sin configurar Access. El modo cerrado sigue disponible para una futura publicación privada y solo permite una página de estado 503. En ese modo se valida el JWT directamente para cubrir también Static Assets.
 
 Las respuestas de error tienen error.code y error.message. La validación añade error.details sin reproducir los valores enviados.
 

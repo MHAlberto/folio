@@ -37,6 +37,13 @@ export class StudyRepository {
     private db: D1Database,
     private student: string,
   ) {}
+  async ensureProfile() {
+    if (!(await this.profile()))
+      await this.db
+        .prepare('INSERT OR IGNORE INTO students(id,display_name) VALUES(?,?)')
+        .bind(this.student, 'Estudiante')
+        .run();
+  }
   async create(id: string, config: ExamConfig, questions: Question[], now: string) {
     const deadline = config.timeLimitMinutes
       ? new Date(Date.parse(now) + config.timeLimitMinutes * 60_000).toISOString()

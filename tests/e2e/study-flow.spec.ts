@@ -1,5 +1,34 @@
 import { test, expect } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
+test('acceso directo con progreso separado por navegador', async ({ page, browser }) => {
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Biblioteca', exact: true })).toBeVisible();
+  const cookies = await page.context().cookies();
+  expect(cookies.some((cookie) => cookie.name === 'folio-visitor' && cookie.httpOnly)).toBe(true);
+  await page.request.put('/api/v1/progress', {
+    data: { topicId: 'espanol-01', status: 'completed' },
+  });
+  const created = await page.request.post('/api/v1/exams', {
+    data: { topicIds: ['espanol-01'], count: 1, mode: 'exam', selection: 'random' },
+  });
+  expect(created.status()).toBe(201);
+  const attempt = await created.json();
+  const other = await browser.newContext({ baseURL: 'http://127.0.0.1:8788' });
+  try {
+    const otherPage = await other.newPage();
+    await otherPage.goto('/');
+    expect(await (await other.request.get('/api/v1/progress')).json()).toEqual([]);
+    expect(await (await other.request.get('/api/v1/attempts')).json()).toEqual([]);
+    expect((await other.request.get('/api/v1/attempts/' + attempt.id)).status()).toBe(404);
+  } finally {
+    await other.close();
+  }
+  await page.reload();
+  expect(await (await page.request.get('/api/v1/progress')).json()).toEqual([
+    expect.objectContaining({ topicId: 'espanol-01', status: 'completed' }),
+  ]);
+  expect((await page.request.get('/api/v1/attempts/' + attempt.id)).status()).toBe(200);
+});
 test('biblioteca → lectura → práctica → simulacro → resultados → diagnóstico → repaso', async ({
   page,
   request,

@@ -58,7 +58,7 @@ export default function SettingsForm() {
             setSaved(false);
           }}
         />
-        <small>Es una preferencia local del perfil, no una cuenta de acceso.</small>
+        <small>Este nombre se guarda con el progreso de tu navegador.</small>
       </label>
       <h2>Preferencias de lectura</h2>
       <label className="field">
@@ -101,8 +101,8 @@ export default function SettingsForm() {
         </p>
       )}
       <div className="notice" style={{ marginTop: 35 }}>
-        Folio utiliza un único perfil interno. Los intentos, las lecturas y las revisiones se
-        conservan en la base de datos de este espacio.
+        Tus intentos, lecturas y revisiones se guardan para este navegador. Si borras las cookies o
+        utilizas otro navegador, comenzarás un espacio nuevo.
       </div>
     </form>
   );

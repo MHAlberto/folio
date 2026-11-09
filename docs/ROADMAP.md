@@ -9,7 +9,7 @@
 - Tarjetas de repaso libre, perfil y preferencias.
 - Validación editorial, pruebas de integración y navegador, CI y documentación.
 
-El requisito pendiente para uso remoto privado es la configuración efectiva de Cloudflare Access. La publicación no se considera funcional hasta verificar una sesión autorizada y la persistencia remota.
+Por petición del usuario, la publicación actual usa acceso directo sin Cloudflare Access y progreso separado por navegador. Access queda como modo opcional para una futura publicación privada.
 
 ## Siguiente trabajo editorial
 
@@ -29,4 +29,4 @@ Añadir fórmulas y diagramas en tarjetas mediante un esquema validado. Luego, e
 
 ## Identidad futura
 
-Mapear el subject de Access a estudiantes distintos con migraciones y pruebas de aislamiento. No implementar registro, contraseñas ni recuperación en la versión actual.
+Añadir sincronización y recuperación entre dispositivos si el usuario la solicita. El modo actual utiliza una cookie opaca por navegador; no requiere registro, contraseñas ni Access.

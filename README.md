@@ -6,7 +6,7 @@ Biblioteca personal de estudio con lecturas MDX, evaluación y diagnóstico. Ast
 
 La aplicación funciona localmente con Wrangler. Incluye diez materias y 74 tópicos con sus páginas originales. Lengua y comunicación es la primera unidad aportada, con dos diagramas y cinco referencias. Sus veinte preguntas están activas para práctica y simulacro; el texto académico continúa en revisión. El banco reúne cuarenta preguntas y cuatro tarjetas. Desde la biblioteca puedes volver a la última lectura, revisar preguntas pendientes durante una evaluación y repetir una configuración al consultar sus resultados.
 
-La dirección solicitada para producción es https://folio.mayiitoo-alberto.workers.dev. El estado real de publicación y los pendientes se registran en [PROGRESS](docs/PROGRESS.md). No desactives la protección para acceder a la aplicación.
+La dirección solicitada para producción es https://folio.mayiitoo-alberto.workers.dev. Por petición del usuario, funciona con acceso directo sin Cloudflare Access. El contenido es público; progreso, preferencias e intentos se separan por navegador mediante una cookie opaca HttpOnly. Borrar las cookies o cambiar de navegador inicia otro espacio. El estado de publicación se registra en [PROGRESS](docs/PROGRESS.md).
 
 ## Requisitos y desarrollo
 
@@ -43,22 +43,21 @@ npm run test:e2e
 
 Las pruebas de integración usan bindings D1 reales emulados por workerd, con almacenamiento aislado. Playwright usa Chrome y una base independiente en .wrangler/e2e. No modifica producción. Las capturas quedan en output/playwright. En CI se instala Chrome mediante Playwright.
 
-## Publicación privada
+## Publicación
 
-La cuenta Cloudflare debe tener D1, Workers y Cloudflare Access habilitados. No se necesita comprar un dominio.
+La cuenta Cloudflare necesita D1 y Workers. No se necesita comprar un dominio ni habilitar Zero Trust.
 
 1. Autentica Wrangler con npx wrangler login.
 2. Crea D1 con npx wrangler d1 create folio-db y configura el ID en wrangler.jsonc. En este checkout la base ya fue creada.
-3. Habilita Zero Trust / Access en Cloudflare. Crea una aplicación self-hosted que proteja folio.mayiitoo-alberto.workers.dev completo, o protege el Worker con alcance All traffic. Limita la política a tu correo.
-4. Copia el Team domain (sin https://) y el Application Audience (AUD) en ACCESS_TEAM_DOMAIN y ACCESS_AUD de producción en wrangler.jsonc. Son identificadores de configuración, no secretos.
-5. Ejecuta npm run db:remote, npm run deploy:check y npm run deploy.
-6. Sin sesión, la dirección debe requerir Access. Con sesión, comprueba salud, lectura, intento y persistencia.
+3. Conserva APP_ENV=production y ACCESS_MODE=public en wrangler.jsonc.
+4. Ejecuta npm run db:remote, npm run deploy:check y npm run deploy.
+5. Comprueba la biblioteca, una lectura, salud de la API y persistencia por navegador. Otro navegador debe recibir un espacio independiente.
 
-Para crear el Worker antes de habilitar Access, npm run deploy:locked publica una página de estado y bloquea con 503 todas las rutas de contenido y API. No es un despliegue funcional de la biblioteca; permite seleccionar el Worker en Cloudflare y terminar la configuración privada. Después utiliza npm run deploy.
+El modo opcional ACCESS_MODE=access conserva la publicación privada. Requiere configurar Access para toda la dirección y completar ACCESS_TEAM_DOMAIN (sin https://) y ACCESS_AUD; entonces el middleware valida firma RS256, audiencia y emisor del JWT. Sin configuración válida permanece cerrado. npm run deploy:locked solo admite ese modo con ambos identificadores vacíos y publica una página de estado 503.
 
-El middleware valida criptográficamente el JWT de Access, su audiencia y su emisor. Sin configuración válida, todas las rutas permanecen cerradas. No basta enviar un correo o un ID en un encabezado. El perfil inicial se resuelve dentro del servidor.
+En modo público, el servidor genera un token aleatorio de 256 bits y deriva de él el ID interno del estudiante mediante SHA-256. La cookie de producción usa Secure, HttpOnly, SameSite=Lax y el prefijo __Host-. Los endpoints no aceptan studentId del cliente. El perfil local anterior no se comparte con los visitantes.
 
-Las URL de vista previa están deshabilitadas. La ruta gratuita workers.dev queda permitida exclusivamente con el mismo control JWT en el Worker. No despliegues el entorno local.
+Las URL de vista previa están deshabilitadas. Todas las rutas atraviesan el Worker y mantienen los encabezados de seguridad y la validación de origen en escrituras. No despliegues el entorno local. Los E2E ejecutan el modo público con datos aislados en .wrangler/e2e.
 
 ## Contenido y estructura
 

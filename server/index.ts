@@ -27,8 +27,8 @@ app.use(
   }),
 );
 app.use('*', async (c, next) => {
-  c.header('Cache-Control', 'private, no-store');
   await next();
+  c.header('Cache-Control', 'private, no-store');
 });
 app.use('*', access);
 app.use(
@@ -48,8 +48,8 @@ app.all('/api/*', (c) =>
 );
 app.all('*', async (c) => {
   const response = await c.env.ASSETS.fetch(c.req.raw);
-  // Asset responses have immutable headers. Clone before Hono applies security headers.
-  return new Response(response.body, response);
+  // Clone immutable asset headers while preserving Hono's prepared session cookie.
+  return c.newResponse(response.body, response);
 });
 app.onError((error, c) => {
   if (error instanceof ZodError)

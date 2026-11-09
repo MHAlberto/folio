@@ -18,7 +18,7 @@
     "db:remote": "wrangler d1 migrations apply folio-db --remote",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "e2e:serve": "wrangler d1 migrations apply folio-db --local --env local --persist-to .wrangler/e2e && wrangler dev --env local --ip 127.0.0.1 --port 8788 --persist-to .wrangler/e2e",
+    "e2e:serve": "wrangler d1 migrations apply folio-db --local --env local --persist-to .wrangler/e2e && wrangler dev --env local --var ACCESS_MODE:public --ip 127.0.0.1 --port 8788 --persist-to .wrangler/e2e",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

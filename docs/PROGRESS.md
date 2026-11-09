@@ -14,6 +14,7 @@ Fecha: 9 de noviembre de 2026.
 - El esquema del banco activo rechaza registros marcados como borrador. La validación admite que aún no exista una carpeta de borradores.
 - Pasan tipos, validación de contenido, 27 pruebas de contenido/API, lint, formato y compilación de las 22 páginas. Los seis E2E de escritorio y móvil pasan y verifican las preguntas activas, las tres mejoras y los enlaces a secciones visibles.
 - Cloudflare recibió esta revisión en la versión d46dca7d-523f-4d8d-8ac6-8c4db19950b0. Las cinco comprobaciones HTTP remotas devolvieron 503 con private, no-store y sin contenido privado. Access sigue pendiente; se conserva el acceso cerrado.
+- El commit 987ad52 se sincronizó con origin/main junto con la revisión visual anterior. [GitHub Actions](https://github.com/MHAlberto/folio/actions/runs/42660143293) finalizó correctamente sobre ese commit, incluidos los seis E2E en Linux.
 
 ## Revisión anterior: diseño y primer tema aportado
 

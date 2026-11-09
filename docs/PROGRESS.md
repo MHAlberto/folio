@@ -9,6 +9,7 @@ Fecha: 9 de noviembre de 2026.
 - La configuración de evaluación resume los tópicos y despliega su selección al solicitarla. Solo lista materias y cuadernos con preguntas disponibles. Se redujeron márgenes y texto redundante en módulos y repaso.
 - Repaso comienza inmersivo, con una tarjeta central. La lectura ofrece la misma vista sin índice lateral y conserva su tipografía y recursos didácticos. No se utilizan alturas fijas que recorten preguntas o explicaciones largas.
 - Pasan tipos generados, Astro Check/TypeScript sin errores, lint, formato, validación del banco de cuarenta preguntas, 29 pruebas de contenido/API, build de 22 páginas y ocho E2E en escritorio y móvil. Se verifican entrada automática, salida por botón y Escape, restauración del sidebar y foco, lectura, repaso y paneles desplegables. Capturas de examen y repaso revisadas en ambos tamaños.
+- El commit 04fe932 está en origin/main y Cloudflare publicó la versión 30911542-1a92-4cb9-92ea-e9d8132b43f1. Las ocho comprobaciones remotas de biblioteca/API devuelven 200. El HTML remoto confirma los controles inmersivos en biblioteca, simulacros y repaso, y la entrada inmersiva inicial de Repaso.
 
 ## Acceso directo sin Cloudflare Access
 

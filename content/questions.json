@@ -1,0 +1,302 @@
+[
+  {
+    "id": "eq-01",
+    "topicId": "ecuaciones-lineales",
+    "conceptIds": ["despeje"],
+    "prompt": "¿Cuál es el valor de x en la ecuación 3x + 6 = 18?",
+    "options": [
+      { "id": "A", "text": "2" },
+      { "id": "B", "text": "4" },
+      { "id": "C", "text": "6" },
+      { "id": "D", "text": "8" }
+    ],
+    "correctOption": "B",
+    "explanation": "Resta 6 en ambos miembros: 3x = 12. Divide entre 3: x = 4.",
+    "references": ["openstax-algebra"]
+  },
+  {
+    "id": "eq-02",
+    "topicId": "ecuaciones-lineales",
+    "conceptIds": ["equivalencia"],
+    "prompt": "¿Qué operación conserva la igualdad de una ecuación?",
+    "options": [
+      { "id": "A", "text": "Sumar 5 solo al miembro izquierdo" },
+      { "id": "B", "text": "Multiplicar solo el miembro derecho por 2" },
+      { "id": "C", "text": "Restar 3 en ambos miembros" },
+      { "id": "D", "text": "Cambiar el signo de un único término" }
+    ],
+    "correctOption": "C",
+    "explanation": "Aplicar la misma resta a ambos miembros conserva la igualdad y el conjunto de soluciones.",
+    "references": ["openstax-algebra"]
+  },
+  {
+    "id": "eq-03",
+    "topicId": "ecuaciones-lineales",
+    "conceptIds": ["despeje"],
+    "prompt": "Resuelve 5x − 10 = 0.",
+    "options": [
+      { "id": "A", "text": "x = −2" },
+      { "id": "B", "text": "x = 0" },
+      { "id": "C", "text": "x = 5" },
+      { "id": "D", "text": "x = 2" }
+    ],
+    "correctOption": "D",
+    "explanation": "Al sumar 10 a ambos miembros se obtiene 5x = 10; por tanto, x = 2.",
+    "references": ["openstax-algebra"]
+  },
+  {
+    "id": "eq-04",
+    "topicId": "ecuaciones-lineales",
+    "conceptIds": ["despeje", "equivalencia"],
+    "prompt": "Si 2(x + 3) = 14, entonces x vale:",
+    "options": [
+      { "id": "A", "text": "4" },
+      { "id": "B", "text": "7" },
+      { "id": "C", "text": "10" },
+      { "id": "D", "text": "11" }
+    ],
+    "correctOption": "A",
+    "explanation": "Divide entre 2 para obtener x + 3 = 7. Resta 3 y resulta x = 4.",
+    "references": ["openstax-algebra"]
+  },
+  {
+    "id": "eq-05",
+    "topicId": "ecuaciones-lineales",
+    "conceptIds": ["equivalencia"],
+    "prompt": "¿Cuál ecuación tiene la misma solución que x + 8 = 12?",
+    "options": [
+      { "id": "A", "text": "x = 20" },
+      { "id": "B", "text": "2x = 8" },
+      { "id": "C", "text": "x − 8 = 12" },
+      { "id": "D", "text": "2x = 12" }
+    ],
+    "correctOption": "B",
+    "explanation": "La ecuación original tiene x = 4. Multiplicar x = 4 por 2 produce 2x = 8, que conserva esa solución.",
+    "references": ["openstax-algebra"]
+  },
+  {
+    "id": "fn-01",
+    "topicId": "funciones-lineales",
+    "conceptIds": ["pendiente"],
+    "prompt": "En la función y = 3x + 2, ¿cuál es la pendiente?",
+    "options": [
+      { "id": "A", "text": "2" },
+      { "id": "B", "text": "3" },
+      { "id": "C", "text": "5" },
+      { "id": "D", "text": "−3" }
+    ],
+    "correctOption": "B",
+    "explanation": "En y = mx + b, el coeficiente de x es la pendiente m. Aquí m = 3.",
+    "references": ["openstax-algebra"]
+  },
+  {
+    "id": "fn-02",
+    "topicId": "funciones-lineales",
+    "conceptIds": ["ordenada"],
+    "prompt": "¿En qué punto corta al eje vertical la recta y = 2x − 5?",
+    "options": [
+      { "id": "A", "text": "(−5, 0)" },
+      { "id": "B", "text": "(2, 0)" },
+      { "id": "C", "text": "(0, −5)" },
+      { "id": "D", "text": "(0, 2)" }
+    ],
+    "correctOption": "C",
+    "explanation": "Sobre el eje vertical x = 0. Al sustituir se obtiene y = −5, por lo que el corte es (0, −5).",
+    "references": ["openstax-algebra"]
+  },
+  {
+    "id": "fn-03",
+    "topicId": "funciones-lineales",
+    "conceptIds": ["pendiente"],
+    "prompt": "Una recta pasa por (0, 1) y (2, 5). Su pendiente es:",
+    "options": [
+      { "id": "A", "text": "1/2" },
+      { "id": "B", "text": "4" },
+      { "id": "C", "text": "3" },
+      { "id": "D", "text": "2" }
+    ],
+    "correctOption": "D",
+    "explanation": "m = (5 − 1) / (2 − 0) = 4 / 2 = 2.",
+    "references": ["openstax-algebra"]
+  },
+  {
+    "id": "fn-04",
+    "topicId": "funciones-lineales",
+    "conceptIds": ["ordenada"],
+    "prompt": "Para y = −x + 4, ¿qué valor toma y cuando x = 0?",
+    "options": [
+      { "id": "A", "text": "4" },
+      { "id": "B", "text": "−1" },
+      { "id": "C", "text": "0" },
+      { "id": "D", "text": "−4" }
+    ],
+    "correctOption": "A",
+    "explanation": "Al evaluar x = 0, el término −x se anula y queda y = 4.",
+    "references": ["openstax-algebra"]
+  },
+  {
+    "id": "fn-05",
+    "topicId": "funciones-lineales",
+    "conceptIds": ["pendiente"],
+    "prompt": "Si una recta tiene pendiente negativa, al aumentar x su valor de y:",
+    "options": [
+      { "id": "A", "text": "Siempre aumenta" },
+      { "id": "B", "text": "Disminuye" },
+      { "id": "C", "text": "Permanece constante" },
+      { "id": "D", "text": "Se vuelve necesariamente positivo" }
+    ],
+    "correctOption": "B",
+    "explanation": "Una pendiente negativa indica una razón de cambio decreciente: si Δx es positivo, Δy es negativo.",
+    "references": ["openstax-algebra"]
+  },
+  {
+    "id": "mr-01",
+    "topicId": "movimiento-rectilineo",
+    "conceptIds": ["velocidad"],
+    "prompt": "Un móvil recorre 120 m en línea recta y en el mismo sentido durante 20 s. Su velocidad media es:",
+    "options": [
+      { "id": "A", "text": "2 m/s" },
+      { "id": "B", "text": "6 m/s" },
+      { "id": "C", "text": "100 m/s" },
+      { "id": "D", "text": "2 400 m/s" }
+    ],
+    "correctOption": "B",
+    "explanation": "La velocidad media es desplazamiento entre tiempo: 120 / 20 = 6 m/s en el sentido del movimiento.",
+    "references": ["openstax-fisica"]
+  },
+  {
+    "id": "mr-02",
+    "topicId": "movimiento-rectilineo",
+    "conceptIds": ["posicion"],
+    "prompt": "Una persona sale de x = 3 m y llega a x = 11 m. ¿Cuál es su desplazamiento?",
+    "options": [
+      { "id": "A", "text": "14 m" },
+      { "id": "B", "text": "−8 m" },
+      { "id": "C", "text": "8 m" },
+      { "id": "D", "text": "3 m" }
+    ],
+    "correctOption": "C",
+    "explanation": "El desplazamiento es posición final menos inicial: 11 − 3 = 8 m.",
+    "references": ["openstax-fisica"]
+  },
+  {
+    "id": "mr-03",
+    "topicId": "movimiento-rectilineo",
+    "conceptIds": ["velocidad"],
+    "prompt": "En un movimiento rectilíneo uniforme, la velocidad:",
+    "options": [
+      { "id": "A", "text": "Aumenta cada segundo" },
+      { "id": "B", "text": "Es siempre cero" },
+      { "id": "C", "text": "Cambia de dirección continuamente" },
+      { "id": "D", "text": "Permanece constante" }
+    ],
+    "correctOption": "D",
+    "explanation": "En el MRU, la magnitud y la dirección de la velocidad se mantienen constantes; la aceleración es cero.",
+    "references": ["openstax-fisica"]
+  },
+  {
+    "id": "mr-04",
+    "topicId": "movimiento-rectilineo",
+    "conceptIds": ["posicion", "velocidad"],
+    "prompt": "Si x₀ = 2 m y v = 3 m/s, ¿cuál es la posición después de 4 s de MRU?",
+    "options": [
+      { "id": "A", "text": "14 m" },
+      { "id": "B", "text": "12 m" },
+      { "id": "C", "text": "9 m" },
+      { "id": "D", "text": "5 m" }
+    ],
+    "correctOption": "A",
+    "explanation": "Usa x = x₀ + vt = 2 + 3(4) = 14 m.",
+    "references": ["openstax-fisica"]
+  },
+  {
+    "id": "mr-05",
+    "topicId": "movimiento-rectilineo",
+    "conceptIds": ["posicion"],
+    "prompt": "Un corredor vuelve al punto de partida. Su desplazamiento total es:",
+    "options": [
+      { "id": "A", "text": "Igual a la distancia recorrida" },
+      { "id": "B", "text": "Cero" },
+      { "id": "C", "text": "Siempre positivo" },
+      { "id": "D", "text": "La mitad de su distancia" }
+    ],
+    "correctOption": "B",
+    "explanation": "Como la posición final coincide con la inicial, Δx = x final − x inicial = 0. La distancia recorrida puede ser mayor que cero.",
+    "references": ["openstax-fisica"]
+  },
+  {
+    "id": "ac-01",
+    "topicId": "acentuacion",
+    "conceptIds": ["silaba-tonica"],
+    "prompt": "¿Cuál es la sílaba tónica de la palabra «camino»?",
+    "options": [
+      { "id": "A", "text": "ca" },
+      { "id": "B", "text": "mi" },
+      { "id": "C", "text": "no" },
+      { "id": "D", "text": "Todas por igual" }
+    ],
+    "correctOption": "B",
+    "explanation": "En «camino», la mayor intensidad recae en «mi», la penúltima sílaba. Es una palabra llana.",
+    "references": ["rae-tilde"]
+  },
+  {
+    "id": "ac-02",
+    "topicId": "acentuacion",
+    "conceptIds": ["reglas-tilde"],
+    "prompt": "¿Cuál de estas palabras agudas necesita tilde?",
+    "options": [
+      { "id": "A", "text": "reloj" },
+      { "id": "B", "text": "pared" },
+      { "id": "C", "text": "canción" },
+      { "id": "D", "text": "papel" }
+    ],
+    "correctOption": "C",
+    "explanation": "Las palabras agudas llevan tilde si terminan en vocal, n o s. «Canción» termina en n.",
+    "references": ["rae-tilde"]
+  },
+  {
+    "id": "ac-03",
+    "topicId": "acentuacion",
+    "conceptIds": ["reglas-tilde"],
+    "prompt": "Las palabras esdrújulas llevan tilde:",
+    "options": [
+      { "id": "A", "text": "Solo si terminan en vocal" },
+      { "id": "B", "text": "Solo si terminan en n" },
+      { "id": "C", "text": "Nunca" },
+      { "id": "D", "text": "Siempre" }
+    ],
+    "correctOption": "D",
+    "explanation": "Todas las palabras esdrújulas llevan tilde en la antepenúltima sílaba, por ejemplo «música».",
+    "references": ["rae-tilde"]
+  },
+  {
+    "id": "ac-04",
+    "topicId": "acentuacion",
+    "conceptIds": ["silaba-tonica"],
+    "prompt": "La palabra «música» se clasifica como:",
+    "options": [
+      { "id": "A", "text": "Esdrújula" },
+      { "id": "B", "text": "Aguda" },
+      { "id": "C", "text": "Llana" },
+      { "id": "D", "text": "Monosílaba" }
+    ],
+    "correctOption": "A",
+    "explanation": "«Mú-si-ca» tiene el acento en la antepenúltima sílaba; por eso es esdrújula.",
+    "references": ["rae-tilde"]
+  },
+  {
+    "id": "ac-05",
+    "topicId": "acentuacion",
+    "conceptIds": ["reglas-tilde"],
+    "prompt": "¿Por qué «árbol» lleva tilde?",
+    "options": [
+      { "id": "A", "text": "Es aguda terminada en vocal" },
+      { "id": "B", "text": "Es llana terminada en consonante distinta de n o s" },
+      { "id": "C", "text": "Todas las palabras de dos sílabas llevan tilde" },
+      { "id": "D", "text": "Es esdrújula" }
+    ],
+    "correctOption": "B",
+    "explanation": "«Árbol» es llana y termina en l. Las llanas terminadas en consonante distinta de n o s llevan tilde, con las excepciones que detalla la norma.",
+    "references": ["rae-tilde"]
+  }
+]

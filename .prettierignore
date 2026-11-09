@@ -1,0 +1,10 @@
+node_modules
+dist
+.astro
+.wrangler
+package-lock.json
+worker-configuration.d.ts
+output
+test-results
+playwright-report
+content/books/**/*.mdx

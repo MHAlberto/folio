@@ -1,0 +1,33 @@
+---
+topicId: funciones-lineales
+title: Funciones lineales
+provisional: true
+---
+
+Una función asigna a cada valor de entrada un único valor de salida. Una relación de la forma $y=mx+b$ describe una recta. En algunos textos se llama **función afín** cuando $b\ne 0$ y se reserva **lineal** para el caso $b=0$; aquí estudiaremos ambos casos.
+
+<h2 id="pendiente">La razón de cambio</h2>
+
+<Definition title="Pendiente">
+La pendiente mide cuánto cambia el valor de salida cuando la entrada aumenta una unidad. Dados dos puntos distintos de una recta no vertical, se calcula como el cociente entre el cambio vertical y el cambio horizontal.
+</Definition>
+
+<Formula tex="m=\frac{y_2-y_1}{x_2-x_1}, \qquad x_2\ne x_1" label="Razón de cambio entre dos puntos." />
+
+<Example>
+La recta que pasa por $(0,1)$ y $(2,5)$ tiene pendiente $m=(5-1)/(2-0)=2$. Cada aumento de una unidad en $x$ corresponde a un aumento de dos unidades en $y$.
+</Example>
+
+<FunctionPlot slope={1} intercept={1} label="La recta y = x + 1 tiene pendiente 1 y ordenada al origen 1" />
+
+<h2 id="ordenada">El valor inicial</h2>
+
+En $y=mx+b$, el número $b$ es el valor de $y$ cuando $x=0$. Por eso, la recta corta el eje vertical en el punto $(0,b)$.
+
+<ConceptNote>
+Una pendiente negativa indica que la función disminuye al aumentar $x$. Una pendiente de cero describe una función constante.
+</ConceptNote>
+
+<ComparisonTable headers={["Función", "Pendiente", "Corte vertical"]} rows={[["y = 2x + 3", "2", "(0, 3)"], ["y = −x + 4", "−1", "(0, 4)"], ["y = 5", "0", "(0, 5)"]]} caption="Pendientes y ordenadas al origen" />
+
+Consulta más ejemplos y las convenciones de notación en <Citation id="openstax-algebra" />.

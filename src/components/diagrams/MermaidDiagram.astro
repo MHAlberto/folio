@@ -1,0 +1,58 @@
+---
+interface Props {
+  code: string;
+  caption?: string;
+}
+const { code, caption } = Astro.props;
+---
+
+<figure class="mermaid-container">
+  <div class="mermaid-target" data-code={code}>
+    <pre class="mermaid-fallback">{code}</pre>
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+<script>
+  const targets = document.querySelectorAll<HTMLElement>('.mermaid-target');
+  if (targets.length) {
+    const observer = new IntersectionObserver(
+      async (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        observer.disconnect();
+        try {
+          const { default: mermaid } = await import('mermaid');
+          mermaid.initialize({
+            startOnLoad: false,
+            securityLevel: 'strict',
+            theme: 'base',
+            fontFamily: 'Source Sans 3 Variable, sans-serif',
+            themeVariables: {
+              primaryColor: '#e8eee7',
+              primaryTextColor: '#252b2d',
+              primaryBorderColor: '#a4b6a8',
+              lineColor: '#839889',
+              secondaryColor: '#dde9f2',
+              tertiaryColor: '#f7f7f4',
+            },
+          });
+          for (const [i, target] of Array.from(targets).entries()) {
+            const { svg } = await mermaid.render(`folio-diagram-${i}`, target.dataset.code!);
+            target.innerHTML = svg;
+            target
+              .querySelector('svg')
+              ?.setAttribute(
+                'aria-label',
+                target.closest('figure')?.querySelector('figcaption')?.textContent ??
+                  'Diagrama conceptual',
+              );
+          }
+        } catch {
+          for (const target of targets)
+            target.insertAdjacentText('beforeend', ' Diagrama en formato de texto.');
+        }
+      },
+      { rootMargin: '200px' },
+    );
+    targets.forEach((t) => observer.observe(t));
+  }
+</script>

@@ -1,0 +1,49 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "folio",
+  "main": "server/index.ts",
+  "compatibility_date": "2026-11-09",
+  "workers_dev": true,
+  "preview_urls": false,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // All requests cross the privacy perimeter, including prerendered readings.
+    "run_worker_first": true,
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+  },
+  "vars": {
+    "APP_ENV": "production",
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUD": "",
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "folio-db",
+      "database_id": "355e7b20-cfe2-4dfb-9f39-b6c85ca54c20",
+      "migrations_dir": "migrations",
+    },
+  ],
+  "env": {
+    "local": {
+      "assets": {
+        "directory": "./dist",
+        "binding": "ASSETS",
+        "run_worker_first": true,
+        "html_handling": "auto-trailing-slash",
+        "not_found_handling": "404-page",
+      },
+      "vars": { "APP_ENV": "development", "ACCESS_TEAM_DOMAIN": "", "ACCESS_AUD": "" },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "folio-db",
+          "database_id": "00000000-0000-0000-0000-000000000000",
+          "migrations_dir": "migrations",
+        },
+      ],
+    },
+  },
+}

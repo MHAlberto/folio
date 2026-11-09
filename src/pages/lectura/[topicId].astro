@@ -1,0 +1,105 @@
+---
+import { getCollection, render } from 'astro:content';
+import AppLayout from '../../layouts/AppLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+import Definition from '../../components/reader/Definition.astro';
+import Example from '../../components/reader/Example.astro';
+import Formula from '../../components/reader/Formula.astro';
+import Figure from '../../components/reader/Figure.astro';
+import ConceptNote from '../../components/reader/ConceptNote.astro';
+import Citation from '../../components/reader/Citation.astro';
+import SourceList from '../../components/reader/SourceList.astro';
+import ComparisonTable from '../../components/reader/ComparisonTable.astro';
+import MermaidDiagram from '../../components/diagrams/MermaidDiagram.astro';
+import FunctionPlot from '../../components/diagrams/FunctionPlot.astro';
+import ReadingProgress from '../../components/reader/ReadingProgress';
+import { catalog } from '../../../shared/catalog';
+import 'katex/dist/katex.min.css';
+export async function getStaticPaths() {
+  const readings = await getCollection('readings');
+  return readings.map((entry) => ({ params: { topicId: entry.data.topicId }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const topic = catalog.topics.find((t) => t.id === entry.data.topicId)!;
+const book = catalog.books.find((b) => b.id === topic.bookId)!;
+const siblings = catalog.topics
+  .filter((t) => t.bookId === book.id)
+  .sort((a, b) => a.number - b.number);
+const index = siblings.findIndex((t) => t.id === topic.id),
+  prev = siblings[index - 1],
+  next = siblings[index + 1];
+const components = {
+  Definition,
+  Example,
+  Formula,
+  Figure,
+  ConceptNote,
+  Citation,
+  ComparisonTable,
+  MermaidDiagram,
+  FunctionPlot,
+};
+---
+
+<AppLayout title={topic.title} wide>
+  <a class="back-link" href={'/biblioteca/' + book.id + '/'}>
+    <Icon name="arrow" size={15} />
+    {book.title}
+  </a>
+  <div class="reader-grid">
+    <article>
+      <header class="reader-header">
+        <div class="eyebrow">
+          <span>Tópico {String(topic.number).padStart(2, '0')}</span>
+          <span class="badge provisional">Lectura provisional</span>
+        </div>
+        <h1>{topic.title}</h1>
+        <p class="reader-deck">{topic.description}</p>
+        <div class="reader-meta">
+          <span>
+            <Icon name="clock" size={15} />
+            {topic.minutes} min de lectura
+          </span>
+          <span>{topic.concepts.length} conceptos</span>
+        </div>
+      </header>
+      <div class="prose">
+        <Content components={components} />
+        <SourceList ids={topic.references} />
+      </div>
+      <ReadingProgress topicId={topic.id} client:load />
+      <div class="result-actions">
+        <a class="button secondary" href={'/simulacros/?topic=' + topic.id + '&mode=practice'}>
+          Practicar este tópico <Icon name="arrow" size={16} />
+        </a>
+      </div>
+      <nav class="reading-navigation" aria-label="Lecturas relacionadas">
+        {prev && (
+          <a href={'/lectura/' + prev.id + '/'}>
+            <small>Lectura anterior</small>
+            {prev.title}
+          </a>
+        )}
+        {next && (
+          <a href={'/lectura/' + next.id + '/'}>
+            <small>Siguiente lectura</small>
+            {next.title}
+          </a>
+        )}
+      </nav>
+    </article>
+    <aside class="reader-toc" aria-label="Índice de la lectura">
+      <h2>En esta lectura</h2>
+      {topic.subtopics.map((s) => (
+        <a href={'#' + s.anchor}>{s.title}</a>
+      ))}
+      <a href="#referencias">Referencias</a>
+      <div class="toc-separator">
+        <h2>Después de leer</h2>
+        <a href={'/simulacros/?topic=' + topic.id + '&mode=practice'}>Practicar los conceptos</a>
+        <a href={'/repaso/?topic=' + topic.id}>Repasar con tarjetas</a>
+      </div>
+    </aside>
+  </div>
+</AppLayout>

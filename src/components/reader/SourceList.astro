@@ -1,0 +1,26 @@
+---
+import { catalog } from '../../../shared/catalog';
+interface Props {
+  ids: string[];
+}
+const { ids } = Astro.props;
+const sources = ids.map((id) => catalog.references.find((r) => r.id === id)!);
+---
+
+<section class="sources" id="referencias">
+  <h2>Referencias y lecturas complementarias</h2>
+  <ol>
+    {sources.map((s) => (
+      <li id={`fuente-${s.id}`}>
+        {s.author}.{' '}
+        <a href={s.url} rel="noopener noreferrer">
+          {s.title}
+        </a>
+        . {s.year}.
+      </li>
+    ))}
+  </ol>
+  <p>
+    Texto de demostración original. Revisa las fuentes antes de utilizarlo como material definitivo.
+  </p>
+</section>

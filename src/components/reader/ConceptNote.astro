@@ -1,0 +1,12 @@
+---
+interface Props {
+  title?: string;
+  kind?: 'lavender' | 'amber' | 'blue';
+}
+const { title = 'Para recordar', kind = 'lavender' } = Astro.props;
+---
+
+<aside class:list={['academic-note', kind]}>
+  <span class="note-label">{title}</span>
+  <slot />
+</aside>

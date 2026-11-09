@@ -1,0 +1,160 @@
+---
+import '../styles/global.css';
+import '@fontsource/lora/latin-400.css';
+import '@fontsource/lora/latin-500.css';
+import '@fontsource/lora/latin-400-italic.css';
+import '@fontsource-variable/source-sans-3';
+import Icon from '../components/ui/Icon.astro';
+interface Props {
+  title: string;
+  section?: string;
+  wide?: boolean;
+}
+const { title, section = 'Biblioteca', wide = false } = Astro.props;
+const nav = [
+  ['Biblioteca', '/', 'library'],
+  ['Simulacros', '/simulacros/', 'exam'],
+  ['Progreso', '/progreso/', 'chart'],
+  ['Repaso', '/repaso/', 'cards'],
+];
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Folio, tu biblioteca personal de estudio. Lecturas, preguntas y repaso en un solo lugar."
+    />
+    <meta name="theme-color" content="#F7F7F4" />
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title} · Folio</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">
+      Saltar al contenido
+    </a>
+    <div class="mobile-bar">
+      <a href="/" class="wordmark">
+        folio<span class="brand-dot"></span>
+      </a>
+      <button
+        id="menu-toggle"
+        class="icon-button"
+        aria-controls="sidebar"
+        aria-expanded="false"
+        aria-label="Abrir navegación"
+      >
+        <Icon name="menu" />
+      </button>
+    </div>
+    <div id="menu-overlay" hidden></div>
+    <aside class="sidebar" id="sidebar" aria-label="Navegación principal">
+      <a href="/" class="wordmark" aria-label="Folio, biblioteca">
+        folio<span class="brand-dot"></span>
+      </a>
+      <div class="sidebar-intro">Un espacio para aprender.</div>
+      <nav>
+        {nav.map(([label, href, icon]) => (
+          <a
+            href={href}
+            class:list={['nav-item', { active: section === label }]}
+            aria-current={section === label ? 'page' : undefined}
+          >
+            <Icon name={icon!} />
+            <span>{label}</span>
+          </a>
+        ))}
+      </nav>
+      <div class="sidebar-note">
+        <Icon name="book" size={22} />
+        <p>
+          Leer con atención.
+          <br />
+          Comprender a tu ritmo.
+        </p>
+      </div>
+      <div class="sidebar-bottom">
+        <a
+          href="/configuracion/"
+          class:list={['nav-item', { active: section === 'Configuración' }]}
+        >
+          <Icon name="settings" />
+          <span>Configuración</span>
+        </a>
+        <div class="profile">
+          <span class="avatar">E</span>
+          <div>
+            <strong id="student-name">Estudiante</strong>
+            <small>Biblioteca personal</small>
+          </div>
+          <span class="private-dot" title="Espacio privado"></span>
+        </div>
+      </div>
+    </aside>
+    <div class="app-body">
+      <header class="topbar">
+        <div class="breadcrumb">
+          <span>Espacio personal</span>
+          <span aria-hidden="true">/</span>
+          <strong>{section}</strong>
+        </div>
+        <span class="private-label">
+          <span class="private-dot"></span>Espacio privado
+        </span>
+      </header>
+      <main id="contenido" class:list={['main-content', { wide }]} tabindex="-1">
+        <slot />
+      </main>
+      <footer class="app-footer">
+        <span>Folio · Biblioteca de estudio</span>
+        <span>El conocimiento se construye, página a página.</span>
+      </footer>
+    </div>
+    <script>
+      const toggle = document.querySelector<HTMLButtonElement>('#menu-toggle');
+      const overlay = document.querySelector<HTMLElement>('#menu-overlay');
+      const sidebar = document.querySelector<HTMLElement>('#sidebar');
+      const mobile = window.matchMedia('(max-width: 720px)');
+      function syncNavigation() {
+        if (sidebar)
+          sidebar.inert = mobile.matches && !document.body.classList.contains('menu-open');
+      }
+      syncNavigation();
+      mobile.addEventListener('change', syncNavigation);
+      function closeMenu() {
+        const wasOpen = document.body.classList.contains('menu-open');
+        document.body.classList.remove('menu-open');
+        toggle?.setAttribute('aria-expanded', 'false');
+        if (overlay) overlay.hidden = true;
+        syncNavigation();
+        if (wasOpen) toggle?.focus();
+      }
+      toggle?.addEventListener('click', () => {
+        const open = document.body.classList.toggle('menu-open');
+        toggle.setAttribute('aria-expanded', String(open));
+        if (overlay) overlay.hidden = !open;
+        syncNavigation();
+      });
+      overlay?.addEventListener('click', closeMenu);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+      });
+      import { api } from '../lib/api';
+      api<{ displayName: string; textSize: string; readingWidth: string }>('/profile')
+        .then((p) => {
+          if (!p) return;
+          const name = document.querySelector('#student-name');
+          if (name) name.textContent = p.displayName;
+          const avatar = document.querySelector('.avatar');
+          if (avatar) avatar.textContent = p.displayName.slice(0, 1).toUpperCase();
+          document.documentElement.dataset.textSize = p.textSize;
+          document.documentElement.dataset.readingWidth = p.readingWidth;
+        })
+        .catch(() => {});
+    </script>
+  </body>
+</html>

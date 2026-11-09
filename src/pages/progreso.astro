@@ -1,0 +1,15 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import ProgressView from '../components/analytics/ProgressView';
+---
+
+<AppLayout title="Progreso" section="Progreso">
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">Una mirada a lo que has aprendido</p>
+      <h1>Tu progreso</h1>
+      <p>Observa tu recorrido y encuentra el punto al que conviene regresar.</p>
+    </div>
+  </div>
+  <ProgressView client:load />
+</AppLayout>

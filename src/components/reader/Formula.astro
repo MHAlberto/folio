@@ -1,0 +1,20 @@
+---
+import katex from 'katex';
+interface Props {
+  tex: string;
+  label?: string;
+}
+const { tex, label } = Astro.props;
+---
+
+<div class="formula-block">
+  <div
+    set:html={katex.renderToString(tex, {
+      displayMode: true,
+      throwOnError: true,
+      trust: false,
+      output: 'htmlAndMathml',
+    })}
+  />
+  {label && <p class="formula-label">{label}</p>}
+</div>

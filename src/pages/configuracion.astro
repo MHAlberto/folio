@@ -1,0 +1,14 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import SettingsForm from '../components/settings/SettingsForm';
+---
+
+<AppLayout title="Configuración" section="Configuración">
+  <div class="page-heading">
+    <div>
+      <h1>Configuración</h1>
+      <p>Haz de la lectura una experiencia cómoda para ti.</p>
+    </div>
+  </div>
+  <SettingsForm client:load />
+</AppLayout>

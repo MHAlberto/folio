@@ -1,0 +1,30 @@
+[
+  {
+    "id": "tarjeta-equivalencia",
+    "topicId": "ecuaciones-lineales",
+    "conceptId": "equivalencia",
+    "front": "¿Qué principio permite transformar una ecuación sin cambiar sus soluciones?",
+    "back": "Aplicar la misma suma o resta a ambos miembros, o multiplicarlos o dividirlos por el mismo número distinto de cero."
+  },
+  {
+    "id": "tarjeta-pendiente",
+    "topicId": "funciones-lineales",
+    "conceptId": "pendiente",
+    "front": "¿Cómo se obtiene la pendiente entre dos puntos?",
+    "back": "m = (y₂ − y₁) / (x₂ − x₁), siempre que x₂ ≠ x₁. Expresa la razón de cambio de y respecto de x."
+  },
+  {
+    "id": "tarjeta-mru",
+    "topicId": "movimiento-rectilineo",
+    "conceptId": "velocidad",
+    "front": "¿Qué relación describe la posición en el MRU?",
+    "back": "x = x₀ + vt. La velocidad v es constante y el tiempo se mide desde la posición inicial x₀."
+  },
+  {
+    "id": "tarjeta-agudas",
+    "topicId": "acentuacion",
+    "conceptId": "reglas-tilde",
+    "front": "¿Cuándo se escriben con tilde las palabras agudas?",
+    "back": "Cuando terminan en vocal, n o s. Ejemplos: café, canción y compás. Consulta la lectura para las precisiones de la regla."
+  }
+]

@@ -1,0 +1,24 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  caption: string;
+  attribution: string;
+  source?: string;
+}
+const { src, alt, caption, attribution, source } = Astro.props;
+---
+
+<figure class="academic-figure">
+  <img src={src} alt={alt} loading="lazy" />
+  <figcaption>
+    {caption} —{' '}
+    {source ? (
+      <a href={source} rel="noopener noreferrer">
+        {attribution}
+      </a>
+    ) : (
+      attribution
+    )}
+  </figcaption>
+</figure>

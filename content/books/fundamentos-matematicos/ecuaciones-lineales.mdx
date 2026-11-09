@@ -1,0 +1,41 @@
+---
+topicId: ecuaciones-lineales
+title: Ecuaciones de primer grado
+provisional: true
+---
+
+Una ecuación expresa una igualdad entre dos cantidades. Resolverla consiste en encontrar los valores de la incógnita que hacen verdadera esa igualdad. Trabajaremos con ecuaciones de la forma $ax+b=c$, con $a\ne 0$.
+
+## Conservar la igualdad
+
+<h3 id="equivalencia">El principio de equivalencia</h3>
+
+<Definition title="Ecuaciones equivalentes">
+Dos ecuaciones son equivalentes si tienen el mismo conjunto de soluciones. Sumar o restar la misma cantidad en ambos miembros conserva esa equivalencia. También podemos multiplicar o dividir ambos miembros por un mismo número distinto de cero.
+</Definition>
+
+Piensa en una balanza: si ambos lados están equilibrados, retirar la misma cantidad de cada lado mantiene el equilibrio. La imagen es una ayuda para razonar, aunque las operaciones algebraicas también se aplican a números negativos.
+
+<ConceptNote kind="amber" title="Una condición necesaria">
+Nunca dividas entre cero. Cuando dividas por una expresión que depende de una incógnita, primero debes estudiar si puede valer cero.
+</ConceptNote>
+
+<h2 id="despeje">Despejar paso a paso</h2>
+
+El propósito es aislar la incógnita mediante operaciones que conserven la igualdad.
+
+<Formula tex="3x + 6 = 18 \quad \Longrightarrow \quad 3x = 12 \quad \Longrightarrow \quad x = 4" label="Restar 6 y dividir entre 3 en ambos miembros." />
+
+<Example>
+Para resolver $2(x+3)=14$, primero divide ambos miembros entre $2$. Obtienes $x+3=7$. Después resta $3$: la solución es $x=4$. Al sustituir en la ecuación original, $2(4+3)=14$.
+</Example>
+
+<MermaidDiagram code={'flowchart LR\nA["Leer la ecuación"] --> B["Aplicar operaciones equivalentes"]\nB --> C["Aislar la incógnita"]\nC --> D["Comprobar por sustitución"]'} caption="Un procedimiento para resolver y comprobar una ecuación." />
+
+### Comprobar forma parte de resolver
+
+La sustitución permite detectar errores aritméticos. Si obtuviste $x=4$ en $3x+6=18$, calcula $3(4)+6=18$: la igualdad se cumple.
+
+<ComparisonTable headers={["Operación", "Condición"]} rows={[["Sumar o restar", "La misma cantidad en ambos miembros"], ["Multiplicar o dividir", "El mismo número distinto de cero"]]} caption="Operaciones que conservan la equivalencia" />
+
+El tratamiento de las ecuaciones lineales puede ampliarse en <Citation id="openstax-algebra" />. Esta muestra no incluye ecuaciones sin solución ni identidades.

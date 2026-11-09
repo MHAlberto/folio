@@ -1,0 +1,31 @@
+---
+topicId: movimiento-rectilineo
+title: Movimiento rectilíneo uniforme
+provisional: true
+---
+
+Para describir un movimiento necesitamos un sistema de referencia, una posición y una medida del tiempo. El movimiento rectilíneo uniforme, o MRU, es un modelo en el que un objeto se mueve sobre una línea recta con velocidad constante.
+
+<h2 id="posicion">Posición y desplazamiento</h2>
+
+<Definition title="Desplazamiento">
+El desplazamiento es la diferencia entre la posición final y la posición inicial: $\Delta x=x_f-x_i$. Puede ser positivo, negativo o cero, según el eje elegido y el movimiento.
+</Definition>
+
+La distancia recorrida y el desplazamiento son cantidades diferentes. Si caminas y regresas al punto de partida, tu desplazamiento es cero, aunque hayas recorrido una distancia positiva.
+
+<h2 id="velocidad">Un modelo de velocidad constante</h2>
+
+<Formula tex="v=\frac{\Delta x}{\Delta t}, \qquad x(t)=x_0+vt" label="En el MRU, la velocidad es constante." />
+
+<Example>
+Un móvil parte de $x_0=2\,\mathrm{m}$ con velocidad $v=3\,\mathrm{m/s}$. Después de $4\,\mathrm{s}$, su posición es $x=2+3(4)=14\,\mathrm{m}$.
+</Example>
+
+<MermaidDiagram code={'flowchart LR\nA["Posición inicial"] --> B["Velocidad × tiempo"]\nB --> C["Posición final"]'} caption="La posición inicial más el desplazamiento determina la posición final." />
+
+<ConceptNote kind="amber" title="Atención a las unidades">
+Convierte las unidades antes de operar. Si la velocidad está en metros por segundo, usa segundos para el tiempo y metros para las posiciones.
+</ConceptNote>
+
+Este modelo es una aproximación útil para intervalos en los que la velocidad no cambia apreciablemente. Amplía el estudio de la cinemática en <Citation id="openstax-fisica" />.

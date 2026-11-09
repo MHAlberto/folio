@@ -1,0 +1,305 @@
+{
+  "subjects": [
+    {
+      "id": "espanol",
+      "title": "Español",
+      "color": "lavender"
+    },
+    {
+      "id": "matematicas",
+      "title": "Matemáticas",
+      "color": "sage"
+    },
+    {
+      "id": "fisica",
+      "title": "Física",
+      "color": "blue"
+    },
+    {
+      "id": "quimica",
+      "title": "Química",
+      "color": "amber"
+    },
+    {
+      "id": "biologia",
+      "title": "Biología",
+      "color": "sage"
+    },
+    {
+      "id": "historia-universal",
+      "title": "Historia universal",
+      "color": "amber"
+    },
+    {
+      "id": "historia-mexico",
+      "title": "Historia de México",
+      "color": "lavender"
+    },
+    {
+      "id": "literatura",
+      "title": "Literatura",
+      "color": "lavender"
+    },
+    {
+      "id": "geografia",
+      "title": "Geografía",
+      "color": "blue"
+    },
+    {
+      "id": "filosofia",
+      "title": "Filosofía",
+      "color": "sage"
+    }
+  ],
+  "books": [
+    {
+      "id": "lengua-escrita",
+      "subjectId": "espanol",
+      "title": "Español",
+      "subtitle": "Lengua, lectura y expresión",
+      "description": "Lengua, lectura y expresión. Índice organizado a partir del temario de admisión proporcionado.",
+      "author": "Fuente bibliográfica por registrar",
+      "edition": "Temario básico",
+      "provisional": true
+    },
+    {
+      "id": "fundamentos-matematicos",
+      "subjectId": "matematicas",
+      "title": "Matemáticas",
+      "subtitle": "Álgebra, geometría y cálculo",
+      "description": "Álgebra, geometría y cálculo. Índice organizado a partir del temario de admisión proporcionado.",
+      "author": "Fuente bibliográfica por registrar",
+      "edition": "Temario básico",
+      "provisional": true
+    },
+    {
+      "id": "principios-fisica",
+      "subjectId": "fisica",
+      "title": "Física",
+      "subtitle": "Materia, movimiento y energía",
+      "description": "Materia, movimiento y energía. Índice organizado a partir del temario de admisión proporcionado.",
+      "author": "Fuente bibliográfica por registrar",
+      "edition": "Temario básico",
+      "provisional": true
+    },
+    {
+      "id": "quimica",
+      "subjectId": "quimica",
+      "title": "Química",
+      "subtitle": "Sustancias y transformaciones",
+      "description": "Sustancias y transformaciones. Índice organizado a partir del temario de admisión proporcionado.",
+      "author": "Fuente bibliográfica por registrar",
+      "edition": "Temario básico",
+      "provisional": true
+    },
+    {
+      "id": "biologia",
+      "subjectId": "biologia",
+      "title": "Biología",
+      "subtitle": "La vida y sus procesos",
+      "description": "La vida y sus procesos. Índice organizado a partir del temario de admisión proporcionado.",
+      "author": "Fuente bibliográfica por registrar",
+      "edition": "Temario básico",
+      "provisional": true
+    },
+    {
+      "id": "historia-universal",
+      "subjectId": "historia-universal",
+      "title": "Historia universal",
+      "subtitle": "Procesos y transformaciones del mundo",
+      "description": "Procesos y transformaciones del mundo. Índice organizado a partir del temario de admisión proporcionado.",
+      "author": "Fuente bibliográfica por registrar",
+      "edition": "Temario básico",
+      "provisional": true
+    },
+    {
+      "id": "historia-mexico",
+      "subjectId": "historia-mexico",
+      "title": "Historia de México",
+      "subtitle": "De la Nueva España al México contemporáneo",
+      "description": "De la Nueva España al México contemporáneo. Índice organizado a partir del temario de admisión proporcionado.",
+      "author": "Fuente bibliográfica por registrar",
+      "edition": "Temario básico",
+      "provisional": true
+    },
+    {
+      "id": "literatura",
+      "subjectId": "literatura",
+      "title": "Literatura",
+      "subtitle": "Textos, géneros e investigación",
+      "description": "Textos, géneros e investigación. Índice organizado a partir del temario de admisión proporcionado.",
+      "author": "Fuente bibliográfica por registrar",
+      "edition": "Temario básico",
+      "provisional": true
+    },
+    {
+      "id": "geografia",
+      "subjectId": "geografia",
+      "title": "Geografía",
+      "subtitle": "Territorio, naturaleza y sociedad",
+      "description": "Territorio, naturaleza y sociedad. Índice organizado a partir del temario de admisión proporcionado.",
+      "author": "Fuente bibliográfica por registrar",
+      "edition": "Temario básico",
+      "provisional": true
+    },
+    {
+      "id": "filosofia",
+      "subjectId": "filosofia",
+      "title": "Filosofía",
+      "subtitle": "El pensamiento y sus preguntas",
+      "description": "El pensamiento y sus preguntas. Índice organizado a partir del temario de admisión proporcionado.",
+      "author": "Fuente bibliográfica por registrar",
+      "edition": "Temario básico",
+      "provisional": true
+    }
+  ],
+  "topics": [
+    {
+      "id": "ecuaciones-lineales",
+      "bookId": "fundamentos-matematicos",
+      "number": 1,
+      "title": "Ecuaciones de primer grado",
+      "description": "La igualdad como punto de partida para despejar una incógnita.",
+      "minutes": 6,
+      "concepts": [
+        {
+          "id": "equivalencia",
+          "title": "Equivalencia",
+          "anchor": "equivalencia"
+        },
+        {
+          "id": "despeje",
+          "title": "Despeje de la incógnita",
+          "anchor": "despeje"
+        }
+      ],
+      "references": ["openstax-algebra"],
+      "subtopics": [
+        {
+          "title": "Conservar la igualdad",
+          "anchor": "equivalencia"
+        },
+        {
+          "title": "Despejar paso a paso",
+          "anchor": "despeje"
+        }
+      ]
+    },
+    {
+      "id": "funciones-lineales",
+      "bookId": "fundamentos-matematicos",
+      "number": 2,
+      "title": "Funciones lineales",
+      "description": "Pendiente, ordenada al origen y representación gráfica.",
+      "minutes": 5,
+      "concepts": [
+        {
+          "id": "pendiente",
+          "title": "Pendiente",
+          "anchor": "pendiente"
+        },
+        {
+          "id": "ordenada",
+          "title": "Ordenada al origen",
+          "anchor": "ordenada"
+        }
+      ],
+      "references": ["openstax-algebra"],
+      "subtopics": [
+        {
+          "title": "La razón de cambio",
+          "anchor": "pendiente"
+        },
+        {
+          "title": "El valor inicial",
+          "anchor": "ordenada"
+        }
+      ]
+    },
+    {
+      "id": "movimiento-rectilineo",
+      "bookId": "principios-fisica",
+      "number": 1,
+      "title": "Movimiento rectilíneo uniforme",
+      "description": "Posición, desplazamiento y velocidad constante.",
+      "minutes": 5,
+      "concepts": [
+        {
+          "id": "velocidad",
+          "title": "Velocidad media",
+          "anchor": "velocidad"
+        },
+        {
+          "id": "posicion",
+          "title": "Posición y desplazamiento",
+          "anchor": "posicion"
+        }
+      ],
+      "references": ["openstax-fisica"],
+      "subtopics": [
+        {
+          "title": "Posición y desplazamiento",
+          "anchor": "posicion"
+        },
+        {
+          "title": "Un modelo de velocidad constante",
+          "anchor": "velocidad"
+        }
+      ]
+    },
+    {
+      "id": "acentuacion",
+      "bookId": "lengua-escrita",
+      "number": 1,
+      "title": "Acentuación de palabras",
+      "description": "Reconocer la sílaba tónica y aplicar las reglas generales.",
+      "minutes": 4,
+      "concepts": [
+        {
+          "id": "silaba-tonica",
+          "title": "Sílaba tónica",
+          "anchor": "silaba-tonica"
+        },
+        {
+          "id": "reglas-tilde",
+          "title": "Reglas generales de la tilde",
+          "anchor": "reglas-tilde"
+        }
+      ],
+      "references": ["rae-tilde"],
+      "subtopics": [
+        {
+          "title": "Escuchar el acento",
+          "anchor": "silaba-tonica"
+        },
+        {
+          "title": "Cuándo escribir la tilde",
+          "anchor": "reglas-tilde"
+        }
+      ]
+    }
+  ],
+  "references": [
+    {
+      "id": "openstax-algebra",
+      "title": "Algebra and Trigonometry 2e",
+      "author": "Jay Abramson · OpenStax",
+      "year": "2021",
+      "url": "https://openstax.org/books/algebra-and-trigonometry-2e/pages/index"
+    },
+    {
+      "id": "openstax-fisica",
+      "title": "Física universitaria, volumen 1",
+      "author": "William Moebs, Samuel J. Ling y Jeff Sanny · OpenStax",
+      "year": "2021",
+      "url": "https://openstax.org/books/f%C3%ADsica-universitaria-volumen-1/pages/indice"
+    },
+    {
+      "id": "rae-tilde",
+      "title": "Diccionario panhispánico de dudas: tilde",
+      "author": "Real Academia Española",
+      "year": "Consulta editorial",
+      "url": "https://www.rae.es/dpd/tilde"
+    }
+  ]
+}

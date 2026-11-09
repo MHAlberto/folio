@@ -1,0 +1,173 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import BookCover from '../components/library/BookCover.astro';
+import Icon from '../components/ui/Icon.astro';
+import { catalog } from '../../shared/catalog';
+import { outlineForBook, syllabusTopicCount } from '../../shared/syllabus';
+---
+
+<AppLayout title="Biblioteca">
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">Tu colección, a tu ritmo</p>
+      <h1>Biblioteca</h1>
+      <p>Un lugar para leer, conectar ideas y volver a lo esencial.</p>
+    </div>
+    <span class="badge">
+      {catalog.subjects.length} materias · {syllabusTopicCount} tópicos
+    </span>
+  </div>
+  <div class="library-toolbar">
+    <div class="filter-list" role="group" aria-label="Filtrar por materia">
+      <button class="filter" data-subject="all" aria-pressed="true">
+        Todas las materias
+      </button>
+      {catalog.subjects.map((s) => (
+        <button class="filter" data-subject={s.id} aria-pressed="false">
+          {s.title}
+        </button>
+      ))}
+    </div>
+    <label class="search-field">
+      <Icon name="search" size={17} />
+      <input
+        type="search"
+        id="book-search"
+        placeholder="Buscar materia o tópico"
+        aria-label="Buscar libros"
+      />
+    </label>
+  </div>
+  <div class="section-heading">
+    <h2>Tu colección de estudio</h2>
+    <small id="book-count">{catalog.books.length} cuadernos del temario</small>
+  </div>
+  <div class="books-grid">
+    {catalog.books.map((b) => {
+      const subject = catalog.subjects.find((s) => s.id === b.subjectId)!,
+        readings = catalog.topics.filter((t) => t.bookId === b.id),
+        outline = outlineForBook(b.id);
+      return (
+        <article
+          class="book-entry"
+          data-book-subject={b.subjectId}
+          data-search={[b.title, subject.title, b.subtitle, ...outline.map((t) => t.title)].join(
+            ' ',
+          )}
+        >
+          <a href={'/biblioteca/' + b.id + '/'} aria-label={'Abrir ' + b.title}>
+            <BookCover book={b} color={subject.color} />
+            <div class="book-meta">
+              <span class:list={['subject-marker', subject.color]}>{subject.title}</span>
+              <span class="badge provisional">
+                {readings.length ? 'Muestra disponible' : 'Por incorporar'}
+              </span>
+            </div>
+            <h3 class="book-title">{b.title}</h3>
+            <p class="book-description">{b.subtitle}</p>
+            <div class="book-foot">
+              <span>
+                {outline.length} tópicos ·{' '}
+                <span data-book-progress={b.id}>
+                  {readings.length ? readings.length + ' lecturas de muestra' : 'Índice disponible'}
+                </span>
+              </span>
+              <Icon name="arrow" size={17} />
+            </div>
+          </a>
+        </article>
+      );
+    })}
+  </div>
+  <div class="empty-state" id="no-books" hidden>
+    <h2>No hay resultados para esa búsqueda</h2>
+    <p>Prueba con otra palabra o selecciona todas las materias.</p>
+  </div>
+  <div class="library-bottom">
+    <section class="study-note">
+      <h2>De la lectura a la comprensión</h2>
+      <p>
+        Tu temario ya tiene un lugar. Incorpora las lecturas y sus fuentes poco a poco; después,
+        conecta cada concepto con preguntas y repaso.
+      </p>
+      <a href="/simulacros/" class="text-link">
+        Preparar una práctica <Icon name="arrow" size={16} />
+      </a>
+    </section>
+    <section class="library-index">
+      <div class="section-heading">
+        <h2>Explora una lectura de muestra</h2>
+      </div>
+      {catalog.topics.slice(0, 3).map((t, i) => (
+        <a href={'/lectura/' + t.id + '/'}>
+          <span class="index-number">{String(i + 1).padStart(2, '0')}</span>
+          <span>{t.title}</span>
+          <Icon name="chevron" size={14} />
+        </a>
+      ))}
+    </section>
+  </div>
+  <p class="muted" style="font-size:.79rem;margin-top:28px">
+    Temario básico proporcionado por ti. Hay cuatro lecturas provisionales para explorar el flujo;
+    el resto del material está pendiente de incorporar.
+  </p>
+</AppLayout>
+<script>
+  import { api } from '../lib/api';
+  let subject = 'all',
+    query = '';
+  const normalize = (value: string) =>
+    value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+  function filter() {
+    let count = 0;
+    document.querySelectorAll<HTMLElement>('[data-book-subject]').forEach((el) => {
+      const show =
+        (subject === 'all' || el.dataset.bookSubject === subject) &&
+        normalize(el.dataset.search ?? '').includes(normalize(query));
+      el.hidden = !show;
+      if (show) count++;
+    });
+    const label = document.querySelector('#book-count');
+    if (label)
+      label.textContent = count + ' ' + (count === 1 ? 'cuaderno' : 'cuadernos') + ' del temario';
+    const empty = document.querySelector<HTMLElement>('#no-books');
+    if (empty) empty.hidden = count > 0;
+  }
+  document.querySelectorAll<HTMLButtonElement>('[data-subject]').forEach((btn) =>
+    btn.addEventListener('click', () => {
+      subject = btn.dataset.subject!;
+      document
+        .querySelectorAll('[data-subject]')
+        .forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      filter();
+    }),
+  );
+  document.querySelector<HTMLInputElement>('#book-search')?.addEventListener('input', (e) => {
+    query = (e.target as HTMLInputElement).value;
+    filter();
+  });
+  const bookTopics: Record<string, Element> = Object.fromEntries(
+    Array.from(document.querySelectorAll('[data-book-progress]')).map((el) => [
+      el.getAttribute('data-book-progress')!,
+      el,
+    ]),
+  );
+  Promise.all([
+    api<{ topicId: string; status: string }[]>('/progress'),
+    api<{ bookId: string; id: string }[]>('/topics'),
+  ])
+    .then(([progress, topics]) => {
+      for (const [id, el] of Object.entries(bookTopics)) {
+        const ids = topics.filter((t) => t.bookId === id).map((t) => t.id);
+        const done = progress.filter(
+          (p) => ids.includes(p.topicId) && p.status === 'completed',
+        ).length;
+        if (el && done)
+          el.textContent = done + '/' + ids.length + ' lecturas de muestra completadas';
+      }
+    })
+    .catch(() => {});
+</script>

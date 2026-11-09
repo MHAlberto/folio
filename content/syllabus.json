@@ -1,0 +1,268 @@
+{
+  "source": {
+    "title": null,
+    "edition": null,
+    "note": "Temario básico proporcionado por el usuario. Páginas de la guía original; fuente bibliográfica pendiente."
+  },
+  "books": [
+    {
+      "bookId": "lengua-escrita",
+      "topics": [
+        { "number": 1, "title": "Lengua y comunicación", "page": 4, "readingTopicIds": [] },
+        { "number": 2, "title": "Formas discursivas del texto", "page": 8, "readingTopicIds": [] },
+        { "number": 3, "title": "Comprensión de lectura", "page": 13, "readingTopicIds": [] },
+        { "number": 4, "title": "Gramática", "page": 21, "readingTopicIds": [] },
+        { "number": 5, "title": "Redacción", "page": 31, "readingTopicIds": [] },
+        { "number": 6, "title": "Vocabulario", "page": 43, "readingTopicIds": [] },
+        { "number": 7, "title": "Ortografía", "page": 51, "readingTopicIds": ["acentuacion"] }
+      ]
+    },
+    {
+      "bookId": "fundamentos-matematicos",
+      "topics": [
+        {
+          "number": 1,
+          "title": "Operaciones con números reales, complejos y expresiones algebraicas",
+          "page": 82,
+          "readingTopicIds": []
+        },
+        {
+          "number": 2,
+          "title": "Productos notables y factorización",
+          "page": 129,
+          "readingTopicIds": []
+        },
+        {
+          "number": 3,
+          "title": "Ecuaciones",
+          "page": 150,
+          "readingTopicIds": ["ecuaciones-lineales"]
+        },
+        { "number": 4, "title": "Desigualdades", "page": 167, "readingTopicIds": [] },
+        { "number": 5, "title": "Sistemas de ecuaciones", "page": 173, "readingTopicIds": [] },
+        {
+          "number": 6,
+          "title": "Funciones algebraicas",
+          "page": 186,
+          "readingTopicIds": ["funciones-lineales"]
+        },
+        { "number": 7, "title": "Trigonometría", "page": 200, "readingTopicIds": [] },
+        {
+          "number": 8,
+          "title": "Funciones exponenciales y logarítmicas",
+          "page": 217,
+          "readingTopicIds": []
+        },
+        { "number": 9, "title": "Recta", "page": 224, "readingTopicIds": [] },
+        { "number": 10, "title": "Circunferencia", "page": 242, "readingTopicIds": [] },
+        { "number": 11, "title": "Parábola", "page": 246, "readingTopicIds": [] },
+        { "number": 12, "title": "Elipse", "page": 252, "readingTopicIds": [] },
+        { "number": 13, "title": "Hipérbola", "page": 257, "readingTopicIds": [] },
+        {
+          "number": 14,
+          "title": "Ecuación general de segundo grado",
+          "page": 262,
+          "readingTopicIds": []
+        },
+        { "number": 15, "title": "Límites", "page": 265, "readingTopicIds": [] },
+        { "number": 16, "title": "La derivada", "page": 275, "readingTopicIds": [] },
+        { "number": 17, "title": "La integral", "page": 302, "readingTopicIds": [] }
+      ]
+    },
+    {
+      "bookId": "principios-fisica",
+      "topics": [
+        {
+          "number": 1,
+          "title": "Cinemática",
+          "page": 327,
+          "readingTopicIds": ["movimiento-rectilineo"]
+        },
+        {
+          "number": 2,
+          "title": "Fuerzas, leyes de Newton y ley de la gravitación universal",
+          "page": 347,
+          "readingTopicIds": []
+        },
+        {
+          "number": 3,
+          "title": "Trabajo y leyes de la conservación",
+          "page": 366,
+          "readingTopicIds": []
+        },
+        { "number": 4, "title": "Termodinámica", "page": 382, "readingTopicIds": [] },
+        { "number": 5, "title": "Ondas", "page": 396, "readingTopicIds": [] },
+        { "number": 6, "title": "Electromagnetismo", "page": 405, "readingTopicIds": [] },
+        { "number": 7, "title": "Fluidos", "page": 426, "readingTopicIds": [] },
+        { "number": 8, "title": "Óptica", "page": 441, "readingTopicIds": [] },
+        { "number": 9, "title": "Física contemporánea", "page": 455, "readingTopicIds": [] }
+      ]
+    },
+    {
+      "bookId": "quimica",
+      "topics": [
+        { "number": 1, "title": "Temas básicos", "page": 464, "readingTopicIds": [] },
+        { "number": 2, "title": "Agua", "page": 480, "readingTopicIds": [] },
+        { "number": 3, "title": "Aire", "page": 489, "readingTopicIds": [] },
+        {
+          "number": 4,
+          "title": "Energía, equilibrio y cinética química",
+          "page": 497,
+          "readingTopicIds": []
+        },
+        { "number": 5, "title": "Química del carbono", "page": 503, "readingTopicIds": [] }
+      ]
+    },
+    {
+      "bookId": "biologia",
+      "topics": [
+        { "number": 1, "title": "Célula", "page": 518, "readingTopicIds": [] },
+        { "number": 2, "title": "Metabolismo celular", "page": 527, "readingTopicIds": [] },
+        { "number": 3, "title": "Reproducción", "page": 532, "readingTopicIds": [] },
+        { "number": 4, "title": "Mecanismos de la herencia", "page": 540, "readingTopicIds": [] },
+        { "number": 5, "title": "Evolución", "page": 548, "readingTopicIds": [] },
+        {
+          "number": 6,
+          "title": "Los seres vivos y su ambiente",
+          "page": 555,
+          "readingTopicIds": []
+        }
+      ]
+    },
+    {
+      "bookId": "historia-universal",
+      "topics": [
+        { "number": 1, "title": "La historia", "page": 568, "readingTopicIds": [] },
+        { "number": 2, "title": "Las revoluciones burguesas", "page": 577, "readingTopicIds": [] },
+        {
+          "number": 3,
+          "title": "Pensamiento y movimientos sociales y políticos del siglo XIX",
+          "page": 592,
+          "readingTopicIds": []
+        },
+        { "number": 4, "title": "El imperialismo", "page": 601, "readingTopicIds": [] },
+        {
+          "number": 5,
+          "title": "Primera Guerra Mundial (1914–1918)",
+          "page": 606,
+          "readingTopicIds": []
+        },
+        { "number": 6, "title": "El mundo entre guerras", "page": 615, "readingTopicIds": [] },
+        {
+          "number": 7,
+          "title": "Segunda Guerra Mundial (1939–1945)",
+          "page": 622,
+          "readingTopicIds": []
+        },
+        {
+          "number": 8,
+          "title": "El conflicto entre el capitalismo y el socialismo",
+          "page": 630,
+          "readingTopicIds": []
+        },
+        { "number": 9, "title": "El mundo actual", "page": 638, "readingTopicIds": [] }
+      ]
+    },
+    {
+      "bookId": "historia-mexico",
+      "topics": [
+        {
+          "number": 1,
+          "title": "La Nueva España (siglos XVI–XIX)",
+          "page": 654,
+          "readingTopicIds": []
+        },
+        {
+          "number": 2,
+          "title": "El movimiento de Independencia de la Nueva España (1810–1821)",
+          "page": 672,
+          "readingTopicIds": []
+        },
+        {
+          "number": 3,
+          "title": "México independiente (1821–1854)",
+          "page": 682,
+          "readingTopicIds": []
+        },
+        {
+          "number": 4,
+          "title": "La reforma liberal y la resistencia de la república (1854–1876)",
+          "page": 691,
+          "readingTopicIds": []
+        },
+        { "number": 5, "title": "El porfiriato (1876–1911)", "page": 702, "readingTopicIds": [] },
+        {
+          "number": 6,
+          "title": "La Revolución Mexicana (1910–1920)",
+          "page": 710,
+          "readingTopicIds": []
+        },
+        {
+          "number": 7,
+          "title": "La reconstrucción nacional (1920–1940)",
+          "page": 722,
+          "readingTopicIds": []
+        },
+        {
+          "number": 8,
+          "title": "México contemporáneo (1940–2000)",
+          "page": 729,
+          "readingTopicIds": []
+        }
+      ]
+    },
+    {
+      "bookId": "literatura",
+      "topics": [
+        { "number": 1, "title": "El texto", "page": 752, "readingTopicIds": [] },
+        {
+          "number": 2,
+          "title": "Géneros y corrientes literarias",
+          "page": 771,
+          "readingTopicIds": []
+        },
+        {
+          "number": 3,
+          "title": "Redacción y técnicas de investigación documental",
+          "page": 801,
+          "readingTopicIds": []
+        }
+      ]
+    },
+    {
+      "bookId": "geografia",
+      "topics": [
+        {
+          "number": 1,
+          "title": "La Tierra, base del desarrollo del ser humano",
+          "page": 824,
+          "readingTopicIds": []
+        },
+        {
+          "number": 2,
+          "title": "Geografía física, el paisaje natural",
+          "page": 836,
+          "readingTopicIds": []
+        },
+        {
+          "number": 3,
+          "title": "Geografía humana, paisaje cultural",
+          "page": 858,
+          "readingTopicIds": []
+        }
+      ]
+    },
+    {
+      "bookId": "filosofia",
+      "topics": [
+        { "number": 1, "title": "Lógica", "page": 904, "readingTopicIds": [] },
+        { "number": 2, "title": "Ética y moral", "page": 913, "readingTopicIds": [] },
+        { "number": 3, "title": "Responsabilidad moral", "page": 919, "readingTopicIds": [] },
+        { "number": 4, "title": "Valores", "page": 925, "readingTopicIds": [] },
+        { "number": 5, "title": "Estética", "page": 928, "readingTopicIds": [] },
+        { "number": 6, "title": "Ontología", "page": 932, "readingTopicIds": [] },
+        { "number": 7, "title": "Epistemología", "page": 935, "readingTopicIds": [] }
+      ]
+    }
+  ]
+}

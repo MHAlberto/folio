@@ -54,6 +54,14 @@ export const questionSchema = z
     correctOption: z.enum(['A', 'B', 'C', 'D']),
     explanation: z.string().min(1),
     references: z.array(idSchema).min(1),
+    originalId: z.string().optional(),
+    origin: z.string().optional(),
+    reviewStatus: z.enum(['active', 'draft']).optional(),
+    difficulty: z.enum(['basic', 'intermediate', 'advanced']).optional(),
+    sourceSection: z
+      .string()
+      .regex(/^#[a-z0-9-]+$/)
+      .optional(),
   })
   .superRefine((q, ctx) => {
     if (
@@ -72,6 +80,10 @@ export const flashcardSchema = z.object({
   front: z.string(),
   back: z.string(),
 });
+export const activeQuestionSchema = questionSchema.refine(
+  (q) => q.reviewStatus !== 'draft',
+  'Una pregunta pendiente no puede formar parte del banco activo.',
+);
 export const draftQuestionBankSchema = z.object({
   topicId: idSchema,
   status: z.literal('draft-pending-review'),

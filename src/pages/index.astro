@@ -16,6 +16,9 @@ import { outlineForBook, syllabusTopicCount } from '../../shared/syllabus';
       {catalog.subjects.length} materias · {syllabusTopicCount} tópicos
     </span>
   </div>
+  <p class="continue-reading" id="continue-reading" hidden>
+    <a class="text-link" id="continue-reading-link"></a>
+  </p>
   <div class="library-toolbar">
     <div class="filter-list" role="group" aria-label="Filtrar por materia">
       <button class="filter" data-subject="all" aria-pressed="true">
@@ -162,9 +165,19 @@ import { outlineForBook, syllabusTopicCount } from '../../shared/syllabus';
   );
   Promise.all([
     api<{ topicId: string; status: string }[]>('/progress'),
-    api<{ bookId: string; id: string }[]>('/topics'),
+    api<{ bookId: string; id: string; title: string }[]>('/topics'),
   ])
     .then(([progress, topics]) => {
+      const last = progress[0];
+      const recent = last && topics.find((t) => t.id === last.topicId);
+      const continuation = document.querySelector<HTMLAnchorElement>('#continue-reading-link');
+      const container = document.querySelector<HTMLElement>('#continue-reading');
+      if (recent && continuation && container) {
+        continuation.href = '/lectura/' + encodeURIComponent(recent.id) + '/';
+        continuation.textContent =
+          (last.status === 'completed' ? 'Volver a: ' : 'Continuar con: ') + recent.title;
+        container.hidden = false;
+      }
       for (const [id, el] of Object.entries(bookTopics)) {
         const ids = topics.filter((t) => t.bookId === id).map((t) => t.id);
         const done = progress.filter(

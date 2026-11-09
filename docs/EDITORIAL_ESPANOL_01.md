@@ -1,13 +1,14 @@
 # Integración de Lengua y comunicación
 
-Estado: borrador en revisión. No se aprobó automáticamente el banco nuevo.
+Estado del texto: borrador en revisión. Las veinte preguntas se activaron el 9 de noviembre de 2026 por petición explícita del usuario.
 
-| Elemento                                  | Archivo                                            |
-| ----------------------------------------- | -------------------------------------------------- |
-| Texto recibido sin cambios de contenido   | content/editorial/espanol-01/source.md             |
-| JSON recibido                             | content/editorial/espanol-01/questions-source.json |
-| Lectura adaptada                          | content/books/lengua-escrita/espanol-01.mdx        |
-| Veinte preguntas normalizadas en revisión | content/drafts/questions/espanol-01.json           |
+| Elemento                                | Archivo                                                  |
+| --------------------------------------- | -------------------------------------------------------- |
+| Texto recibido sin cambios de contenido | content/editorial/espanol-01/source.md                   |
+| JSON recibido                           | content/editorial/espanol-01/questions-source.json       |
+| Lectura adaptada                        | content/books/lengua-escrita/espanol-01.mdx              |
+| Veinte preguntas activas                | content/questions.json (IDs esp-001-n001 a esp-001-n020) |
+| Registro de activación y procedencia    | content/editorial/espanol-01/activation.json             |
 
 El ID de lectura es espanol-01 y corresponde al tópico ESP-001 del banco suministrado. Los IDs de preguntas pasan a minúsculas para cumplir el esquema; cada una conserva originalId. No se modificaron enunciados, opciones, respuestas ni explicaciones.
 
@@ -19,4 +20,6 @@ Se abrieron las cinco fuentes de la UNAM para comprobar su disponibilidad. El t�
 
 La entrada se vinculó al apartado 1 de Español, página 4, del temario existente. El número de la lectura de muestra de acentuación se ajustó a 7 para conservar el orden de la materia.
 
-Pendiente: título y edición del libro original, documento base mencionado pero no adjuntado, contexto de los siete ejercicios originales y revisión académica del texto y de las veinte preguntas. No hay CMS ni publicación automática.
+Se conservaron originalId, origin, difficulty y sourceSection al promover las preguntas. Sus claves, explicaciones y opciones no cambiaron. pendingQuestionCount es cero y los accesos de práctica dependen del número real de preguntas, independientemente del estado editorial del texto.
+
+Pendiente: título y edición del libro original, documento base mencionado pero no adjuntado, contexto de los siete ejercicios originales y revisión académica exhaustiva del texto. No hay CMS ni aprobación automática de futuros borradores.

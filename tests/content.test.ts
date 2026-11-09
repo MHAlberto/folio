@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { validateContent } from '../scripts/validate-content';
 import { examConfigSchema } from '../shared/schemas/api';
-import { questionSchema } from '../shared/schemas/content';
+import { questionSchema, activeQuestionSchema } from '../shared/schemas/content';
 import data from '../content/questions.json';
 import { selectQuestions } from '../server/services/selection';
 import { readingUrl, catalog } from '../shared/catalog';
@@ -19,8 +19,8 @@ describe('contenido y selección', () => {
       books: 10,
       syllabusTopics: 74,
       topics: 5,
-      questions: 20,
-      draftQuestions: 20,
+      questions: 40,
+      draftQuestions: 0,
       cards: 4,
     });
   });
@@ -28,8 +28,13 @@ describe('contenido y selección', () => {
     for (let i = 0; i < 30; i++) {
       const result = selectQuestions(bank, config);
       expect(new Set(result.map((q) => q.id)).size).toBe(12);
-      for (const topic of config.topicIds)
-        expect(result.filter((q) => q.topicId === topic)).toHaveLength(3);
+      const sizes = config.topicIds.map(
+        (topic) => result.filter((q) => q.topicId === topic).length,
+      );
+      expect(Math.min(...sizes)).toBeGreaterThanOrEqual(
+        Math.floor(config.count / config.topicIds.length),
+      );
+      expect(Math.max(...sizes) - Math.min(...sizes)).toBeLessThanOrEqual(1);
     }
   });
   it('excluye preguntas vistas', () => {
@@ -51,7 +56,9 @@ describe('contenido y selección', () => {
     expect(result.map((q) => q.id)).toEqual(['eq-01', 'ac-03']);
   });
   it('rechaza cantidades superiores al banco disponible', () => {
-    expect(() => selectQuestions(bank, { ...config, count: 21 })).toThrow('20 preguntas');
+    expect(() => selectQuestions(bank, { ...config, count: bank.length + 1 })).toThrow(
+      bank.length + ' preguntas',
+    );
   });
   it('rechaza claves correctas ausentes y opciones repetidas', () => {
     const q = bank[0]!;
@@ -61,6 +68,11 @@ describe('contenido y selección', () => {
         options: [q.options[0], q.options[0], q.options[2], q.options[3]],
       }).success,
     ).toBe(false);
+  });
+  it('rechaza borradores insertados accidentalmente en el banco activo', () => {
+    expect(activeQuestionSchema.safeParse({ ...bank[0], reviewStatus: 'draft' }).success).toBe(
+      false,
+    );
   });
   it('rechaza tópicos repetidos y usuario o calificación del navegador', () => {
     expect(

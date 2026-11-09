@@ -2,7 +2,20 @@
 
 Fecha: 9 de noviembre de 2026.
 
-## Revisión actual: diseño y primer tema aportado
+## Activación de preguntas y pequeñas mejoras
+
+- Por petición explícita del usuario se activaron las veinte preguntas de Lengua y comunicación. El banco principal tiene cuarenta preguntas; no quedan preguntas pendientes de esta unidad.
+- Se conservaron enunciados, opciones, claves, explicaciones, IDs y procedencia. La promoción queda registrada en content/editorial/espanol-01/activation.json. La lectura mantiene su estado de revisión académica.
+- Los accesos de práctica en el lector utilizan el conteo real del banco. La disponibilidad de ejercicios ya no depende del estado editorial de la lectura.
+- La biblioteca ofrece volver a la última lectura. El progreso se ordena por última actualización.
+- La evaluación permite saltar a la primera pregunta sin responder y revisar pendientes antes de finalizar.
+- Los resultados permiten repetir la configuración en un intento nuevo, conservando modalidad, tópicos, cantidad, selección y tiempo.
+- Al probar preguntas nuevas se detectaron anclas vacías en la lectura de Español. Se trasladaron a sus encabezados para que el diagnóstico lleve a una sección visible. El validador evita reintroducir ese problema.
+- El esquema del banco activo rechaza registros marcados como borrador. La validación admite que aún no exista una carpeta de borradores.
+- Pasan tipos, validación de contenido, 27 pruebas de contenido/API, lint, formato y compilación de las 22 páginas. Los seis E2E de escritorio y móvil pasan y verifican las preguntas activas, las tres mejoras y los enlaces a secciones visibles.
+- Cloudflare recibió esta revisión en la versión d46dca7d-523f-4d8d-8ac6-8c4db19950b0. Las cinco comprobaciones HTTP remotas devolvieron 503 con private, no-store y sin contenido privado. Access sigue pendiente; se conserva el acceso cerrado.
+
+## Revisión anterior: diseño y primer tema aportado
 
 - Se eliminaron portadas en forma de caja, fondos de color en notas, tarjetas y opciones, y separadores horizontales. El color queda en palabras y recursos didácticos.
 - El sidebar empieza oculto y se controla con hamburguesa en escritorio y móvil. Se puede cerrar con botón o Escape y su preferencia se conserva en escritorio.

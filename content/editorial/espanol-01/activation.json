@@ -1,0 +1,35 @@
+{
+  "topicId": "espanol-01",
+  "status": "active",
+  "activatedOn": "2026-11-09",
+  "authorization": "El usuario solicitó añadir las preguntas al banco activo.",
+  "provenance": {
+    "topicIds": [
+      "espanol-01",
+      "ESP-001"
+    ],
+    "sourceFile": "content/editorial/espanol-01/questions-source.json"
+  },
+  "questionIds": [
+    "esp-001-n001",
+    "esp-001-n002",
+    "esp-001-n003",
+    "esp-001-n004",
+    "esp-001-n005",
+    "esp-001-n006",
+    "esp-001-n007",
+    "esp-001-n008",
+    "esp-001-n009",
+    "esp-001-n010",
+    "esp-001-n011",
+    "esp-001-n012",
+    "esp-001-n013",
+    "esp-001-n014",
+    "esp-001-n015",
+    "esp-001-n016",
+    "esp-001-n017",
+    "esp-001-n018",
+    "esp-001-n019",
+    "esp-001-n020"
+  ]
+}

@@ -160,7 +160,7 @@ export class StudyRepository {
     return (
       await this.db
         .prepare(
-          'SELECT topic_id AS topicId,status,updated_at AS updatedAt FROM reading_progress WHERE student_id=?',
+          'SELECT topic_id AS topicId,status,updated_at AS updatedAt FROM reading_progress WHERE student_id=? ORDER BY updated_at DESC,topic_id',
         )
         .bind(this.student)
         .all<{ topicId: string; status: string; updatedAt: string }>()

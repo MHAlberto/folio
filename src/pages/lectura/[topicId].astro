@@ -14,6 +14,8 @@ import MermaidDiagram from '../../components/diagrams/MermaidDiagram.astro';
 import FunctionPlot from '../../components/diagrams/FunctionPlot.astro';
 import ReadingProgress from '../../components/reader/ReadingProgress';
 import { catalog } from '../../../shared/catalog';
+// This frontmatter runs only during prerendering. Only public counts enter the HTML.
+import { catalogWithCounts } from '../../../server/services/study';
 import 'katex/dist/katex.min.css';
 export async function getStaticPaths() {
   const readings = await getCollection('readings');
@@ -22,6 +24,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const topic = catalog.topics.find((t) => t.id === entry.data.topicId)!;
+const questionCount = catalogWithCounts().topics.find((t) => t.id === topic.id)!.questionCount;
 const book = catalog.books.find((b) => b.id === topic.bookId)!;
 const siblings = catalog.topics
   .filter((t) => t.bookId === book.id)
@@ -81,11 +84,12 @@ const components = {
             {topic.pendingQuestionCount} preguntas en revisión, aún fuera del banco activo.
           </p>
         )}
-        {topic.status !== 'draft' && (
+        {questionCount > 0 && (
           <a class="button secondary" href={'/simulacros/?topic=' + topic.id + '&mode=practice'}>
             Practicar este tópico <Icon name="arrow" size={16} />
           </a>
         )}
+        {questionCount > 0 && <span class="muted">{questionCount} preguntas disponibles</span>}
       </div>
       <nav class="reading-navigation" aria-label="Lecturas relacionadas">
         {prev && (
@@ -110,7 +114,7 @@ const components = {
       <a href="#referencias">Referencias</a>
       <div class="toc-separator">
         <h2>Después de leer</h2>
-        {topic.status !== 'draft' && (
+        {questionCount > 0 && (
           <a href={'/simulacros/?topic=' + topic.id + '&mode=practice'}>Practicar los conceptos</a>
         )}
         <a href={'/repaso/?topic=' + topic.id}>Repasar con tarjetas</a>

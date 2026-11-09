@@ -55,20 +55,37 @@ beforeEach(async () => {
   ]);
 });
 describe('Hono con D1 nativo local', () => {
-  it('mantiene las preguntas nuevas en revisión fuera del banco activo', async () => {
+  it('activa las veinte preguntas de Español, oculta claves y las califica en D1', async () => {
     const response = await request('/exams', 'POST', {
       topicIds: ['espanol-01'],
-      count: 1,
+      count: 20,
       mode: 'exam',
       selection: 'random',
     });
-    expect(response.status).toBe(422);
+    expect(response.status).toBe(201);
+    const attempt = (await response.json()) as Attempt;
+    expect(attempt.questions).toHaveLength(20);
+    expect(new Set(attempt.questions.map((q) => q.id)).size).toBe(20);
+    expect(JSON.stringify(attempt)).not.toMatch(/correctOption|explanation|originalId/);
+    expect(attempt.questions.every((q) => q.topicId === 'espanol-01')).toBe(true);
+    for (const question of attempt.questions) {
+      const source = questions.find((q) => q.id === question.id)!;
+      const answer = await request('/attempts/' + attempt.id + '/answers', 'POST', {
+        questionId: question.id,
+        optionId: source.correctOption,
+      });
+      expect(await answer.json()).toEqual({ saved: true });
+    }
+    const result = (await (
+      await request('/attempts/' + attempt.id + '/finish', 'POST', {})
+    ).json()) as Attempt;
+    expect(result).toMatchObject({ correctCount: 20, score: 100, status: 'finished' });
     const catalog = (await (await request('/catalog')).json()) as {
       topics: { id: string; questionCount: number; pendingQuestionCount: number }[];
     };
     expect(catalog.topics.find((t) => t.id === 'espanol-01')).toMatchObject({
-      questionCount: 0,
-      pendingQuestionCount: 20,
+      questionCount: 20,
+      pendingQuestionCount: 0,
     });
   });
   it('responde health y catálogo sin claves', async () => {

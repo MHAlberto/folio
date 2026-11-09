@@ -117,9 +117,11 @@ La estructura inicial es textual. Puede contener notación Unicode. Fórmulas Ka
 
 Los bancos pendientes viven en content/drafts/questions. Se validan con draftQuestionBankSchema: IDs, opciones, claves, conceptos, referencias, sección de origen y procedencia. El generador del servidor importa únicamente content/questions.json, por lo que los borradores no participan en simulacros. No copies preguntas pendientes al banco activo sin una revisión explícita.
 
-Los originales recibidos para la primera unidad están en content/editorial/espanol-01 y quedan fuera de las colecciones Astro y de los assets. La lectura adaptada usa el ID canónico espanol-01. Se conserva la correspondencia con ESP-001 y con los IDs originales de sus veinte preguntas. Varios conceptos pueden compartir el ancla de una misma sección.
+Los originales recibidos para la primera unidad están en content/editorial/espanol-01 y quedan fuera de las colecciones Astro y de los assets. La lectura adaptada usa el ID canónico espanol-01. Se conserva la correspondencia con ESP-001 y con los IDs originales de sus veinte preguntas. Varios conceptos pueden compartir el ancla de una misma sección. Coloca los IDs directamente en encabezados visibles; las anclas vacías no pasan la validación.
 
-La unidad Lengua y comunicación conserva el estado de revisión. Los siete reactivos del libro no fueron entregados completos; sus comentarios y claves se guardan solo en el original editorial, sin inventar enunciados ni agregarlos al motor. Los dos diagramas del texto se integran como MermaidDiagram.
+La lectura Lengua y comunicación conserva el estado de revisión. Sus veinte preguntas se activaron por autorización explícita del usuario y se movieron al banco principal, conservando su procedencia en content/editorial/espanol-01/activation.json. El estado editorial del texto es independiente de la disponibilidad de preguntas.
+
+Los siete reactivos del libro no fueron entregados completos; sus comentarios y claves se guardan solo en el original editorial, sin inventar enunciados ni agregarlos al motor. Los dos diagramas del texto se integran como MermaidDiagram. activeQuestionSchema rechaza cualquier registro marcado como draft en el banco principal.
 
 Ejecuta npm run content:validate y npm run build. El validador comprueba esquemas Zod, IDs únicos, relaciones, orden por libro, opciones, referencias, anclas, correspondencia MDX y archivos locales. Astro compila el MDX y verifica los componentes y las fórmulas.
 

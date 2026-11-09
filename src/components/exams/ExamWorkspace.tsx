@@ -48,13 +48,31 @@ export default function ExamWorkspace() {
           const value = await api<Attempt>('/attempts/' + encodeURIComponent(id));
           if (!cancelled) adopt(value);
         } else {
-          const [value, rows] = await Promise.all([
+          const repeatId = params.get('repetir');
+          const [value, rows, previous] = await Promise.all([
             api<CatalogCounts>('/catalog'),
             api<History>('/attempts'),
+            repeatId
+              ? api<Attempt>('/attempts/' + encodeURIComponent(repeatId))
+              : Promise.resolve(null),
           ]);
           if (cancelled) return;
           setData(value);
           setHistoryRows(rows);
+          if (previous) {
+            const ids = previous.config.topicIds.filter((id) =>
+              value.topics.some((t) => t.id === id && t.questionCount > 0),
+            );
+            const available = value.topics
+              .filter((t) => ids.includes(t.id))
+              .reduce((sum, t) => sum + t.questionCount, 0);
+            setSelected(ids);
+            setCount(Math.max(1, Math.min(previous.config.count, available)));
+            setMode(previous.config.mode);
+            setSelection(previous.config.selection);
+            setMinutes(previous.config.timeLimitMinutes?.toString() ?? '');
+            return;
+          }
           const topic = params.get('topic'),
             book = params.get('book');
           setSelected(
@@ -194,6 +212,7 @@ export default function ExamWorkspace() {
     }
   }
   function navigate(to: number) {
+    setConfirm(false);
     setIndex(to);
     heading.current?.focus();
   }
@@ -418,6 +437,7 @@ export default function ExamWorkspace() {
       </>
     );
   if (attempt.status === 'finished') return <Results attempt={attempt} error={error} />;
+  const firstUnanswered = attempt.questions.findIndex((q) => !q.selectedOption);
   const question = attempt.questions[index]!,
     answered = attempt.questions.filter((q) => q.selectedOption).length;
   return (
@@ -466,6 +486,15 @@ export default function ExamWorkspace() {
           <button className="button secondary" onClick={() => setConfirm(false)}>
             Seguir respondiendo
           </button>
+          {firstUnanswered >= 0 && (
+            <button
+              className="button secondary"
+              disabled={busy}
+              onClick={() => navigate(firstUnanswered)}
+            >
+              Revisar pendientes
+            </button>
+          )}
         </section>
       )}
       <div className="exam-grid">
@@ -574,6 +603,15 @@ export default function ExamWorkspace() {
           <p>
             {answered} de {attempt.questionCount} respuestas guardadas.
           </p>
+          {firstUnanswered >= 0 && firstUnanswered !== index && (
+            <button
+              className="button secondary"
+              disabled={busy}
+              onClick={() => navigate(firstUnanswered)}
+            >
+              Ir a primera sin responder
+            </button>
+          )}
           <p>
             {attempt.mode === 'exam'
               ? 'Las explicaciones estarán disponibles al finalizar.'
@@ -682,6 +720,9 @@ function Results({ attempt, error }: { attempt: Attempt; error: string }) {
         </div>
       </section>
       <div className="result-actions">
+        <a href={'/simulacros/?repetir=' + attempt.id} className="button secondary">
+          Repetir configuración
+        </a>
         <a href="/progreso/" className="button">
           Ver mi diagnóstico
           <ArrowRight size={16} />

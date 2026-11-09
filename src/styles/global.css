@@ -382,6 +382,9 @@ hr {
   justify-content: space-between;
   margin-bottom: 42px;
 }
+.continue-reading {
+  margin-bottom: 32px;
+}
 .filter-list {
   display: flex;
   gap: 8px 18px;

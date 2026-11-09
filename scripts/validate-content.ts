@@ -6,7 +6,7 @@ import { compile } from '@mdx-js/mdx';
 import { z } from 'zod';
 import {
   catalogSchema,
-  questionSchema,
+  activeQuestionSchema,
   flashcardSchema,
   draftQuestionBankSchema,
 } from '../shared/schemas/content';
@@ -26,7 +26,7 @@ async function files(dir: string): Promise<string[]> {
 export async function validateContent(root = process.cwd()) {
   const catalog = catalogSchema.parse(await readJson(path.join(root, 'content/catalog.json')));
   const questions = z
-    .array(questionSchema)
+    .array(activeQuestionSchema)
     .parse(await readJson(path.join(root, 'content/questions.json')));
   const cards = z
     .array(flashcardSchema)
@@ -34,7 +34,14 @@ export async function validateContent(root = process.cwd()) {
   const syllabus = syllabusSchema.parse(await readJson(path.join(root, 'content/syllabus.json')));
   const errors: string[] = [];
   const drafts = await Promise.all(
-    (await files(path.join(root, 'content/drafts/questions')))
+    (
+      await files(path.join(root, 'content/drafts/questions')).catch(
+        (error: NodeJS.ErrnoException) => {
+          if (error.code === 'ENOENT') return [];
+          throw error;
+        },
+      )
+    )
       .filter((f) => f.endsWith('.json'))
       .map(async (file) => draftQuestionBankSchema.parse(await readJson(file))),
   );
@@ -122,6 +129,13 @@ export async function validateContent(root = process.cwd()) {
         errors.push('Concepto ajeno al tópico: ' + q.id + ' / ' + c);
     for (const ref of q.references)
       if (!references.has(ref)) errors.push('Referencia inexistente: ' + q.id + ' / ' + ref);
+    if (
+      q.sourceSection &&
+      !topic?.concepts.some(
+        (c) => q.conceptIds.includes(c.id) && '#' + c.anchor === q.sourceSection,
+      )
+    )
+      errors.push('Sección de origen incorrecta: ' + q.id);
   }
   for (const bank of drafts) {
     if (!topicMap.has(bank.topicId)) errors.push('Borrador sin tópico: ' + bank.topicId);
@@ -168,8 +182,8 @@ export async function validateContent(root = process.cwd()) {
         ...topic.concepts.map((c) => c.anchor),
         ...topic.subtopics.map((s) => s.anchor),
       ])
-        if (!content.includes('id="' + anchor + '"'))
-          errors.push('Ancla inexistente: ' + data.topicId + '#' + anchor);
+        if (!new RegExp('<h[1-6]\\b[^>]*\\bid="' + anchor + '"').test(content))
+          errors.push('Ancla sin encabezado visible: ' + data.topicId + '#' + anchor);
     }
     // MDX is executable, trusted Git content. This validates compilation, not a sandbox.
     await compile(content, { development: false });

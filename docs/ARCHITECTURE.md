@@ -41,6 +41,8 @@ Cache-Control es private, no-store. Se aplican CSP, protección de marcos, restr
 
 El frontend importa tipos de la API mediante import type. Las importaciones del banco y sus claves se quedan en el servidor. Astro descubre MDX con glob desde content/books; genera rutas por topicId.
 
+La página de lectura obtiene los conteos públicos mediante catalogWithCounts exclusivamente durante el prerenderizado de Astro. No pasa preguntas ni claves a las islas React. Los enlaces para practicar se muestran según la disponibilidad real del banco, incluso si la lectura continúa en revisión editorial.
+
 Los documentos originales de integración se conservan en content/editorial, fuera del descubrimiento y de los assets. Las preguntas en content/drafts/questions se validan, pero nunca se importan en el Worker ni se incluyen en la selección. El catálogo solo comunica su conteo pendiente y estado editorial.
 
 El temario básico de content/syllabus.json agrupa 74 apartados en diez cuadernos. readingTopicIds enlaza las lecturas disponibles de cada apartado. El generador solo ofrece preguntas existentes; un apartado pendiente nunca equivale a un capítulo inventado.
@@ -80,6 +82,8 @@ Ejemplo de configuración:
 Modos: practice y exam. Selección: random, unseen, errors y cumulative. Aleatorio y acumulativo usan cobertura equilibrada por tópico con colas barajadas. Acumulativo permite mezclar cualquier libro o materia seleccionada. Priorizar errores ordena por número histórico de fallos y desempata al azar. Si no hay suficientes preguntas, la API rechaza la configuración con 422.
 
 Los reactivos se congelan en el intento. Práctica devuelve feedback solo del reactivo ya respondido y conserva la primera opción. Simulacro admite cambios hasta finalizar o agotar el tiempo y nunca devuelve feedback en curso. El servidor fija el plazo; el reloj del navegador se ajusta con serverNow. Los reactivos sin respuesta cuentan como incorrectos.
+
+Desde los resultados, Repetir configuración recupera el intento del mismo estudiante y restaura tópicos, cantidad, modalidad, selección y tiempo. Al comenzar se crea un intento distinto con una nueva selección; no se reutilizan las respuestas anteriores. Los tópicos retirados se excluyen y la cantidad se limita al banco actual.
 
 No vistas excluye todos los reactivos entregados a cualquier intento del estudiante, incluidos los intentos en curso. El diagnóstico de aciertos y errores utiliza solamente intentos finalizados. La cobertura cuenta los IDs del banco actual que ya se entregaron; no incluye preguntas retiradas. El historial muestra los cien intentos más recientes y el diagnóstico considera la historia completa.
 

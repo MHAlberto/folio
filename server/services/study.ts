@@ -2,13 +2,17 @@ import questionsData from '../../content/questions.json';
 import cardsData from '../../content/flashcards.json';
 import { catalog, topicById, bookById, readingUrl } from '../../shared/catalog';
 import { syllabus } from '../../shared/syllabus';
-import { flashcardSchema, questionSchema, type PublicQuestion } from '../../shared/schemas/content';
+import {
+  flashcardSchema,
+  activeQuestionSchema,
+  type PublicQuestion,
+} from '../../shared/schemas/content';
 import type { ExamConfig } from '../../shared/schemas/api';
 import { AppError } from '../types';
 import { StudyRepository, type AttemptRow, type QuestionRow } from '../repositories/study';
 import { selectQuestions } from './selection';
 
-const bank = questionsData.map((q) => questionSchema.parse(q));
+const bank = questionsData.map((q) => activeQuestionSchema.parse(q));
 const cards = cardsData.map((c) => flashcardSchema.parse(c));
 export const catalogWithCounts = () => ({
   ...catalog,

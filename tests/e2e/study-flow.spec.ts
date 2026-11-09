@@ -130,7 +130,7 @@ test('preferencias y navegación ocultable en escritorio y móvil', async ({ pag
     await expect(page.locator('#sidebar')).toHaveAttribute('inert', '');
   }
 });
-test('primera unidad de Español: lectura en revisión con diagramas y banco separado', async ({
+test('Español: preguntas activas, continuar lectura, revisar pendientes y repetir configuración', async ({
   page,
   request,
 }, info) => {
@@ -143,12 +143,10 @@ test('primera unidad de Español: lectura en revisión con diagramas y banco sep
   await expect(page.getByText('Borrador en revisión', { exact: true })).toBeVisible();
   await page.locator('.mermaid-container').first().scrollIntoViewIfNeeded();
   await expect(page.locator('.mermaid-target svg')).toHaveCount(2);
+  await expect(page.getByText('20 preguntas disponibles', { exact: true })).toBeVisible();
   await expect(
-    page.getByText('20 preguntas en revisión, aún fuera del banco activo.'),
+    page.getByRole('link', { name: 'Practicar este tópico', exact: true }),
   ).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Practicar este tópico', exact: true })).toHaveCount(
-    0,
-  );
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
     path: 'output/playwright/espanol-01-' + info.project.name + '.png',
@@ -163,9 +161,43 @@ test('primera unidad de Español: lectura en revisión con diagramas y banco sep
   const data = await response.json();
   expect(data.topics.find((t: { id: string }) => t.id === 'espanol-01')).toMatchObject({
     status: 'draft',
-    questionCount: 0,
-    pendingQuestionCount: 20,
+    questionCount: 20,
+    pendingQuestionCount: 0,
   });
-  await page.goto('/simulacros/');
-  await expect(page.getByRole('checkbox', { name: /Lengua y comunicación/ })).toBeDisabled();
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Continuar con: Lengua y comunicación' }).click();
+  await expect(page).toHaveURL(/\/lectura\/espanol-01\//);
+  await page.getByRole('link', { name: 'Practicar este tópico', exact: true }).click();
+  await expect(page.getByRole('checkbox', { name: /Lengua y comunicación/ })).toBeChecked();
+  await page.getByLabel('Cantidad de preguntas').fill('3');
+  await page.getByLabel('Límite de tiempo, en minutos').fill('2');
+  const created = page.waitForResponse(
+    (r) => r.url().endsWith('/api/v1/exams') && r.request().method() === 'POST',
+  );
+  await page.getByRole('button', { name: 'Comenzar evaluación' }).click();
+  const attempt = await (await created).json();
+  expect(attempt.questions.every((q: { topicId: string }) => q.topicId === 'espanol-01')).toBe(
+    true,
+  );
+  await page.getByRole('radio').first().click();
+  await expect(page.locator('.feedback')).toBeVisible();
+  await page.getByRole('button', { name: 'Ir al reactivo 3', exact: true }).click();
+  await page.getByRole('button', { name: 'Ir a primera sin responder' }).click();
+  await expect(page.locator('.question-label')).toContainText('Reactivo 2 de 3');
+  await page.getByRole('button', { name: 'Finalizar evaluación', exact: true }).click();
+  await page.getByRole('button', { name: 'Revisar pendientes' }).click();
+  await expect(page.getByRole('region', { name: 'Confirmar finalización' })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Finalizar evaluación', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirmar y ver resultados' }).click();
+  await page.getByRole('link', { name: 'Repetir configuración' }).click();
+  await expect(page.getByLabel('Cantidad de preguntas')).toHaveValue('3');
+  await expect(page.getByLabel('Límite de tiempo, en minutos')).toHaveValue('2');
+  await expect(page.getByRole('checkbox', { name: /Lengua y comunicación/ })).toBeChecked();
+  const repeated = page.waitForResponse(
+    (r) => r.url().endsWith('/api/v1/exams') && r.request().method() === 'POST',
+  );
+  await page.getByRole('button', { name: 'Comenzar evaluación' }).click();
+  const next = await (await repeated).json();
+  expect(next.id).not.toBe(attempt.id);
+  expect(next.config).toEqual(attempt.config);
 });

@@ -4,7 +4,7 @@ Biblioteca personal de estudio con lecturas MDX, evaluación y diagnóstico. Ast
 
 ## Estado
 
-La aplicación funciona localmente con Wrangler. Incluye diez materias y 74 tópicos con sus páginas originales. Lengua y comunicación es la primera unidad aportada, integrada como borrador con dos diagramas y cinco referencias. Sus veinte preguntas permanecen en revisión. El banco activo conserva veinte preguntas de demostración y cuatro tarjetas; los demás apartados se identifican como pendientes.
+La aplicación funciona localmente con Wrangler. Incluye diez materias y 74 tópicos con sus páginas originales. Lengua y comunicación es la primera unidad aportada, con dos diagramas y cinco referencias. Sus veinte preguntas están activas para práctica y simulacro; el texto académico continúa en revisión. El banco reúne cuarenta preguntas y cuatro tarjetas. Desde la biblioteca puedes volver a la última lectura, revisar preguntas pendientes durante una evaluación y repetir una configuración al consultar sus resultados.
 
 La dirección solicitada para producción es https://folio.mayiitoo-alberto.workers.dev. El estado real de publicación y los pendientes se registran en [PROGRESS](docs/PROGRESS.md). No desactives la protección para acceder a la aplicación.
 

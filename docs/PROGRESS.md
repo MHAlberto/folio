@@ -42,6 +42,8 @@ La ruta inicialmente devolvió un 404 de Cloudflare pese a aparecer activada. Se
 
 El código de aplicación corresponde al commit 58bc3ed. La configuración y las guías están preparadas para el despliegue privado funcional; el workflow de GitHub Actions ejecuta tipos, lint, formato, pruebas, build y E2E sin credenciales de producción.
 
+Versión final de Cloudflare: 819dcfec-e060-4110-90d3-9575910c12ba. Los commits 58bc3ed y f434b71 se subieron a origin/main. [GitHub Actions](https://github.com/MHAlberto/folio/actions/runs/42651388675) terminó correctamente sobre f434b71: instalación limpia en Linux, tipos, lint, formato, 25 pruebas, build y cuatro E2E en Chrome. La comprobación HTTP final del despliegue confirmó 503 y private, no-store para las cinco rutas probadas.
+
 ## Pendiente externo
 
 Activar Cloudflare Access para todo el tráfico de folio y registrar el Team domain y AUD. Después desplegar de nuevo y comprobar con una sesión autorizada un intento real persistido en D1. No se considera logrado el flujo remoto completo hasta realizar esa verificación.
